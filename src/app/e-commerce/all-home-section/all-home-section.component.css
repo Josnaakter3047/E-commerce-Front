@@ -1,0 +1,28 @@
+.contact-container{
+    background-color: green;
+    position: relative;
+    z-index: 60;
+}
+.contact-content{
+  color: #fff;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  line-height: 20px;
+  margin-right: 2.5rem;
+  max-height: 40px;
+  padding-left: 1rem;
+}
+.contact-info{
+    text-align: center; padding: 10px;
+}
+@media screen and (max-width: 639px) {
+    .contact-content {
+        display: block;
+        margin-right: 0;
+        max-height: none;
+        overflow: hidden;
+        padding: 5px 20px;
+        text-align: center;
+    }
+}

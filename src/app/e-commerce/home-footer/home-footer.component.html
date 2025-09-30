@@ -1,0 +1,75 @@
+<section class="footer">
+    <div class="grid app-footer m-0" style="width: 100%;">
+        <div class="col-12 sm:col-5 md:col-5 lg:col-5 company-info">
+            <div class="d-flex flex-row flex-wrap align-items-center justify-content-left gap-2">
+                <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{company?.name?? ''}}" height="60px">
+                <h5>{{company?.name?? ''}}</h5>
+            </div>
+            
+            <div class="company-title">
+                <p [innerHTML]="branch?.footerTitle" style="font-size:15px;font-weight: 500;color:#666666">
+                    <!-- This Company is a leading e-commerce platform committed to delivering safe, healthy, and organic food products across Bangladesh. Renowned
+                    for its dedication to quality, This Company offers a diverse range of health-focused items, including premium
+                    mustard oil, pure ghee, organic honey, dates, chia seeds, and an assortment of nuts. Each product is carefully
+                    sourced and crafted to ensure maximum health benefits, meeting the highest standards of purity and
+                    freshness.<br><br>With a focus on convenience, This Company operates primarily online, bringing the
+                    goodness of
+                    nature straight to your doorstep. Whether you're seeking to elevate your wellness journey or simply
+                    enjoy
+                    natural, wholesome foods, This Company is your go-to destination for authentic, trustworthy products. -->
+                </p>
+            </div>
+        </div>
+        <div class="col-12 sm:col-2 md:col-2 lg:col-2 company-title">
+            <h5>Company</h5>
+            <ul>
+                <li>
+                    <a href="#">About us</a>
+                </li>
+                  <li>
+                    <a href="#">Contact us</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-12 sm:col-2 md:col-2 lg:col-2 company-title">
+            <h5>Policy</h5>
+            <ul>
+                <li>
+                    <a href="#">Return Policy</a>
+                </li>
+                  <li>
+                    <a href="#">Refund Policy</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-12 sm:col-3 md:col-3 lg:col-3 company-title">
+            <h5>Contact Us</h5>
+            <ul>
+                <li>
+                    <i class="pi pi-map-marker" style="color:#767575;"></i>
+                    <span class="pl-2" style="color:#767575;">Head Office: {{this.company?.address?? ''}}</span>
+                </li>
+                <li>
+                    <i class="pi pi-phone" style="color:#767575;"></i>
+                    <span class="pl-2" style="color:#767575;">Phone: {{this.branch?.phoneNumber?? ''}}</span>
+                </li>
+                <li>
+                    <i class="pi pi-map" style="color:#767575;"></i>
+                    <span class="pl-2" style="color:#767575;">Address: {{this.branch?.address?? ''}}</span>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+    <div class="col-12 footer-nav">
+        <p>@ 2025. All rights reserved and developed by <a href="#">My Solution Bangladesh</a></p>
+    </div>
+    <button *ngIf="showScrollTopButton"
+          pButton 
+          type="button" 
+          icon="pi pi-arrow-up" 
+          class="p-button-rounded p-button-sm p-button-primary scroll-top-btn"
+          (click)="scrollToTop()">
+    </button>
+</section>

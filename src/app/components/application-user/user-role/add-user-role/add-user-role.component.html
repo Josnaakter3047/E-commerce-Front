@@ -1,0 +1,35 @@
+<div class="grid grid-nogutter" style="background-color: #fff;width:100%">
+  <div class="p-fluid card" style="width:100%">
+   <form [formGroup]="this._service.form" (ngSubmit)="OnSubmit()">
+     <div class="grid nogutter">
+
+       <div class="col-12" style="padding-bottom: 0">
+         <div class="field">
+             <span class="p-float-label">
+             <input type="text" id="name" pInputText formControlName="name"
+             [ngClass]="(this._service.form.get('name').hasError('required') &&
+             (this._service.form.get('name').touched))? 'ng-invalid ng-dirty': ''">
+             <label for="name">{{ 'Name' | translate }} <span class="text-danger">*</span></label>
+           </span>
+           <span *ngIf="(this._service.form.get('name').hasError('required') && (this._service.form.get('name').touched))"
+            style="padding: 0; margin:0; color: darkred; text-align: left">
+            <small>This field is required</small>
+          </span>
+         </div>
+       </div>
+
+       <div class="col-8 ml-auto text-end">
+        <button pButton pRipple [disabled]="roleProgress"
+          label="{{ roleProgress? 'Please Wait': this._service.form.get('id').value !=null? this.translate.instant('Update'):this.translate.instant('Add') }}"
+          icon="pi pi-check" class="p-button-primary" type="submit"
+          style="width:fit-content">
+        </button>
+        <label pButton pRipple class="p-button-warning ml-2"
+          label="{{'Cancel' | translate}}" icon="pi pi-times"
+         (click)="onCancel()" style="width:fit-content">
+         </label>
+       </div>
+     </div>
+   </form>
+  </div>
+ </div>

@@ -1,0 +1,206 @@
+/* General Layout */
+.text-underline{
+  text-decoration: underline;
+}
+.page-header {
+    padding: 1.5rem 0;
+    background-color: #CCF3F4;
+    color:#000;
+}
+.page-header-title {
+  text-align: center;
+  color:#000;
+  text-transform: capitalize;
+}
+.header-breadcrumb {
+    padding: 2px 10px;
+    font-size: 13px;
+}
+.pi-angle-right {
+    color: #b8b5b5;
+    padding: 0 10px;
+}
+.bread-crumb-item {
+   color:#000;
+}
+.bread-crumb-item:hover {
+    cursor: pointer;
+    color: #b8b5b5;
+    text-decoration: underline;
+}
+
+/* Cart Layout */
+.cart-table {
+    padding: 0 150px;
+}
+.cart-img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+}
+.cart-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+.cart-desktop-view {
+  display: table;   /* preserve table layout */
+  width: 100%;
+}
+
+.cart-mobile-view {
+  display: none;
+}
+
+/* Cart Footer */
+.cart-footer-container {
+    width: 30%;
+    margin-left: auto;
+    text-align: end;
+}
+.shipping-method-option{
+  border-bottom: 1px solid #dedede;
+}
+.shipping-method-option h5{
+  margin-bottom:10px;
+  text-align: center;
+  font-size: 18px;
+}
+.shipping-content{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  color: #615f5f;
+  margin:0px;
+}
+.cart-subtotal {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    color: #4f4e4e;
+    margin: 0px;
+}
+.cart-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    font-size: 16px;
+    color: #615f5f;
+    border-bottom: 1px solid #dedede;
+    margin-bottom:10px;
+}
+.cart-action button {
+    flex: 1;
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    max-height: 35px;
+}
+.cart-action .cart-note-btn:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 11px;
+    width: 1px;
+    height: 26px;
+    background: #dedede;
+}
+.cart-subtotal {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+  
+    font-size: 16px;
+    color: #4f4e4e;
+}
+.cart-payment-action {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Breakpoints */
+@media (min-width: 1024px) {
+    .cart-table { padding: 0 100px; }
+    .cart-moibile-veiw{
+      display: none !important;
+    }
+}
+@media (max-width: 992px) {
+  .cart-table {
+    padding: 0 30px;
+  }
+  .cart-moibile-veiw{
+    display: none !important;
+  }
+  .cart-footer-container {
+    width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .cart-table {
+    padding: 0 15px;
+  }
+
+  .cart-desktop-view {
+    display: none !important;
+  }
+
+  .cart-mobile-view {
+    display: block !important;
+  }
+
+  .cart-footer-container {
+    width: 100%;
+  }
+}
+@media (max-width: 576px) {
+    .cart-table { padding: 0 10px; }
+    .cart-action button { max-height: 40px; }
+    .cart-payment-action button {
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+    /* Force stacked mobile layout */
+    .cart-item {
+        flex-wrap: wrap;
+    }
+    .cart-item .product-img,
+    .cart-item .product-info,
+    .cart-item .product-qty,
+    .cart-item .remove-btn {
+        width: 50%;
+        margin-bottom: 8px;
+    }
+}
+@media (max-width: 305px) {
+  .cart-item {
+    flex-direction: column;   /* stack vertically */
+    align-items: flex-start;  /* align nicely */
+  }
+
+  .cart-item .product-img,
+  .cart-item .product-info,
+  .cart-item .product-qty,
+  .cart-item .remove-btn {
+    width: 100% !important;   /* full width */
+    margin-bottom: 8px;       /* spacing between rows */
+  }
+
+  .cart-footer-container {
+    width: 100%;   /* footer should also fit full width */
+  }
+}

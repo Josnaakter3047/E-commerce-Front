@@ -1,0 +1,42 @@
+
+<style>
+    ::ng-deep .p-confirm-dialog .p-dialog-header {
+        justify-content: center;
+        text-align: center;
+        padding:15px;
+    }
+    ::ng-deep .p-confirm-dialog .p-dialog-footer {
+        display: flex;
+        padding:30px;
+        justify-content: center; /* center the buttons */
+        gap: 0.8rem; /* optional spacing between buttons */
+    }
+    /* styles inside your component.scss */
+    ::ng-deep .p-confirm-dialog .p-dialog-footer {
+      display: flex;
+      justify-content: center;
+    }
+   
+
+
+</style>
+
+<p-toast position="top-right"
+[baseZIndex]="10050"></p-toast>
+
+<p-confirmDialog
+[baseZIndex]="1000"
+[closable]="false"
+header="{{ 'Are you sure to proceed?' | translate }}"
+rejectButtonStyleClass="p-button-outlined p-button-danger"
+[dismissableMask]="true"
+defaultFocus="reject"
+acceptLabel="{{ 'Yes' | translate }}"
+rejectLabel="{{ 'No' | translate }}"
+[style]="{'width':'24vw'}">
+</p-confirmDialog>
+
+<router-outlet></router-outlet>
+<app-shopping-cart></app-shopping-cart>
+<app-home-footer></app-home-footer>
+

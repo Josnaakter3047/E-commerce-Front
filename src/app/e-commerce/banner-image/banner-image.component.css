@@ -1,0 +1,24 @@
+.banner {
+  width: 100%;
+}
+/* Banner image */
+.banner-img {
+  height: auto;
+  max-height: 630px;
+
+  display: block;
+}
+
+/* Optional: make sure it’s not too tall on small screens */
+@media (max-width: 768px) {
+  .banner-img {
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-img {
+    max-height: 300px;
+  }
+}
+

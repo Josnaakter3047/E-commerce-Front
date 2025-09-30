@@ -1,0 +1,34 @@
+<div class="my-div">
+  <ul>
+    <li class="sidelist" *ngFor="let x of functions">
+      <ng-container *ngIf="!x.parentId  && !x.routerLink">
+        <a (click)="toggleSubMenu(x.id)" class="list-link"
+        [routerLinkActive]="['active']" [ngClass]="{ 'active': isActive(x.id) }">
+        <i class="{{ x.icon }} menu-icon"></i>
+          <span>{{ x.name | translate}}</span>
+          <span class="{{ getIcon(x.id) }} down-icon"></span>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="!x.parentId && x.routerLink">
+        <a (click)="toggleSubMenu(x.id)" class="list-link"
+        routerLinkActive="active" routerLink="{{ x.routerLink }}/{{ x.id }}">
+
+        <i class="{{ x.icon }} menu-icon"></i>
+          <span>{{ x.name | translate }}</span>
+        </a>
+      </ng-container>
+      <ul [@slideToggle]="isOpen(x.id)">
+        <li class="sidelist" *ngFor="let child of functions">
+          <ng-container *ngIf="child.parentId === x.id">
+            <a class="list-link pl-6 pr-6" routerLinkActive="activeSubMenu"
+              routerLink="{{ child.routerLink }}/{{ child.id }}">
+              <!-- <i class="{{ child.icon }} mr-1 menu-icon"></i> -->
+              <span>{{ child.name | translate }}</span>
+            </a>
+          </ng-container>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+

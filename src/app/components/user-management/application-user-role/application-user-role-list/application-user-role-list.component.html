@@ -1,0 +1,79 @@
+<div class="grid grid-nogutter">
+  <div class="p-fluid" style="width: 100%">
+    <p-table #dt1 showGridlines
+    stripedRows [value]="list" dataKey="id"
+    [paginator]="true" [rows]="50" [loading]="loading"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+    [tableStyle]="{ 'width': 'auto' }"
+    styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50,100]"
+    [globalFilterFields]="['name']">
+
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+          <p-toolbar styleClass="p-mb-1">
+            <ng-template pTemplate="left">
+              <h3 class="table-title">{{ 'Roles' | translate }}</h3>
+              <label pButton pRipple
+                icon="pi pi-plus" class="p-button-primary" label="{{'Add New' | translate}}"
+                style="width:fit-content;" (click)="onCreate()"
+                *ngIf="this._roleFunctionService.addPermit">
+              </label>
+            </ng-template>
+            <ng-template pTemplate="right">
+              <span class="p-input-icon-left p-ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal(getVal($event), 'contains')"
+                  placeholder="{{'Search keyword' | translate}}" style="height: 38px;" />
+              </span>
+            </ng-template>
+          </p-toolbar>
+
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+        
+          <th pSortableColumn="name">{{ 'Name' | translate }}
+            <p-sortIcon field="name"></p-sortIcon>
+          </th>
+        
+          <th style="text-align: center;">{{ 'Option' | translate }}</th>
+        </tr>
+
+      </ng-template>
+
+      <ng-template pTemplate="body" let-i="rowIndex" let-x>
+        <tr>
+          <td>{{i + 1}}</td>
+          <td>{{x.name?? '-'}}</td>
+          <td style="text-align: center;">
+            <p-menu #menu [popup]="true" appendTo="body" [model]=GetActions(x)></p-menu>
+            <button pButton pRipple icon="pi pi-chevron-down"
+            label="{{ 'Options' | translate }}" class="p-button-primary"
+              (click)="menu.toggle($event)" style="width:fit-content;">
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="20">
+            <p class="text-primary" style="text-align:center; padding: 5px;">NO DATA AVAILABLE</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<p-dialog [(visible)]="this._service.displayModal" [modal]="true" [resizable]="false"
+   header="{{this._service.form.get('id').value? this.translate.instant('Update'):this.translate.instant('Add') }} {{ 'User Role' | translate }}"
+   [closable]="false" [style]="{'width':'800px'}"
+    (onHide)="LoadData()" [draggable]="false">
+    <app-add-user-role></app-add-user-role>
+  </p-dialog>

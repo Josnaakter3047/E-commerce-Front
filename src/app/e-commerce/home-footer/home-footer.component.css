@@ -1,0 +1,61 @@
+.app-footer{
+    padding:20px 15px;
+    background-color: #ccf3f4;
+}
+.footer-nav{
+    background-color: #2182a5;
+    color: #fff;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding:20px 0px;
+}
+.company-info p{
+    align-items: center;
+    justify-content: left;
+}
+.company-title h5{
+    font-weight: 700;
+}
+ul{
+    list-style: none;
+    padding-left:0px;
+}
+li a{
+    color:#767575;
+}
+li a:hover{
+    cursor: pointer;
+    color:#097197;
+    text-decoration: underline;
+}
+.footer-nav p a{
+    color:#000;
+    text-decoration: underline;
+}
+
+.footer-nav p a:hover{
+    color:rgb(9, 105, 201);
+    cursor: pointer;
+    text-decoration: underline;
+}
+.top-btn{
+    z-index: 1500;
+    border-radius: 50% !important;
+    background-color: green;
+}
+.scroll-top-btn {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  z-index: 1500;
+  border-radius: 50% !important;
+  color:#fff !important;
+  font-weight: 700 !important;
+  background-color: rgb(63, 158, 63);
+}
+.scroll-top-btn:hover{
+  color:#fff !important;
+  font-weight: 700 !important;
+}
+

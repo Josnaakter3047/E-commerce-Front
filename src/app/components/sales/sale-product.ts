@@ -1,0 +1,22 @@
+export class SaleProductModel {
+  id?:string;
+  branchId:string;
+  address?:string;
+  customerId:string;
+  referenceNo:string;
+  saleDate:Date;
+  saleStatusId?:string;
+  shipmentStatusId?:string;
+  shippingDetails:string;
+  shipmentAddress:string;
+  deliveredTo:string;
+  shippingCharge:number;
+  note:string;
+  createdById?:string;
+  saleTaxAmount:string;
+  discountAmount:string;
+  invoiceNo?:string;
+  //saleAttatchFile:string;
+  totalAmount:number;
+  updatedById?:string;
+}

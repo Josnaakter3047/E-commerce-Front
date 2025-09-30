@@ -1,0 +1,173 @@
+<div class="grid grid-nogutter" style="width: 100%;background-color: #fff;">
+  <div class="card p-fluid" style="width: 100%">
+    <form [formGroup]="this._service.updateForm">
+      <div class="grid formgroup" style="width:100%;">
+        <div class="col-12 md:col-12 lg:col-12" style="display:none;">
+          <div class="field">
+            <span class="p-float-label">
+              <input
+                [ngClass]="this._service.updateForm.get('id').hasError('required') && (this._service.updateForm.get('id').touched)? 'ng-invalid ng-dirty': ''"
+                formControlName="id" pInputText type="text">
+              <label>Id<span style="color:red">*</span></label>
+            </span>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-6">
+          <span class="p-float-label">
+            <input formControlName="fullName" pInputText type="text"
+              [ngClass]="this._service.updateForm.get('fullName').hasError('required') 
+              && (this._service.updateForm.get('fullName').touched)? 'ng-invalid ng-dirty': ''">
+            <label>{{ 'Name' | translate }}<span style="color:red">*</span></label>
+          </span>
+          <label *ngIf="this._service.updateForm.get('fullName').hasError('required') &&
+          (this._service.updateForm.get('fullName').touched)"
+          style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+          <small>This field is required!!</small>
+          </label>
+        </div>
+        <div class="col-12 md:col-6 lg:col-6">
+          <span class="p-float-label">
+            <input (keyup)="IfEmailExists()" type="text" id="email" 
+              formControlName="email" [disabled]="this._service.updateForm.get('roleName').value == 'Admin'" pInputText
+              [ngClass]="(this._service.updateForm.get('email').hasError('required') && (this._service.updateForm.get('email').touched)) ||
+              (this._service.updateForm.get('email').hasError('exists') && (this._service.updateForm.get('email').touched))? 'ng-invalid ng-dirty': ''">
+            <label for="email">{{ 'Email' | translate }}<span style="color:red">*</span></label>
+          </span>
+          <label *ngIf="this._service.updateForm.get('email').hasError('exists') && (this._service.updateForm.get('email').touched)"
+            style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+            <small>{{(this._service.updateForm.get('email').value).trim()}} already exists!!</small>
+          </label>
+          <label *ngIf="this._service.updateForm.get('email').hasError('required') &&
+          (this._service.updateForm.get('email').touched)"
+          style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+          <small>This field is required!!</small>
+        </label>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-6">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-phone"></i>
+            </span>
+            <span class="p-float-label">
+              <input (keyup)="IfPhoneExists()" type="text" id="phoneNumber" formControlName="phoneNumber" pInputText
+                [ngClass]="(this._service.updateForm.get('phoneNumber').hasError('required') && (this._service.updateForm.get('phoneNumber').touched)) ||
+                       (this._service.updateForm.get('phoneNumber').hasError('maxlength') && (this._service.updateForm.get('phoneNumber').touched)) ||
+                       (this._service.updateForm.get('phoneNumber').hasError('minlength') && (this._service.updateForm.get('phoneNumber').touched))? 'ng-invalid ng-dirty': ''">
+              <label for="phoneNumber">{{ 'Phone Number' | translate }}<span style="color:red">*</span></label>
+            </span>
+          </div>
+          <label *ngIf="(this._service.updateForm.get('phoneNumber').hasError('maxlength') && (this._service.updateForm.get('phoneNumber').touched))
+          || (this._service.updateForm.get('phoneNumber').hasError('minlength') && (this._service.updateForm.get('phoneNumber').touched))"
+          style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+            <small>Phone number is must be 11 digit.</small>
+          </label>
+          <label *ngIf="this._service.updateForm.get('phoneNumber').hasError('required') &&
+          (this._service.updateForm.get('phoneNumber').touched)"
+            style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+            <small>This field is required</small>
+          </label>
+          <label *ngIf="this._service.updateForm.get('phoneNumber').hasError('exists') && (this._service.updateForm.get('phoneNumber').touched)"
+            style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+            <small>{{(this._service.updateForm.get('phoneNumber').value).trim()}} already exists!!</small>
+          </label>
+
+        </div>
+        <div class="col-12 md:col-6 lg:col-6">
+          <span class="p-float-label">
+            <input type="number" formControlName="salesCommission" pInputText
+              [ngClass]="this._service.updateForm.get('salesCommission').hasError('required') &&
+              (this._service.updateForm.get('salesCommission').touched)? 'ng-invalid ng-dirty': ''">
+            <label for="salesCommission">{{ 'Sales Commission Percentage (%)' | translate }}</label>
+          </span>
+        </div>
+        <div class="col-12 md:col-6 lg:col-6">
+          <span class="p-float-label">
+            <input type="number" formControlName="maxSaleDiscount" pInputText
+              [ngClass]="this._service.updateForm.get('maxSaleDiscount').hasError('required') &&
+              (this._service.updateForm.get('maxSaleDiscount').touched)? 'ng-invalid ng-dirty': ''">
+            <label for="maxSaleDiscount">{{ 'Max Sales Discount Percent' | translate }}</label>
+          </span>
+        </div>
+        <!-- <div class="col-12 md:col-6 lg:col-6 mb-2">
+          <span class="p-float-label">
+            <p-dropdown [autoDisplayFirst]="false" [options]="languages"
+              formControlName="language" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"
+              optionValue="code" [style]="{'width':'100%'}">
+            </p-dropdown>
+            <label>{{ 'Language' | translate }}</label>
+          </span>
+        
+        </div> -->
+        <!-- <div class="col-12 md:col-6 lg:col-6">
+          <span class="p-float-label">
+            <input (keyup)="IfUserNameExists()" type="text" id="userName" formControlName="userName" pInputText
+              [ngClass]="_service.updateForm.get('userName').hasError('required') &&
+              (_service.updateForm.get('userName').touched)? 'ng-invalid ng-dirty': ''">
+            <label for="userName">{{ 'User Name' | translate }}<span style="color:red">*</span></label>
+          </span>
+          <label *ngIf="this._service.updateForm.get('userName').hasError('exists') && 
+          (this._service.updateForm.get('userName').touched)"
+          style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+          <small>{{(this._service.updateForm.get('userName').value).trim()}} already exists!!</small>
+        </label>
+          <label *ngIf="_service.updateForm.get('userName').hasError('required') &&
+            (_service.updateForm.get('userName').touched)"
+            style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+            <small>This field is required!!</small>
+          </label>
+        </div> -->
+      
+        
+        <div class="col-12 md:col-6 lg:col-6">
+          <div class="field">
+            <span class="p-float-label" style="width: 100%;">
+              <p-dropdown (onChange)="onChangeRole()" [disabled]="this._service.updateForm.get('roleName').value == 'Admin'" 
+                inputId="roleId" [autoDisplayFirst]="false" [options]="this._service.roleList"
+                formControlName="roleId" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"
+                optionValue="id" [style]="{'width':'100%'}"
+                [ngClass]="this._service.updateForm.get('roleId').hasError('required') &&
+                (this._service.updateForm.get('roleId').touched)? 'ng-invalid ng-dirty': ''">
+              </p-dropdown>
+              <label for="roleId">{{ 'Role' | translate }}<span style="color:red">*</span></label>
+            </span>
+            <label *ngIf="this._service.updateForm.get('roleId').hasError('required') &&
+              (this._service.updateForm.get('roleId').touched)"
+              style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+              <small>This field is required!!</small>
+            </label>
+          </div>
+        </div>
+        <div class="col-12 md:col-12 lg:col-12">
+          <h4>{{'Access Locations' | translate}}</h4>
+          <div class="grid formgrid" style="width:100%;">
+            <div class="col-12 md:col-12 p-2" *ngFor="let x of this._service.userBranches">
+              <ng-container>
+               <input (change)="onCheckedBranch(x)"
+               type="checkbox"
+               id="{{ x.id }}"
+               [(ngModel)]="x.status"
+               [ngModelOptions]="{standalone: true}">
+               <label for="" class="pl-2">{{ x.name }}</label>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-6 ml-auto text-right pr-5">
+          <button pButton [disabled]="inProgress" icon="pi pi-check"
+            class="p-button-primary"
+            label="{{inProgress? 'Please Wait': this.translate.instant('Update')}}"
+            (click)="OnSubmit()" style="width: fit-content;">
+          </button>
+
+          <label pButton pRipple (click)="onCancel()"  label="{{'Cancel' | translate}}" icon="pi pi-times"
+            class="ml-2 p-button-warning" style="width: fit-content;">
+          </label>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>

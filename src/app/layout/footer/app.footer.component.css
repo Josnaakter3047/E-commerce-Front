@@ -1,0 +1,18 @@
+.wrap {
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  box-shadow: 0 0 4px 4px #c5c3c3;
+  width:100%;
+  align-items: center;
+  justify-content:left;
+  background-color: #fff;
+  color:#000 !important;
+}
+.text-color, .text-color  a{
+  color:#000 !important;
+}
+.content {
+  color:#000 !important;
+  position: relative;
+}

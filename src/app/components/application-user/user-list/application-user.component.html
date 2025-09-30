@@ -1,0 +1,169 @@
+<div class="grid grid-nogutter" style="width: 100%;background-color: #fff;">
+  <div class="p-fluid" style="width: 100%">
+    <!-- <div class="col-12">
+      <form [formGroup]="_service.filterForm">
+        <div class="grid">
+          <div class="col-4">
+            <span class="p-float-label" style="width: 100%;">
+              <p-dropdown inputId="branchId" [autoDisplayFirst]="false" [options]="companyByBranches"
+                formControlName="branchId" optionLabel="branch.name" [filter]="true" filterBy="branch.name" [showClear]="true"
+                optionValue="id" [style]="{'width':'100%'}">
+              </p-dropdown>
+              <label for="branchId">{{ 'Branch' | translate }}</label>
+            </span>
+          </div>
+          <div class="col-4">
+            <button (click)="GetAll()" style="width: fit-content;" pButton pRipple [disabled]="loading" label="{{loading? this.translate.instant('Please Wait') :this.translate.instant('Load') }}"></button>
+          </div>
+        </div>
+      </form>
+    </div> -->
+    <p-table #dt1 showGridlines
+    stripedRows [value]="list" dataKey="id"
+    [paginator]="true" [rows]="50"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+    [tableStyle]="{ 'width': 'auto' }"
+    styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['fullName', 'phoneNumber','email','roleName','branch.name','company.name']">
+
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+          <div class="grid" style="width:100%;">
+            <div class="col-12 md:col-6">
+              <h3 class="table-title">
+                {{ 'All User' | translate }}
+              </h3>
+              <label pButton pRipple
+              icon="pi pi-plus" class="p-button-primary" label="{{'Add New' | translate}}"
+              style="width:fit-content;" (click)="onCreate()"
+              *ngIf="this._roleFunctionService.addPermit">
+              </label>
+            </div>
+            
+            <div class="col-12 md:col-6">
+              <span class="p-input-icon-left p-ml-auto">
+                <small>
+                  <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal(getVal($event), 'contains')"
+                  placeholder="{{'Search keyword' | translate}}" style="height: 38px;" />
+                </small>
+              </span>
+            </div>
+          </div>
+         
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+
+          <th pSortableColumn="fullName">{{ 'Name' | translate }}
+            <p-sortIcon field="fullName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="companyName">{{ 'Company Name' | translate}}
+            <p-sortIcon field="companyName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="branchName">{{ 'Branch' | translate}}
+            <p-sortIcon field="branchName"></p-sortIcon>
+          </th>
+          <!-- <th pSortableColumn="countryCode">{{ 'Country Code' | translate}}
+            <p-sortIcon field="countryCode"></p-sortIcon>
+          </th> -->
+          <th pSortableColumn="phoneNumber">{{ 'Phone Number' | translate}}
+            <p-sortIcon field="phoneNumber"></p-sortIcon>
+          </th>
+          <th>{{ 'Email' | translate}}</th>
+          <th>{{'Role' | translate}}</th>
+          <th>{{ 'Entry Date' | translate }}</th>
+          <th style="text-align: center;">{{ 'Status' | translate }}</th>
+          <th style="text-align: center;">{{ 'Option' | translate }}</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-i="rowIndex" let-x>
+        <!-- [ngStyle]="{'background': x.status?'':'rgba(255, 0, 0, 0.1)'}" -->
+        <tr>
+          <td>{{i + 1}}</td>
+
+          <td>{{x.fullName ?? ''}}</td>
+          <td>{{x.companyName ?? '-'}}</td>
+          <td>{{x.branchName ?? '-'}}</td>
+          <td>{{x.countryCode}}{{x.phoneNumber ?? ''}}</td>
+          <td>{{x.email ?? '-'}}</td>
+          <td>{{x.roleName ?? ''}}</td>
+          <td>{{x.entry_Date ? (x.entry_Date | date: 'dd MMM, yyyy hh:mm a') : ''}}</td>
+          <td style="text-align: center;">
+            <span>
+              <p-badge value="{{x.status? 'Active': 'In-Active'}}" [severity]="x.status? 'success': 'danger'"></p-badge>
+            </span>
+          </td>
+
+
+          <td style="text-align: center;">
+            <p-menu #menu [popup]="true" appendTo="body" [model]=GetActions(x)></p-menu>
+            <button pButton pRipple icon="pi pi-chevron-down"
+            label="{{ 'Options' | translate }}" class="p-button-primary"
+              (click)="menu.toggle($event)" style="width:fit-content;">
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="20">
+            <p class="text-primary" style="text-align:center; padding: 5px;">NO DATA AVAILABLE</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-dialog [(visible)]="this._service.displayModal" [modal]="true"
+   [resizable]="false" [closable]="true"
+   header="{{ 'Add New User' | translate}}"
+   (onHide)="GetAll()">
+  <app-add-user></app-add-user>
+</p-dialog>
+
+<p-dialog [(visible)]="this._service.displayUpdateUserModal"
+   [modal]="true" [resizable]="false" [closable]="true"
+   header="{{ 'Update User' | translate}}"
+   (onHide)="GetAll()">
+  <app-update-user></app-update-user>
+</p-dialog>
+
+<p-dialog [(visible)]="this._resetService.displayModal"
+   [modal]="true" [resizable]="false" [closable]="true"
+   header="{{ 'Reset Password for' | translate}} {{ this._resetService.userName }}"
+   (onHide)="GetAll()">
+  <app-reset-password></app-reset-password>
+</p-dialog>
+
+<p-dialog [(visible)]="this.displayUserBranch"
+   [modal]="true" [resizable]="false" [closable]="true"
+   header="{{ 'User Branch' | translate}}"
+   (onHide)="GetAll()">
+  <div class="grid p-4" style="width:100%;background-color: #fff;">
+    <div class="p-fluid" style="width:100%;background-color: #fff;">
+        <form [formGroup]="this._service.userBranchForm">
+          <div class="grid formgrid" style="width:100%;">
+            <div class="col-12 md:col-4 p-2" *ngFor="let x of companyByBranches">
+              <ng-container>
+               <input (change)="onAddChange(x.id)"
+               type="checkbox"
+               id="{{ x.id }}"
+               [(ngModel)]="selectedBranches[x.id]"
+               [ngModelOptions]="{standalone: true}">
+               <label for="" class="pl-2">{{ x.name }}</label>
+              </ng-container>
+            </div>
+          </div>
+        </form>
+    </div>
+  </div>
+</p-dialog>

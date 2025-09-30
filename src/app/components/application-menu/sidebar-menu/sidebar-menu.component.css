@@ -1,0 +1,113 @@
+
+.my-div{
+  padding:10px 0px;
+  position: relative;
+}
+.down-icon{
+  font-size:10px;
+  text-align: end;
+  justify-content: end;
+  margin-left:auto;
+  align-items: end;
+}
+.dropdown-icon {
+  margin-left: 5px;
+}
+
+.my-div ul{
+  list-style: none;
+  padding:0px;
+}
+
+.my-div ul li{
+  width:100%;
+  padding:0px;
+  transition-duration: .3s;
+  border-radius: 5px;
+  margin-bottom:0px;
+}
+
+ .my-div ul li .list-link{
+  width:100%;
+  font-size: 14px;
+  display: flex;
+  font-weight: 600;
+  justify-content: left;
+  align-items: center;
+  padding:8px 20px;
+  transition-duration: .3s;
+  text-decoration: none;
+  margin-bottom:5px;
+ }
+
+ .list-link i, .list-link span{
+  font-weight: 400;
+ }
+ .my-div ul li .list-link:hover{
+  cursor: pointer;
+  background-color: rgba(24,28,33,0.06);
+ }
+ .my-div ul li .list-link:hover span{
+  color:#058607;
+ }
+ .my-div ul li .list-link:hover i{
+  color:#058607;
+ }
+
+ .active{
+  color: #222;
+  background-color: rgba(24,28,33,0.06)
+ }
+ .active i{
+  color:#058607;
+ }
+ .active span{
+  color: #222;
+ }
+
+ .activeSubMenu{
+  background-color: #21A84A;
+ }
+ .activeSubMenu i,
+ .activeSubMenu span{
+  color:#fff;
+ }
+ .main-icon{
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 25px;
+  margin-inline-end:.5rem;
+  border: 1px solid #ddd;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  position: relative;
+  background-color: #e5e5e5;
+
+ }
+ .menu-icon{
+  padding-right:10px;
+  transition: all .2s
+}
+ .active .main-icon{
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 25px;
+  margin-inline-end:.5rem;
+  border: 1px solid #ddd;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  position: relative;
+  background-color: #058607;
+  color:#fff;
+ }
+
+ .active .menu-icon{
+    color:#058607 !important;
+    transition: all .2s
+ }
+
+

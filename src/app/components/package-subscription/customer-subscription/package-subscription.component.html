@@ -1,0 +1,178 @@
+<div class="grid grid-nogutter" style="width:100%;background-color: #fff;">
+  <div class="box p-fluid p-3 mb-5" style="width:100%;background-color: #fff;">
+    <h4 class="ml-4 mb-2">Active Subscription</h4>
+    <div class="box-body">
+      <div class="col-md-4">
+      <div class="box box-success">
+      <div class="box-header with-border text-center">
+        <div class="title flex justify-content-center">
+          <div class="text-center">
+            <h2>14 days trial</h2>
+          </div>
+          <div class="ml-5 pt-2">
+            <p-badge class="text-right" severity="success" value="Running"></p-badge>
+          </div>
+        </div>
+
+      </div>
+      <div class="box-body text-center">
+        Start Date : 03-04-2025 <br>
+        End Date : 17-04-2025 <br>
+        Remaining 9 day(s)
+      </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-fluid mb-3" style="width:100%;">
+    <p-table #dt1 showGridlines
+    stripedRows [value]="list" dataKey="id"
+    [paginator]="true" [rows]="50"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+   [tableStyle]="{ 'width': 'auto' }"
+    styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['softwarePackage.name']">
+
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+          <p-toolbar styleClass="p-mb-1">
+            <ng-template pTemplate="left">
+              <h3 class="table-title" style="margin-right: 20px">
+              {{ 'All Subscriptions' | translate }}
+              </h3>
+
+            </ng-template>
+
+            <ng-template pTemplate="right">
+              <span class="p-input-icon-left p-ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal(getVal($event), 'contains')"
+                  placeholder="{{'Search keyword' | translate}}" style="height: 38px;" />
+              </span>
+            </ng-template>
+          </p-toolbar>
+
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th pSortableColumn="softwarePackage.name">{{ 'Package Name' | translate }}
+            <p-sortIcon field="softwarePackage.name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="startDate">{{ 'Start Date' | translate }}
+            <p-sortIcon field="startDate"></p-sortIcon>
+          </th>
+          <th pSortableColumn="trialEndDate">{{ 'Trial End Date' | translate }}
+            <p-sortIcon field="trialEndDate"></p-sortIcon>
+          </th>
+          <th pSortableColumn="endDate">{{ 'End Date' | translate }}
+            <p-sortIcon field="endDate"></p-sortIcon>
+          </th>
+          <th pSortableColumn="price">{{ 'Price' | translate }}
+            <p-sortIcon field="price"></p-sortIcon>
+          </th>
+          <th pSortableColumn="paymentMethod.name">{{ 'Paid Via' | translate }}
+            <p-sortIcon field="paymentMethod.name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="transactionId">{{ 'Transaction Id' | translate }}
+            <p-sortIcon field="transactionId"></p-sortIcon>
+          </th>
+          <th pSortableColumn="saleSoftwareStatus">{{ 'Sale Software Status' | translate }}
+            <p-sortIcon field="saleSoftwareStatus"></p-sortIcon>
+          </th>
+          <th pSortableColumn="createdDate">{{ 'Created At' | translate }}
+            <p-sortIcon field="createdDate"></p-sortIcon>
+          </th>
+          <th pSortableColumn="createdBy.fullName">{{ 'Created By' | translate }}
+            <p-sortIcon field="createdBy.fullName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="paymentStatus">{{ 'Payment Status' | translate }}
+            <p-sortIcon field="paymentStatus"></p-sortIcon>
+          </th>
+
+          <th style="text-align: center;">{{'Option' | translate}}</th>
+        </tr>
+
+      </ng-template>
+      <ng-template pTemplate="body" let-i="rowIndex" let-x>
+        <tr>
+          <td>{{i + 1}}</td>
+          <td>{{x.softwarePackage?.name?? '-'}}</td>
+          <td>{{x.startDate | date:"dd-MM-yyyy"}}</td>
+          <td>{{x.trialEndDate | date:"dd-MM-yyyy"}}</td>
+          <td>{{x.endDate | date:"dd-MM-yyyy"}}</td>
+          <td>{{x.price ?? '-'}}</td>
+          <td>{{x.paymentMethod?.name ?? '-'}}</td>
+          <td>{{x.transactionId ?? '-'}}</td>
+          <td>{{x.saleSoftwareStatus?? '-'}}</td>
+          <td>{{x.createdDate | date:"dd-MM-yyyy"}}</td>
+          <td>{{x.createdBy?.fullName ?? '-'}}</td>
+          <td style="text-align: center;">
+
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="20">
+            <p class="text-primary" style="text-align:center; padding: 5px;">NO DATA AVAILABLE</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div class="p-fluid mb-5" style="width:100%;background-color: #fff;">
+    <div class="col-12 m-0 p-0" style="width:100%;background-color: #fff;">
+      <h3 class="pl-3 mb-2" style="color:green;">Packages</h3>
+    </div>
+    <div class="col-12 m-0 p-0" style="width:100%;background-color: #fff;">
+    <div class="grid m-0 p-0" style="width:100%;background-color: #fff;">
+      <div class="col-4 mb-4 p-3" *ngFor="let x of billPackages">
+        <div class="pricing_box">
+          <div class="pricing_box_body">
+            <div class="feature_list">
+                <div class="pricing_box_header">
+                  <h2>{{ x.name }}</h2>
+                  <h4 class="text-center" *ngIf="x.orderNo != 1 && x.orderNo != 6">সেটআপ ফী ৳ {{ x.installation }}</h4>
+                  <h4 class="text-center" *ngIf="x.orderNo == 6">আলোচনা সাপেক্ষে</h4>
+                </div>
+                <h1 class="pricing_box_price" *ngIf="x.orderNo == 1">
+                  Free for 14 Days
+                </h1>
+                <h1 class="pricing_box_price" *ngIf="x.orderNo != 1 && x.orderNo != 6">
+                  <span>৳</span>
+                  <span>{{ x.monthlyCharge }} /</span><br>
+                  <span style="font-size:15px;">Monthly</span>
+                </h1>
+                <h1 class="pricing_box_price" *ngIf="x.orderNo == 6">
+                  আলোচনা সাপেক্ষে
+                </h1>
+
+                <div class="list_item" *ngFor="let f of x.packageFeatures">
+                  <span>
+                    <i class="pi pi-check text-success"></i>
+                    {{ f.name }}
+                  </span>
+                  <hr>
+                </div>
+            </div>
+          </div>
+
+          <div class="pricing_box_footer">
+           <a href="#" class="pricing_btn">Order Now</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    </div>
+  </div>
+
+</div>

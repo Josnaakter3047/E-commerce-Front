@@ -1,0 +1,36 @@
+<div class="grid grid-nogutter" style="width:100%;background:#fff;">
+  <div class="p-fluid p-4" style="width:100%;background:#fff;">
+    <form [formGroup]="this._service.form" (ngSubmit)="onSubmit()">
+      <div class="grid p-0 m-0">
+        <div class="col-12 p-0 mb-2">
+          <span class="p-float-label">
+            <input type="text" id="label" formControlName="label" pInputText>
+            <label for="name">{{ 'Name' | translate }}</label>
+          </span>
+        </div>
+        <div class="col-12 p-0 mb-2">
+          <span class="p-float-label">
+            <input type="text" id="icon" formControlName="icon" pInputText>
+            <label for="icon">{{ 'Icon' | translate }}</label>
+          </span>
+        </div>
+        <div class="col-12 p-0 mb-2">
+          <span class="p-float-label">
+            <input type="text" id="link" formControlName="routerLink" pInputText>
+            <label for="link">{{ 'Router Link' | translate }}</label>
+          </span>
+        </div>
+        <div class="col-8 text-right ml-auto">
+          <button  pButton pRipple class="p-button-primary"
+          [disabled]="inProgress" icon="pi pi-check"
+           label="{{inProgress? this.translate.instant('Please Wait'): this._service.form.get('id').value? this.translate.instant('Update'):this.translate.instant('Add') }}"
+           style="width:fit-content;"></button>
+          <label  pButton class="p-button-warning ml-3" icon="pi pi-times"
+          label="{{'Cancel' | translate}}" style="width:fit-content;"
+          (click)="onCancel()"></label>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>

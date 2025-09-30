@@ -1,0 +1,202 @@
+<div class="company-log p-0 m-0" [ngClass]="{'sticky-header': isSticky}">
+    <section class="banner-logo p-0 m-0">
+        <!-- desktop view -->
+        <div class="grid p-0 m-0 text-center align-items-center justify-content-center header"
+            style="width:100%;">
+            <div class="col-3">
+                <span (click)="onDisplaySearchBar()" pTooltip="Search" tooltipPosition="bottom"
+                    style="cursor: pointer;color:#2182a5;">
+                    <i class="pi pi-search" style="font-size: 20px;"></i>
+                </span>
+            </div>
+            <div class="col-6 align-items-center justify-content-center m-0 p-2">
+                <a href="/home">
+                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{company?.name?? ''}}" height="60px">
+                    <span class="companyTitle" *ngIf="!company?.logoUrl">{{company?.name?? ''}}</span>
+                </a>
+            </div>
+            <div class="col-3">
+                <span (click)="onShowCartList()" style="cursor: pointer;color:#2182a5;">
+                    <i class="pi pi-shopping-cart p-text-primary" severity="danger" pBadge style="font-size: 20px"
+                        value="{{cartCount?? 0}}"></i>
+                </span>
+                <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#2182a5;margin-left:30px;">
+                    <i class="pi pi-user" style="font-size: 20px;"></i>
+                </span>
+                <span *ngIf="userName" style="cursor: pointer;color:#2182a5; margin-left:15px; font-size:20px;">
+                    <p-menu #userOption [popup]="true" appendTo="body" [model]=GetUserOptions()></p-menu>
+                    <button pButton pRipple icon="pi pi-chevron-down" label="{{ userName }}"
+                        class="p-button-text user-optionBtn" (click)="userOption.toggle($event)"
+                        style="width:fit-content;">
+                    </button>
+                </span>
+            </div>
+        </div>
+
+        <!-- mobile view -->
+        <div class="header-mobile px-3 py-2" style="width:100%;">
+            <div class="flex align-items-center justify-content-center">
+                <span (click)="sidebarVisible = true" style="cursor: pointer;color:#2182a5;">
+                    <i class="{{sidebarVisible? 'pi pi-times':'pi pi-list'}}" style="font-size: 20px;"></i>
+                </span>
+            </div>
+            <div class="align-items-center justify-content-between logo-img">
+                <img draggable="false" src="assets/images/company-logo.jpg" alt="My Solution Bangladesh">
+            </div>
+
+            <div class="flex align-items-center justify-content-between gap-3">
+                <span (click)="onDisplaySearchBar()" style="cursor: pointer;color:#2182a5;">
+                    <i class="pi pi-search" style="font-size: 20px;"></i>
+                </span>
+                <span (click)="onShowCartList()" style="cursor: pointer;color:#2182a5;">
+                    <i class="pi pi-shopping-cart p-text-secondary" severity="danger" pBadge style="font-size: 20px"
+                        value="{{cartCount?? 0}}"></i>
+                </span>
+                <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#2182a5;margin-left:30px;">
+                    <i class="pi pi-user" style="font-size: 20px;"></i>
+                </span>
+
+                <span *ngIf="userName" style="cursor: pointer;color:#2182a5; margin-left:30px;">
+                    <p-menu #userOption [popup]="true" appendTo="body" [model]=GetUserOptions()></p-menu>
+                    <button pButton pRipple icon="pi pi-chevron-down" label="{{ userName }}"
+                        class="p-button-primary p-button-text" (click)="userOption.toggle($event)"
+                        style="width:fit-content;">
+                    </button>
+                </span>
+            </div>
+        </div>
+    </section>
+    <!--  menu section for desktop-->
+    <section class="menu-container p-0 m-0 menu-desktop">
+        <div class="menubar-bg">
+            <div class="flex justify-content-center align-items-center">
+                <ul class="nav flex flex-wrap text-base whitespace-nowrap">
+                    <li class="menu-item list-none" *ngFor="let x of productCategories">
+                        <a *ngIf="x.id" routerLink="/products/{{x.name}}/{{x.id}}" routerLinkActive="active-link"
+                            class="block flex items-center menu-link">
+                            {{x.name?? ''}}
+                        </a>
+                        <a *ngIf="!x.id" routerLink="{{x.routerLink}}" routerLinkActive="active-link"
+                            class="block flex items-center menu-link">
+                            {{x.name?? ''}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<!-- menu sidebar -->
+<p-sidebar [(visible)]="sidebarVisible" position="left" styleClass="p-sidebar-sm">
+    <ul class="list-none p-0 m-0">
+        <li class="menu-item p-3 border-b" *ngFor="let x of productCategories">
+            <a routerLink="{{x.routerLink ?? '#'}}" routerLinkActive="active-link" class="block w-full">
+                {{x.name ?? ''}}
+            </a>
+        </li>
+    </ul>
+</p-sidebar>
+
+<!-- search display -->
+<p-sidebar #searchSidebar [(visible)]="displaySearchBar" position="top" [showCloseIcon]="false"
+    (onHide)="onSidebarHide()" styleClass="search-sidebar">
+    <div class="grid align-items-center justify-content-left py-2 px-3 md:px-6 mb-3" style="width:100%;">
+        <!-- Logo -->
+        <div class="col-12 sm:col-3 text-left flex align-items-center justify-content-center sm:justify-content-start mb-2 sm:mb-0">
+            <!-- <img draggable="false" src="assets/images/company-logo.jpg" height="40" alt="My Solution Bangladesh"> -->
+            <a href="/home">
+                <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{company?.name?? ''}}"
+                    height="60px">
+                <span class="companyTitle" *ngIf="!company?.logoUrl">{{company?.name?? ''}}</span>
+            </a>
+        </div>
+
+        <!-- Search -->
+        <div class="col-12 sm:col-6 text-center flex flex-column align-items-center">
+            <input [(ngModel)]="searchText" (input)="onInputSearchText()" class="search-input" type="text" pInputText
+                placeholder="Search products">
+
+            <p class="mt-2 sm:mt-3" *ngIf="!finalSearchText">
+                Popular Searches:
+                <a (click)="onSearchWithTopProduct(p)" class="search-link" *ngFor="let p of searchTopThereeProducts">
+                    {{p.name?? ''}}
+                </a>
+                
+            </p>
+        </div>
+
+        <!-- Icons -->
+        <div class="col-12 sm:col-3 text-center sm:text-right mt-2 sm:mt-0">
+            <span (click)="onLogIn()" style="cursor: pointer;color: green;margin-right:20px;">
+                <i class="pi pi-user" style="font-size: 20px;"></i>
+            </span>
+            <span (click)="onShowCartList()" style="cursor: pointer;color: green;margin-right:20px;">
+                <i class="pi pi-shopping-cart p-text-secondary" severity="danger" pBadge style="font-size: 20px"
+                    value="{{this.cartitems?.length?? 0}}"></i>
+            </span>
+            <span (click)="onClose($event)" style="cursor: pointer;color: rgb(228, 1, 1);">
+                <i class="pi pi-times-circle" style="font-size: 20px;"></i>
+            </span>
+        </div>
+
+        <!-- product search- result -->
+        <div style="width:100%;" *ngIf="finalSearchText">
+            <div class="col-12 text-center align-items-center text-2xl text-[#999] mt-4 md:mt-9 mb-2 text-center"
+                style="width: 100%;">
+                <span *ngIf="filteredProducts?.length> 0">Results for</span>
+                <span *ngIf="filteredProducts?.length == 0">No Result for</span>
+                "<span class="text-black" data-query="">{{ finalSearchText }}</span>"
+            </div>
+
+            <div class="col-12" style="width: 100%;">
+                <div class="grid product-content align-items-center justify-content-center" style="width: 100%;">
+                    <div *ngFor="let product of filteredProducts"
+                        class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2 product-col">
+                        <div class="card h-full flex flex-column shadow-2 product-card">
+                            <a routerLink="/product-detail/{{product.id}}">
+                                <div class="image-wrapper">
+                                    <img draggable="false" *ngIf="product.productImageUrl"
+                                        src="{{baseUrl}}/{{ product.productImageUrl }}" alt="{{ product.name }}">
+                                    <img draggable="false" *ngIf="!product.productImageUrl"
+                                        src="assets/images/default-img.png" alt="{{ product.name }}">
+                                    <span *ngIf="product.discount > 0" class="product-discount">On Sale</span>
+                                </div>
+                            </a>
+                            
+
+                            <div class="p-3 flex flex-column justify-between flex-grow-1">
+                                <div class="align-items-center text-center">
+                                    <h3 class="text-lg font-semibold m-0">
+                                        {{ product.name }}
+                                        <span *ngIf="product?.description">- ({{ product?.description?? '' }})</span>
+                                    </h3>
+                                    <p *ngIf="!product.discount" class="text-gray-600 mt-1">৳ {{ product.sellingPrice | number:"1.2-2" }}</p>
+                                    <p *ngIf="product.discount" class="text-gray-600 mt-1">
+                                        <span>৳ {{ onCalculateDiscountedPrice(product.sellingPrice, product.discount) | number:"1.2-2" }}</span>
+                                        <span style="text-decoration: line-through;padding-left:15px;">৳ {{ product.sellingPrice | number:"1.2-2"
+                                            }}</span>
+                                    </p>
+                                    <p class="mb-2">
+                                        <p-badge value="{{product?.isStockAvailable? 'Available':'Stock Out'}}"
+                                        severity="{{product?.isStockAvailable? 'success':'danger'}}"></p-badge>
+                                    </p>
+                                </div>
+                                <div class="mt-auto">
+                                    <!-- Add to Cart button if needed -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 text-center align-items-center text-2xl text-[#999] mt-3 mb-5 text-center"
+                style="width: 100%;">
+                <button (click)="onSearchMoreProduct()" pButton pRipple label="More Results" class="p-button-warning more-btn"
+                    style="width: fit-content;"></button>
+            </div>
+        </div>
+    </div>
+</p-sidebar>

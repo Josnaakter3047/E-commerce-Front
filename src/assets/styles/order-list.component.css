@@ -1,0 +1,103 @@
+.col-6
+{
+  border-left:2px solid rgb(165, 165, 165);
+  margin-bottom:20px;
+  padding-top:0px;
+  padding-bottom:0px;
+  padding-left:20px;
+  font-weight: 500;
+}
+.col-6 .col .field{
+  font-size:15px;
+  position:relative;
+  transition: all 0.4s;
+}
+.col-6 .col .field::before{
+  content:'';
+  position: absolute;
+  width:12px;
+  height: 12px;
+  right:calc(100% + 15px);
+  top:5px;
+  background-color: rgb(207, 207, 206);
+  border:2px solid #fff;
+  margin-bottom:20px;
+}
+.col-6 .col .isCurrent .name{
+ font-weight: 600;
+}
+.col-6 .col .isCurrent::before{
+  content:'';
+  position: absolute;
+  width:12px;
+  height: 12px;
+  right:calc(100% + 15px);
+  top:0px;
+  background-color: rgb(214, 214, 81);
+  border:2px solid #fff;
+}
+
+.title{
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.tbl-data tr td{
+  font-size:12px;
+  padding:5px 2px;
+}
+.data tr td{
+  font-size:12px;
+  padding:5px 2px;
+}
+.data th, .data td {
+  font-size:12px;
+  border: 1px solid black;
+  padding: 3px;
+}
+.showprint{
+  display:none;
+}
+.signature{
+  width:50%;
+  text-align: center;
+}
+.p-border{
+  border-bottom: 1px solid #484747 !important;
+  color: #000 !important;
+}
+.orderForm{
+  margin-top:10px;
+}
+
+@media print{
+  @page {
+    margin:20px 15px;
+    size: A4 portrait;
+  }
+  .showprint{
+    display:block;
+  }
+  .noprint{
+    display:none;
+  }
+  .signature{
+    width:50%;
+    text-align: center;
+  }
+  .signature .p-border {
+    width: 50% !important;
+    text-align: center !important;
+    border-bottom: 1px solid #000 !important;
+    background-color: #000 !important;
+    color: #000 !important;
+  }
+  .data th, .data td {
+    font-size:12px;
+    border: 1px solid black !important;
+    padding: 3px;
+  }
+
+}

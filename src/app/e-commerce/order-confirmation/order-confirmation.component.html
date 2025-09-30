@@ -1,0 +1,148 @@
+<div class="grid grid-nogutter" style="width:100%;background:#fff;">
+  <div class="p-fluid pb-3" style="width:100%;background:#fff;">
+    <div class="header">
+      <h4 class="title">Order Confirmation</h4>
+      <button (click)="onHideOrderModal()" pButton pRipple icon="pi pi-times"
+        class="p-button-outlined p-button-danger"></button>
+    </div>
+    <form [formGroup]="this._service.orderForm">
+      <div class="grid formgrid py-3 pl-4 pr-0 order-form" style="width: 100%;">
+        <div class="col-12 sm:col-6 md:col-6 lg:col-6">
+          <label for="name">{{ 'Name' | translate }}</label>
+          <div class="field">
+            <input type="text" formControlName="orderCustomerName" pInputText 
+              [ngClass]="this._service.orderForm.get('orderCustomerName').hasError('required') &&
+             (this._service.orderForm.get('orderCustomerName').touched)? 'ng-invalid ng-dirty': ''">
+            <label *ngIf="this._service.orderForm.get('orderCustomerName').hasError('required') && 
+                    (this._service.orderForm.get('orderCustomerName').touched)"
+              style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+              <small>This field is required</small>
+            </label>
+          </div>
+
+        </div>
+        <div class="col-12 sm:col-6 md:col-6 lg:col-6">
+          <label>{{ 'Phone Number' | translate }}</label>
+          <div class="field">
+            <input type="text" formControlName="orderCustomerPhoneNumber" pInputText 
+              [ngClass]="this._service.orderForm.get('orderCustomerPhoneNumber').hasError('required') &&
+              (this._service.orderForm.get('orderCustomerPhoneNumber').touched)? 'ng-invalid ng-dirty': ''">
+
+            <label *ngIf="this._service.orderForm.get('orderCustomerPhoneNumber').hasError('required') && 
+              (this._service.orderForm.get('orderCustomerPhoneNumber').touched)"
+              style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+              <small>This field is required</small>
+            </label>
+          </div>
+
+        </div>
+        <div class="col-12 sm:col-6 md:col-6 lg:col-6">
+          <label for="link">{{ 'Delivery Address' | translate }}</label>
+          <div class="field">
+            <textarea type="text" rows="2" formControlName="deliveryAddress" pInputText 
+            [ngClass]="this._service.orderForm.get('deliveryAddress').hasError('required') &&
+                (this._service.orderForm.get('deliveryAddress').touched)? 'ng-invalid ng-dirty': ''"></textarea>
+            <label *ngIf="this._service.orderForm.get('deliveryAddress').hasError('required') && 
+              (this._service.orderForm.get('deliveryAddress').touched)"
+              style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+              <small>This field is required</small>
+            </label>
+          </div>
+
+        </div>
+        <div class="col-12 sm:col-6 md:col-6 lg:col-6">
+          <label for="link">{{ 'Comment' | translate }}</label>
+          <div class="field">
+            <textarea type="text" rows="2" formControlName="note" pInputText></textarea>
+          </div>
+        </div>
+        <!-- <div class="col-12 sm:col-12 md:col-12 lg:col-12">
+          <h5 class="text-underline">{{'Select Shipping a Method' | translate}}:</h5>
+          <div class="grid" style="width: 100%;">
+            <div class="col-12 p-3">
+              <div class="field-checkbox shipping-content" *ngFor="let x of this._service.shippingMethods">
+                <div>
+                  <p-radioButton (onClick)="getTotalPayable(x.charge)" [inputId]="x.id" [value]="x.charge"
+                    formControlName="shippingCharge"></p-radioButton>
+                  <label [for]="x.id" class="ml-2">
+                    {{ x.name }}
+                  </label>
+                </div>
+                <div>
+                  <label [for]="x.id" class="ml-2">
+                    Tk. {{ x.charge | number:"1.2-2"}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="col-12 sm:col-12 md:col-12 lg:col-12" style="width: 100%;">
+          <div class="cart-container">
+            <div class="cart-list-title mb-2">
+              <h5 style="text-decoration: underline;">{{'Your Cart Items' | translate}}:</h5>
+            </div>
+          
+            <div *ngFor="let item of _shoppingCartService.cartItems" class="cart-item flex align-items-center mb-2">
+              <div class="cart-img-wrapper flex-shrink-0">
+                <img *ngIf="item.image" [src]="_shoppingCartService.baseUrl + '/' + item.image" alt="{{item.name}}"
+                  class="cart-img">
+                <img *ngIf="!item.image" src="assets/images/default-img.png" alt="{{item.name}}" class="cart-img">
+                <p-badge value="{{item.quantity}}" severity="danger" class="cart-badge"></p-badge>
+              </div>
+              <div class="cart-item-name flex-grow ml-2">
+                <h6 class="m-0 text-truncate">{{ item.name }}
+                  <span *ngIf="item?.description">- ({{ item?.description?? '' }})</span>
+                </h6>
+              </div>
+          
+              <div class="cart-item-price flex-shrink-0 text-right ml-auto">
+                <p class="m-0">Tk {{ item.price | number:"1.2-2"}}</p>
+              </div>
+          
+            </div>
+          </div>
+        </div> -->
+
+        <div class="col-12 sm:col-12 md:col-12 lg:col-12 mb-3">
+          <div class="grid px-2">
+            <div class="col-12" style="background-color: #ececec;">
+              <div class="cart-subtotal">
+                <span class="subtotal-title font-medium">Subtotal</span>
+                <span class="subtotal-price font-medium">Tk {{ _shoppingCartService.getTotal() | number:"1.2-2"
+                  }}</span>
+              </div>
+              <div class="cart-subtotal" style="border-bottom:1px solid grey;">
+                <span class="subtotal-title font-medium">Delivery Charge</span>
+                <span class="subtotal-price font-medium">Tk {{ this._service.shippingCharge | number:"1.2-2" }}</span>
+              </div>
+              <div class="cart-subtotal">
+                <span class="subtotal-title font-medium">Total Payable</span>
+                <span class="subtotal-price font-medium">Tk {{ this._shoppingCartService.getTotal() + this._service.shippingCharge | number:"1.2-2" }}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        
+        <div class="col-8 ml-auto mr-auto d-flex flex-column align-items-center">
+          <button pButton pRipple class="confirmation-btn mb-2" [disabled]="inProgress" icon="pi pi-check"
+            label="{{inProgress? 'Please Wait':'Submit'}}" (click)="onSubmit()" style="width: fit-content; text-align:center;">
+          </button>
+        
+          <p class="text-center text-2xl" style="color:rgb(8, 127, 211);">
+            উপরের বাটনে ক্লিক করলে আপনার অর্ডারটি সাথে সাথে কনফার্ম হয়ে যাবে !
+          </p>
+        </div>
+        
+        <!-- <div class="col-12 sm:col-12 md:col-12 lg:col-12">
+                  <button pButton pRipple class="payonline-btn" icon="pi pi-credit-card" label="Pay Online">
+                  </button>
+                </div> -->
+
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+
+<div class="grid login-14" style="width:100%;">
+  <div class="col-7 bg-img none-992">
+      <div class="info">
+          <h1>Welcome To<br>
+            <span>MySolution Bangladesh</span>
+          </h1>
+          <p>
+            MySolution Bangladesh is an online software where possible to manage all types of shops perfectly. It plans to connect clients who have shops but they need to manage. We will focus on providing our clients with User-friendly, Fast &amp; Secure software that helps them manage their shop easily.
+          </p>
+      </div>
+  </div>
+  <div class="col-5 bg-color-10" style="background: #06a761">
+      <div class="form-section">
+          <div class="logo clearfix">
+              <!-- <a href="/">
+                  <img src="https://amarsolution.com/images/logo.png" style="height: 80px" alt="logo">
+              </a> -->
+              <h1 class="text-light text-center">SIGN IN</h1>
+              <h3 style="color: #fff;text-align: center;">Continue to MySolution Bangladesh</h3>
+          </div>
+
+            <div class="login-inner-form">
+              <form [formGroup]="form" (ngSubmit)="OnSubmit()">
+                  <div class="form-group form-box">
+                    <input type="text" id="username" formControlName="userName" pInputText
+                    [ngClass]="this.form.get('userName').hasError('required') && (this.form.get('userName').touched)? 'ng-invalid ng-dirty': ''">
+                  </div>
+                  <div class="form-group form-box">
+                    <input [type]="passwordFieldType" id="password" formControlName="password" pInputText
+                    [ngClass]="this.form.get('password').hasError('required') && (this.form.get('password').touched)? 'ng-invalid ng-dirty': ''">
+                    <i class="eye-icon {{ passwordFieldType === 'password' ? 'pi pi-eye' : 'pi pi-eye-slash' }}" (click)="togglePasswordVisibility()"></i>
+                  </div>
+                  <div class="p-inputgroup mt-2">
+                    <p-checkbox class="padding:0px;margin:0px;" [binary]="true" formControlName="rememberMe"></p-checkbox>
+                    <label style="color:#fff; padding-left:10px;font-size:15px;">Remember me</label>
+                  </div>
+                  <div class="mt-3 mb-2">
+                      <button type="submit" class="btn-md btn-theme btn-block">
+                        SIGN IN
+                      </button>
+                      
+                  </div>
+                  <p style="font-size: 14px;color:#fff;">
+                    If you are not registration yet. Please Registration
+                    <a routerLink="/ragistration" style="text-decoration: underline;color:blue;"> Here</a>
+                  </p>
+                  <p style="font-size: 14px;color:#fff;">
+                    <a routerLink="/home" style="text-decoration: underline;color:blue;">Go to home</a>
+                  </p>
+              </form>
+          </div>
+         
+      </div>
+  </div>
+</div>

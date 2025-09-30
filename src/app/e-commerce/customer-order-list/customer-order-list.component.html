@@ -1,0 +1,103 @@
+<div class="grid grid-nogutter" style="width: 100%;background-color: #fff;">
+  <div class="p-fluid" style="width: 100%">
+    <!-- <div class="col-12">
+      <form [formGroup]="_service.filterForm">
+        <div class="grid">
+          <div class="col-4">
+            <span class="p-float-label" style="width: 100%;">
+              <p-dropdown inputId="branchId" [autoDisplayFirst]="false" [options]="companyByBranches"
+                formControlName="branchId" optionLabel="branch.name" [filter]="true" filterBy="branch.name" [showClear]="true"
+                optionValue="id" [style]="{'width':'100%'}">
+              </p-dropdown>
+              <label for="branchId">{{ 'Branch' | translate }}</label>
+            </span>
+          </div>
+          <div class="col-4">
+            <button (click)="GetAll()" style="width: fit-content;" pButton pRipple [disabled]="loading" label="{{loading? this.translate.instant('Please Wait') :this.translate.instant('Load') }}"></button>
+          </div>
+        </div>
+      </form>
+    </div> -->
+    <p-table #dt1 showGridlines
+    stripedRows [value]="list" dataKey="id"
+    [paginator]="true" [rows]="50"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+    [tableStyle]="{ 'width': 'auto' }"
+    styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['invoiceNo', 'customer.name']">
+
+    <ng-template pTemplate="caption">
+        <div class="table-header">
+          <p-toolbar >
+            <ng-template pTemplate="left">
+              <h3 class="table-title">
+                {{ 'Order List' | translate }}
+              </h3>
+             
+            </ng-template>
+
+            <ng-template pTemplate="right">
+              <span class="p-input-icon-left p-ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal(getVal($event), 'contains')"
+                  placeholder="{{'Search keyword' | translate}}" style="height: 38px;" />
+              </span>
+            </ng-template>
+          </p-toolbar>
+
+        </div>
+    </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th pSortableColumn="name">{{ 'Name' | translate }}
+            <p-sortIcon field="name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="phoneNumber">{{ 'Phone Number' | translate }}
+            <p-sortIcon field="phoneNumber"></p-sortIcon>
+          </th>
+          <th pSortableColumn="address">{{ 'Address' | translate }}
+            <p-sortIcon field="address"></p-sortIcon>
+          </th>
+          <th pSortableColumn="customer.name">{{ 'Customer Name' | translate }}
+            <p-sortIcon field="customer.name"></p-sortIcon>
+          </th>
+         
+          
+          <th pSortableColumn="qurierService.name">{{'Querier' | translate}}
+            <p-sortIcon field="qurierService.name"></p-sortIcon>
+          </th>
+          
+         
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-i="rowIndex" let-x>
+        <!-- [ngStyle]="{'background': x.status?'':'rgba(255, 0, 0, 0.1)'}" -->
+        <tr>
+          <td>{{i + 1}}</td>
+          <td>{{x.name?? ''}}</td>
+          <td>{{x.phoneNumber??''}}</td>
+          <td>{{x.address?? ''}}</td>
+          <td>{{x.customer?.name?? ''}}</td>
+          <td>{{x.qurierService?.name?? ''}}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="20">
+            <p class="text-primary" style="text-align:center; padding: 5px;">NO DATA AVAILABLE</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+
+
+

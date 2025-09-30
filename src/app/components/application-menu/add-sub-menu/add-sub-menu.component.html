@@ -1,0 +1,36 @@
+<div class="grid grid-nogutter" style="background-color: #fff;width:100%">
+  <div class="p-fluid card" style="width:100%">
+    <form [formGroup]="this._service.form">
+      <div class="input-panel flex flex-column px-3">
+        <div class="grid">
+          <div class="p-inputgroup md:col-12">
+            <span class="p-float-label">
+              <input type="text" id="label" formControlName="label" pInputText>
+              <label for="name">{{'Name' | translate}}</label>
+            </span>
+          </div>
+          <div class="p-inputgroup md:col-12">
+            <span class="p-float-label">
+              <input type="text" id="icon" formControlName="icon" pInputText>
+              <label for="icon">{{'Icon' | translate}}</label>
+            </span>
+          </div>
+          <div class="p-inputgroup md:col-12">
+            <span class="p-float-label">
+              <input type="text" id="link" formControlName="routerLink" pInputText>
+              <label for="link">{{'Router Link' | translate}}</label>
+            </span>
+          </div>
+          <div class="md:col-3">
+            <button  pButton pRipple class="p-button-primary" [disabled]="inProgress" icon="pi pi-check"
+            label="{{inProgress? this.translate.instant('Please Wait'):this.translate.instant('Submit') }}" (click)="onSubmit()"></button>
+          </div>
+          <div class="md:col-3">
+            <button  pButton pRipple class="p-button-danger" icon="pi pi-times"  
+            label="{{'Cancel' | translate}}" (click)="onCancel()"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

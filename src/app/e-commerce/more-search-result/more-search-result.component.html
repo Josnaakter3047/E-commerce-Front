@@ -1,0 +1,72 @@
+<app-top-contact-info></app-top-contact-info>
+<app-home-banner></app-home-banner>
+<div class="grid p-0 m-0" style="width: 100%;">
+    <div class="col-12 product-title" style="width: 100%;">
+        <h2 class="mb-0 text-center">Found {{searchCount}} results for "{{searchName}}"</h2>
+    </div>
+    <div class="p-fluid product-container pt-2" style="width: 100%;">
+        <div class="grid">
+            <div class="col-2 product-col" *ngFor="let product of this._productService.searchResultProductList">
+                <div class="card h-full flex flex-column shadow-2 product-card">
+                    <a routerLink="/product-detail/{{product.id}}">
+                        <div class="image-wrapper">
+                            <img draggable="false" *ngIf="product.productImageUrl"
+                                src="{{baseUrl}}/{{ product.productImageUrl }}" alt="{{ product.name }}">
+                            <img draggable="false" *ngIf="!product.productImageUrl" src="assets/images/default-img.png"
+                                alt="{{ product.name }}">
+                            <span *ngIf="product.discount > 0" class="product-discount">On Sale</span>
+                        </div>
+                    </a>
+
+                    <div class="p-3 flex flex-column justify-between flex-grow-1">
+                        <div class="align-items-center text-center">
+                            <h3 class="text-lg font-semibold m-0">
+                                {{ product.name }}
+                                <span *ngIf="product?.description">- ({{ product?.description?? '' }})</span>
+                            </h3>
+                            <p *ngIf="!product.discount" class="text-gray-600 mt-1">৳ {{ product.sellingPrice |
+                                number:"1.2-2" }}</p>
+                            <p *ngIf="product.discount" class="text-gray-600 mt-1">
+                                <span>৳ {{ onCalculateDiscountedPrice(product.sellingPrice, product.discount) |
+                                    number:"1.2-2" }}</span>
+                                <span style="text-decoration: line-through;padding-left:15px;">৳ {{ product.sellingPrice
+                                    | number:"1.2-2" }}</span>
+                            </p>
+                            <p class="mb-2">
+                                <p-badge value="{{product?.isStockAvailable? 'Available':'Stock Out'}}"
+                                severity="{{product?.isStockAvailable? 'success':'danger'}}"></p-badge>
+                            </p>
+                        </div>
+                        <div class="mt-auto ml-auto mr-auto">
+                            <!-- <button pButton label="Add to Cart" icon="pi pi-shopping-cart" class="p-button-sm w-full p-button-primary"
+                                                        (click)="addToCart(product)">
+                                                    </button> -->
+                            <div class="flex align-items-center">
+                                <div class="flex items-center" style="background-color:#eae9e9; border:1px solid grey;">
+                                    <button pButton icon="pi pi-minus" class="p-button-sm p-button-primary p-button-text"
+                                        (click)="decreaseQty(product)"></button>
+                                    <div class="align-items-center justify-content-center p-1"
+                                        style="border-left:1px solid grey; border-right:1px solid grey;">
+                                        <span class="px-3"> {{ getCartQty(product.productDetailId) }}</span>
+                                    </div>
+                                    <button pButton icon="pi pi-plus" class="p-button-sm p-button-primary p-button-text"
+                                        (click)="increaseQty(product)"></button>
+                                </div>
+                                <!-- <button pButton icon="pi pi-trash" class="p-button-danger ml-2 p-button-outlined" (click)="onRemoveItem(i)">
+                                                                                        </button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- paginator bottom -->
+
+        </div>
+        <div class="flex justify-content-center mt-3">
+            <p-paginator [rows]="rows" [totalRecords]="totalRecords" [rowsPerPageOptions]="[10,15,30,50,100]"
+                (onPageChange)="paginate($event)">
+            </p-paginator>
+        </div>
+    </div>
+</div>
+<!-- <app-home-footer></app-home-footer> -->

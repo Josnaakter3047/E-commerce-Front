@@ -1,0 +1,210 @@
+<div class="registration-form" style="width: 100%;">
+  <div class="container-fluid">
+    <div class="login-form col-md-12 col-xs-12 right-col-content-register">
+      <div class="row text-center">
+        <div class="col-md-12" style="font-size: 18px; font-weight: 600; color:#ebff03">
+          Hotline: +88019 0000-0000
+        </div>
+      </div>
+
+
+      <p class="form-header text-center" style="color: #ebff03">Register and Get Started in minutes</p>
+      <form [formGroup]="this._service.form">
+        
+
+        <h3 style="font-weight: bold; color: #fff; font-size: 16px;text-align: center;">❑ Software Login Information</h3>
+       
+          <div class="row">
+            <!-- <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label for="username">User Name<span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-user"></i>
+                  </span>
+                  <input (keyup)="IfUserNameExists()" formControlName="userName" class="form-control"
+                    placeholder="Username" name="username" type="text" id="username" [ngClass]="this._service.form.get('userName').hasError('required') &&
+              (this._service.form.get('userName').touched)? 'ng-invalid ng-dirty': ''">
+                </div>
+                <label *ngIf="this._service.form.get('userName').hasError('required') &&
+          (this._service.form.get('userName').touched)"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>This field is required!!</small>
+                </label>
+                <label
+                  *ngIf="this._service.form.get('userName').hasError('exists') && (this._service.form.get('userName').touched)"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>{{(this._service.form.get('userName').value).trim()}} already exists!!</small>
+                </label>
+              </div>
+            </div> -->
+            <div class="col-md-6 ml-auto mr-auto" style="background: #ffffff; color: rgb(0, 0, 0); padding: 30px 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px 5px #0000001f;">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label for="first_name">Your Full Name<span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-info"></i>
+                  </span>
+                  <input formControlName="name" class="form-control"
+                    name="first_name" type="text" id="first_name" [ngClass]="this._service.form.get('name').hasError('required') &&
+                    (this._service.form.get('name').touched)? 'ng-invalid ng-dirty': ''">
+                </div>
+                <label *ngIf="this._service.form.get('name').hasError('required') &&
+                (this._service.form.get('name').touched)"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>This field is required</small>
+                </label>
+              </div>
+            </div>
+           
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label for="mobile">Phone Number<span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-phone"></i>
+                  </span>
+                  <input formControlName="phoneNumber" class="form-control"
+                    name="mobile" type="text" id="mobile"
+                    [ngClass]="(this._service.form.get('phoneNumber').hasError('required') && (this._service.form.get('phoneNumber').touched)) ||
+                    (this._service.form.get('phoneNumber').hasError('maxlength') && (this._service.form.get('phoneNumber').touched)) ||
+                    (this._service.form.get('phoneNumber').hasError('minlength') && (this._service.form.get('phoneNumber').touched))? 'ng-invalid ng-dirty': ''">
+                </div>
+                <label
+                  *ngIf="(this._service.form.get('phoneNumber').hasError('required') && (this._service.form.get('phoneNumber').touched)) &&
+              ((this._service.form.get('phoneNumber').hasError('minlength') && (this._service.form.get('phoneNumber').touched)) ||
+              (this._service.form.get('phoneNumber').hasError('maxlength') && (this._service.form.get('phoneNumber').touched)))"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>Phone Number Must Be 11 Digit</small>
+                </label>
+                <label *ngIf="this._service.form.get('phoneNumber').hasError('required') &&
+              (this._service.form.get('phoneNumber').touched)"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>This field is required</small>
+                </label>
+              </div>
+            </div>
+           
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label for="address_line_1">Address</label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-info"></i>
+                  </span>
+                  <textarea formControlName="address" class="form-control" 
+                    placeholder="House#2, Uttara, Dhaka-1230" type="text"
+                    rows="1"></textarea>
+                </div>
+              </div>
+            </div>
+             <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-envelope"></i>
+                  </span>
+                  <input formControlName="email" class="form-control"
+                    type="text" [ngClass]="(this._service.form.get('email').hasError('pattern') &&
+                    (this._service.form.get('email').touched))? 'ng-invalid ng-dirty': ''">
+                </div>
+                <!-- <label *ngIf="this._service.form.get('email').hasError('required') && (this._service.form.get('email').touched)"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>This field is required</small>
+                </label> -->
+
+                <label *ngIf="this._service.form.get('email').hasError('pattern') && (this._service.form.get('email').touched)"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>Invalid email</small>
+                </label>
+                <label
+                  *ngIf="this._service.form.get('email').hasError('exists') && (this._service.form.get('email').touched)"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>{{(this._service.form.get('email').value).trim()}} already exists!!</small>
+                </label>
+              </div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label for="password">Password<span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-lock"></i>
+                  </span>
+                  <input formControlName="password" class="form-control" name="password"
+                    type="password" value="" id="password"
+                    [ngClass]="(this._service.form.get('password').hasError('required') && (this._service.form.get('password').touched)) ||
+                             (this._service.form.get('password').hasError('pattern') && (this._service.form.get('password').touched))? 'ng-invalid ng-dirty': ''">
+
+                </div>
+                <label
+                  *ngIf="this._service.form.get('password').hasError('required') && (this._service.form.get('password').touched)"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>This field is required</small>
+                </label>
+                <label
+                  *ngIf="(!this._service.form.get('password').hasError('required') && (this._service.form.get('password').touched)) &&
+                (this._service.form.get('password').hasError('pattern') && (this._service.form.get('password').touched))"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>Password Must Contain - One of Each [0-9], [a-z], [A-Z], Special <br> Character in (&and;, #,
+                    $,
+                    !,
+                    %, *,
+                    ?, &)
+                    & 8-32 in length</small>
+                </label>
+              </div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label for="confirm_password">Confirm Password<span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-lock"></i>
+                  </span>
+                  <input formControlName="confirmPassword" class="form-control"
+                    name="confirm_password" type="password" value="" id="confirm_password"
+                    [ngClass]="(this._service.form.get('confirmPassword').hasError('required') && (this._service.form.get('confirmPassword').touched)) ||
+                             (this._service.form.get('confirmPassword').hasError('confirmedValidator') && (this._service.form.get('confirmPassword').touched))? 'ng-invalid ng-dirty': ''">
+
+
+                </div>
+                <p *ngIf="(!this._service.form.get('confirmPassword').hasError('required') && (this._service.form.get('confirmPassword').touched)) &&
+              (this._service.form.get('confirmPassword').hasError('confirmedValidator') && (this._service.form.get('confirmPassword').touched))"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>Password Does Not Match</small>
+                </p>
+                <label *ngIf="this._service.form.get('confirmPassword').hasError('required') &&
+          (this._service.form.get('confirmPassword').touched)"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>This field is required</small>
+                </label>
+              </div>
+            </div>
+            <div class="col-md-12 mb-3">
+            </div>
+              </div>
+            </div>
+          </div>
+     
+
+        <div class="registration-btn mt-2">
+          <button pButton pRipple [disabled]="isProgress" class="btn p-button-info p-3" (click)="onSubmit()"
+            label="{{ isProgress? this.translate.instant('Please Wait'):'SUBMIT'}}" icon="pi pi-check">
+          </button>
+
+          <p class="m-2" style="font-size: 15px;">
+            If you are registered. Please
+            <a routerLink="/login" style="color:#fff;text-decoration: underline;">Log In</a>
+          </p>
+          <button routerLink="/home" class="p-button-secondary" label="Go Back Home" icon="pi pi-arrow-left" pButton
+            pRipple></button>
+        </div>
+        <input name="package_id" type="hidden">
+      </form>
+    </div>
+  </div>
+</div>

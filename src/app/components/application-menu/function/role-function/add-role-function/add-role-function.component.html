@@ -1,0 +1,64 @@
+<!-- <style>
+  .pages-body .pages-panel.card {
+    background-color: rgb(255, 255, 255);
+  }
+</style> -->
+
+<div class="grid grid-nogutter" style="width:100%;">
+  <div class="card p-fluid" style="width: 100%;">
+    <h4 class="ml-3 text-primary">{{ 'Assign Permission' | translate }}</h4>
+    <form [formGroup]="_service.form">
+      <div class="input-panel flex flex-column px-3 mt-3">
+        <div class="grid formgrid">
+          <div class="md:col-7">
+            <div class="grid">
+              <div class="md:col-12">
+                <span class="p-float-label" style="width: 100%;">
+                  <p-dropdown (onChange)="onChangeDropdown()" inputId="roleId" [autoDisplayFirst]="false" [options]="roles"
+                    formControlName="roleId" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"
+                    optionValue="id" [style]="{'width':'100%'}">
+                  </p-dropdown>
+                  <label for="roleId">{{ 'Select a Role' | translate }}<span style="color:red">*</span></label>
+
+                </span>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-12 md:col-12 lg:col-12" *ngIf="roleId == null">
+            <div class="grid formgrid">
+              <div class="col-12 md:col-12 lg:col-12" *ngFor="let x of menuFunctions">
+                <h5 for="" class="p-2">{{ x.name }}</h5>
+                <div class="grid pl-2">
+                  <div class="col-12 md:col-2 lg:col-2 p-2" *ngFor="let y of x.items">
+                    <input type="checkbox" name="{{y.menuFunctionId}}" id="{{y.id}}"
+                    [(ngModel)]="y.status" [ngModelOptions]="{standalone: true}">
+                    <label for="" class="pl-1">{{ y.functionName }}</label>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-12 md:col-12 lg:col-12" *ngIf="roleId">
+            <div class="grid formgrid">
+              <div class="md:col-12" *ngFor="let x of roleFunctions">
+                <h5 for="" class="pl-2">{{ x.name }}</h5>
+                <div class="grid pl-2">
+                  <div class="col-12 md:col-2 lg:col-2 p-2" *ngFor="let y of x.items">
+                    <input type="checkbox" name="{{y.id}}" id="{{y.id}}" (change)="onAddChange(y)"
+                    [(ngModel)]="y.status" [ngModelOptions]="{standalone: true}">
+                    <label for="" class="pl-1">{{ y.functionName }}</label>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>

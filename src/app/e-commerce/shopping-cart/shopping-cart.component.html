@@ -1,0 +1,120 @@
+<p-sidebar #sidebarRef [(visible)]="visible" position="right" appendTo="body" [showCloseIcon]="false" 
+ styleClass="cart-sidebar">
+  <ng-template pTemplate="headless">
+    <div class="flex flex-column h-full" style="background-color: #fff;">
+      <!-- Header -->
+      <div class="flex align-items-center justify-content-between px-3 py-2 flex-shrink-0 border-bottom-1 border-gray-300">
+        <span class="font-semibold text-2xl">Shopping Cart</span>
+        <button pButton (click)="closeCallback($event)" icon="pi pi-times"
+          class="p-button-outlined p-button-danger" style="width: fit-content;">
+        </button>
+      </div>
+
+      <!-- Cart Items: 50% height -->
+      <div class="overflow-y-auto px-3 py-2" style="flex: 1 1 auto; height: 50vh;">
+        <div *ngIf="_shoppingCartService.cartItems?.length === 0" class="text-center text-gray-500 mt-3">
+          Your cart is empty.
+        </div>
+
+        <div *ngFor="let item of _shoppingCartService.cartItems; let i = index"
+          class="cart-item flex items-center mb-3">
+          
+          <img *ngIf="item.image" [src]="_shoppingCartService.baseUrl + '/' + item.image"
+            alt="{{item.name}}" class="cart-img mr-2">
+          <img *ngIf="!item.image" src="assets/images/default-img.png"
+            alt="{{item.name}}" class="cart-img mr-2">
+
+          <div class="flex-grow product-info">
+            <h4 class="m-0 font-semibold">{{ item.name }} <span *ngIf="item?.description">- ({{ item?.description?? '' }})</span></h4>
+            <p class="m-0 text-gray-600">৳ {{ item.price }}</p>
+
+            <div class="flex items-center">
+              <div class="flex items-center" style="background-color:#eae9e9; border:1px solid grey;">
+                <button pButton icon="pi pi-minus" class="p-button-sm p-button-primary p-button-text"
+                  (click)="decreaseQty(i)"></button>
+                <div class="align-items-center justify-content-center p-1"
+                  style="border-left:1px solid grey; border-right:1px solid grey;">
+                  <span class="px-3">{{ item.quantity }}</span>
+                </div>
+                <button pButton icon="pi pi-plus" class="p-button-sm p-button-primary p-button-text"
+                  (click)="increaseQty(i)"></button>
+              </div>
+              <button pButton icon="pi pi-trash" class="p-button-danger ml-2 p-button-outlined"
+                (click)="onRemoveItem(i)">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cart Summary: fixed 50% bottom -->
+      <div class="cart-footer-container flex-shrink-0 bg-gray-100 flex flex-col justify-center" style="height: 50vh;">
+        <div class="cart-footer-content" *ngIf="_shoppingCartService.cartItems?.length > 0; else emptySummary">
+           <div class="cart-action">
+            <button pTooltip="Add note" tooltipPosition="top" class="cart-note-btn">
+                <span class="pi pi-pencil"></span><span>Note</span>
+            </button>
+            <button pTooltip="Add coupon" tooltipPosition="top">
+                <span class="pi pi-ticket"></span><span>Coupon</span>
+            </button>
+          </div>
+          <div class="shipping-method-option">
+            <h5>{{'Select your area' | translate}}:</h5>
+            <div class="grid p-0 m-0" style="width: 100%;">
+              <div class="col-12 p-0 m-0">
+                <div class="field-checkbox shipping-content" *ngFor="let x of this._service.shippingMethods">
+                  <div class="m-0 p-0">
+                    <p-radioButton (onClick)="getTotalPayable(x.charge)" [inputId]="x.id" [value]="x.charge"
+                      [(ngModel)]="this._service.shippingCharge">
+                    </p-radioButton>
+          
+                    <label [for]="x.id" class="ml-2">
+                      {{ x.name }}
+                    </label>
+                  </div>
+                  <div class="m-0 p-0">
+                    <label [for]="x.id">
+                      Tk. {{ x.charge | number:"1.2-2"}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cart-subtotal">
+            <span class="subtotal-title font-medium">Subtotal</span>
+            <span class="subtotal-price font-medium">৳ {{ _shoppingCartService.getTotal() | number:"1.2-2" }}</span>
+          </div>
+          <div class="cart-subtotal" style="border-bottom: 1px solid #dedede;">
+            <span class="subtotal-title font-medium">Delivery Charge</span>
+            <span class="subtotal-price font-medium">Tk. {{ this._service.shippingCharge | number:"1.2-2"}}</span>
+          </div>
+          <div class="cart-subtotal">
+            <span class="subtotal-title font-medium">Total Payable</span>
+            <span class="subtotal-price font-medium">Tk. {{ this._shoppingCartService.getTotal() + this._service.shippingCharge |
+              number:"1.2-2"}}</span>
+          </div>
+          <div class="cart-payment-action">
+               <button (click)="onDisplayOrderModal()" label="Cash on Delivery" icon="pi pi-shopping-cart" class="w-full p-button-primary" pButton pRipple></button>
+               <button label="Pay Online" icon="pi pi-credit-card" class="w-full p-button-warning" pButton pRipple></button>
+               <p class="go-to-cart" (click)="goCartList()">
+                <a>View Cart</a>
+               </p>
+           </div>
+        </div>
+        <ng-template #emptySummary>
+          <h4 class="text-center text-gray-400">No items</h4>
+        </ng-template>
+      </div>
+
+    </div>
+  </ng-template>
+</p-sidebar>
+
+<p-dialog [(visible)]="this._service.displayModal" [modal]="true"
+   [resizable]="false" position="top" [closable]="true" 
+   header="{{ 'Order Confirmation' | translate}}" [style]="{'width':'50vw'}"
+   (onHide)="onHideOrderModal()" [showHeader]="false">
+   <app-order-confirmation></app-order-confirmation>
+</p-dialog>
+

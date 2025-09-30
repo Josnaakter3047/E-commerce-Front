@@ -1,0 +1,273 @@
+
+
+.login-14 .bg-img {
+  background: rgba(0, 0, 0, 0.04) url('src/assets/images/img-14.jpg') top left repeat;
+  background-size: cover;
+  top: 0;
+  bottom: 0;
+  opacity: 1;
+  z-index: 999;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.login-14 .info{
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.login-14 .info h1 {
+  font-size: 45px;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+.login-14 .info h1 span{
+  font-weight: 300;
+}
+
+.login-14 .info {
+  text-align: center;
+}
+
+.login-14 .info p {
+  margin-bottom: 0;
+  color: #dcdcdc;
+  line-height: 28px;
+}
+
+.login-14 .login-inner-form .btn-md {
+  cursor: pointer;
+  height: 50px;
+  width:100%;
+  color: #fff;
+  padding: 15.0px 50px 14.5px 50px;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: sans-serif;
+  text-transform: uppercase;
+}
+.login-14 .form-section p {
+  margin: 25px 0 0;
+  text-align: center;
+  font-size: 16px;
+  color: #616161;
+}
+.login-14 .login-inner-form img {
+  margin-bottom: 5px;
+  height: 40px;
+}
+.login-14 .login-inner-form .input-text {
+  font-size: 16px;
+  outline: none;
+  color: #616161;
+  border-radius: 3px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  background: #f7eaea;
+}
+
+.login-14 .login-inner-form p {
+  margin: 0;
+  color: #616161;
+}
+
+.login-14 .login-inner-form p a {
+  color: #616161;
+}
+
+.login-14 .login-inner-form button:focus {
+  outline: none;
+  outline: 0 auto -webkit-focus-ring-color;
+}
+
+.login-14 .login-inner-form .btn-theme.focus, .btn-theme:focus {
+  box-shadow: none;
+}
+
+.login-14 .login-inner-form .btn-theme {
+  border: none;
+  color: #000;
+  font-weight: 600;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.login-14 .login-inner-form .btn-theme:hover {
+  color:#fff;
+  background: #25498B;
+}
+
+.login-14 .logo img {
+  height: 30px;
+  margin-bottom: 20px;
+}
+
+.login-14 .nav-pills li {
+  display: inline-block;
+}
+
+.login-14 .login-inner-form .checkbox {
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+.login-14 .login-inner-form .form-check {
+  float: left;
+  margin-bottom: 0;
+}
+
+.login-14 .login-inner-form .form-check a {
+  color: #d6d6d6;
+  float: right;
+}
+
+.login-14 .login-inner-form .form-check-input {
+  position: absolute;
+  margin-left: 0;
+}
+
+.login-14 .login-inner-form .form-check label::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 2px;
+  margin-left: -25px;
+  border: none;
+  border-radius: 3px;
+  background: #f7eaea;
+}
+
+.login-14 .login-inner-form .form-check-label {
+  padding-left: 25px;
+  margin-bottom: 0;
+  font-size: 16px;
+  color: #616161;
+}
+
+.login-14 .login-inner-form .checkbox-theme input[type="checkbox"]:checked + label::before {
+  color: #fff;
+  background: #fea900;
+
+}
+
+.login-14 .login-inner-form input[type=checkbox]:checked + label:before {
+  font-weight: 300;
+  color: #f3f3f3;
+  font-size: 14px;
+  content: "\2713";
+  line-height: 17px;
+}
+
+.login-14 .login-inner-form input[type=checkbox], input[type=radio] {
+  margin-top: 4px;
+}
+
+.login-14 .login-inner-form .checkbox a {
+  font-size: 16px;
+  color: #616161;
+  float: right;
+  margin-left: 3px;
+}
+.login-14 .bg-color-10 {
+  min-height: 100vh;
+  position: relative;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 15px;
+}
+.login-14 .form-section h3 {
+  font-size: 23px;
+  margin-bottom: 40px;
+  font-weight: 500;
+  color: #313131;
+}
+
+.login-14 .form-section p {
+  margin: 25px 0 0;
+  font-size: 16px;
+  color: #616161;
+}
+
+.login-14 .form-section p a {
+  color: #616161;
+}
+.login-14 .form-box {
+  width: 100%;
+  text-align: center;
+}
+
+.login-14 .login-inner-form .form-group {
+  margin-bottom: 25px;
+}
+
+.login-14 .login-inner-form .form-box {
+  float: left;
+  width: 100%;
+  position: relative;
+}
+
+.login-14 .login-inner-form .input-text {
+  font-size: 16px;
+  outline: none;
+  color: #616161;
+  border-radius: 3px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  background: #f7eaea;
+}
+.login-14 .login-inner-form .form-box input {
+  float: left;
+  width: 100%;
+  padding: 14.5px 45px 14.5px 20px;
+  border-radius: 0;
+}
+
+.login-14 .login-inner-form .form-box i {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 20px;
+  color: #616161;
+}
+
+.login-14 .login-inner-form label {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.login-14 .login-inner-form .forgot {
+  margin: 0;
+  line-height: 45px;
+  color: #535353;
+  font-size: 15px;
+  float: right;
+}
+.login-14 .form-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media screen and (max-width: 570px) {
+  .login-14 .col-7{
+    width:100%;
+    display: none;
+  }
+  .login-14 .col-5{
+    width:100%;
+  }
+}

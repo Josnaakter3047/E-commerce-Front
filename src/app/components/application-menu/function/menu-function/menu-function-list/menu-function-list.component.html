@@ -1,0 +1,77 @@
+<div class="grid grid-nogutter">
+  <div class="p-fluid" style="width: 100%">
+    <p-table #dt1 showGridlines
+    stripedRows [value]="list" dataKey="id"
+    [paginator]="true" [rows]="50"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+    [tableStyle]="{ 'width': 'auto' }"
+    styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['menuItem.label', 'functionName']">
+
+      <ng-template pTemplate="caption">
+
+        <div class="table-header">
+
+          <p-toolbar styleClass="p-mb-1">
+            <ng-template pTemplate="left">
+              <h3 style="margin-right: 20px" class="table-title">{{'Menu Function List' | translate}}</h3>
+              <lebel (click)="onCreate()" pButton pRipple style="width:fit-content;"
+                icon="pi pi-plus" class="p-button-primary" label="{{'Add New' | translate}}">
+              </lebel>
+            </ng-template>
+
+            <ng-template pTemplate="right">
+              <span class="p-input-icon-left p-ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal(getVal($event), 'contains')"
+                  placeholder="{{'Search keyword' | translate}}" style="height: 38px;"/>
+              </span>
+            </ng-template>
+
+          </p-toolbar>
+
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>{{ 'Name' | translate }}</th>
+          <th>{{ 'Function Name' | translate  }}</th>
+          <!-- <th>Status</th> -->
+          <th style="text-align: center;">{{ 'Option' | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-i="rowIndex" let-x>
+        <tr>
+          <td>{{i + 1}}</td>
+          <td>{{x.menuItem.label?? "-"}}</td>
+          <td>{{x.functionName ?? '-'}}</td>
+
+          <td style="text-align: center;">
+            <p-menu #menu [popup]="true" appendTo="body" [model]=GetActions(x)></p-menu>
+            <button pButton pRipple icon="pi pi-chevron-down"
+            label="{{ 'Options' | translate }}" class="p-button-primary"
+              (click)="menu.toggle($event)" style="width:fit-content;">
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="20">
+            <p class="text-primary" style="text-align:center; padding: 5px;">NO DATA AVAILABLE</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<p-dialog [(visible)]="this._service.displayModal" [modal]="true" [resizable]="false"
+   header="{{this._service.form.get('id').value? this.translate.instant('Update'):this.translate.instant('Add') }} {{ 'Menu Function' | translate }}"
+   [closable]="true" [style]="{'width':'40vw'}"
+    (onHide)="LoadData()">
+   <app-add-menu-function></app-add-menu-function>
+</p-dialog>

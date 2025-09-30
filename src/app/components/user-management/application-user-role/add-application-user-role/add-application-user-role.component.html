@@ -1,0 +1,69 @@
+<div class="grid grid-nogutter" style="background-color: #fff;width:100%">
+  <div class="p-fluid card" style="width:100%">
+   <form [formGroup]="this._service.form" (ngSubmit)="OnSubmit()">
+     <div class="grid nogutter">
+      <div class="col-6" style="padding-bottom: 0">
+        <div class="field">
+            <span class="p-float-label">
+            <input (keyup)="IfRoleNameExists()" pInputText formControlName="name"
+             type="text" id="name"
+            [ngClass]="this._service.form.get('name').hasError('required') &&
+              (this._service.form.get('name').touched)? 'ng-invalid ng-dirty': ''">
+            <label for="name">{{ 'Role Name' | translate }} <span class="text-danger">*</span></label>
+          </span>
+          <label *ngIf="(this._service.form.get('name').hasError('required') &&
+          (this._service.form.get('name').touched))"
+           style="padding: 0; margin:0; color: darkred; text-align: left">
+           <small>This field is required</small>
+         </label>
+         <label *ngIf="(this._service.form.get('name').hasError('exists') &&
+           (this._service.form.get('name').touched))"
+           style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+           <small>{{this._service.form.get('name').value}} is already exist!</small>
+         </label>
+        </div>
+      </div>
+      <div class="col-10 ml-auto text-end">
+        <button *ngIf="this._service.form.get('name').value !== 'Admin'" type="submit" icon="pi pi-check"
+         pButton pRipple [disabled]="roleProgress"
+         label="{{ roleProgress? this.translate.instant('Please Wait'): this._service.form.get('id').value !=null? this.translate.instant('Update'):this.translate.instant('Add') }}"
+         class="p-button-primary" style="width:fit-content">
+       </button>
+       <label pButton pRipple class="p-button-warning ml-3"
+          label="{{ this.translate.instant('Back To List') }}"
+          icon="pi pi-arrow-left"
+          (click)="onCancel()" style="width:fit-content">
+      </label>
+     </div>
+     </div>
+     <div class="grid nogutter" style="width:100%;">
+        <div class="col-12" style="width:100%;">
+          <h4>{{'Permission' | translate}}:</h4>
+        </div>
+      
+        <ng-container>
+          <div class="col-12 md:col-12 lg:col-12" *ngFor="let x of this._service.roleFunctionList">
+            <div class="grid">
+              <div class="col-3">
+                <h5 for="" class="p-2">{{ x.name }}</h5>
+              </div>
+              
+              <div class="col-6">
+                <div class="col-grid">
+
+                  <div class="col-12" *ngFor="let y of x.items">
+                    <input [disabled]="this._service.form.get('name')?.value === 'Admin'" type="checkbox" name="{{y.menuId}}" id="{{y.menuId}}" (change)="onUpdateChange(y)"
+                    [(ngModel)]="y.status" [ngModelOptions]="{standalone: true}">
+                    <label for="" class="pl-1">{{ y.functionName}}</label>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <hr>
+          </div>
+        </ng-container>
+     </div>
+   </form>
+  </div>
+ </div>

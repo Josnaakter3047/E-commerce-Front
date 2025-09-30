@@ -1,0 +1,322 @@
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeflex/primeflex.scss";
+@import "../node_modules/primeicons/primeicons.css";
+@import "../node_modules/prismjs/themes/prism-coy.css";
+@import "../node_modules/@fullcalendar/daygrid/main.min.css";
+@import "../node_modules/@fullcalendar/timegrid/main.min.css";
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import '../node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.carousel.scss';
+@import '../node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.theme.default.scss';
+@import '../node_modules/quill/dist/quill.snow.css';
+//@import '../node_modules//quill/dist/quill.core.css';
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arimo, sans-serif !important;
+}
+p{
+ padding:3px !important;
+ margin:0px !important;
+ line-height: normal !important;   
+}
+.p-datatable{
+  font-size:12px !important;
+}
+.p-component{
+  font-family: 'DM Sans', sans-serif !important;
+}
+.p-button-icon{
+  font-size:11px !important;
+}
+.p-menu{
+  border-radius: 2px !important;
+}
+
+.p-menuitem .p-menuitem-link{
+  font-size:14px;
+  padding:6px 10px !important;
+}
+.p-menuitem-icon{
+   font-size:13px !important;
+}
+//p-dialog custom css
+.p-dialog {
+  z-index: 10000 !important;
+}
+.p-dialog-mask {
+  z-index: 10000 !important;
+}
+
+
+.p-dialog{
+  width:60vw;
+  padding:0px !important;
+}
+
+.p-dialog .p-dialog-header {
+  border-bottom: 0 none;
+  background: green !important;
+  color: #f0efef;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  padding:6px 15px;
+}
+
+.p-dialog .p-dialog-content{
+  background-color: #fff;
+  padding:0px !important;
+}
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #fff;
+  border: 0 none;
+  background: rgb(5, 95, 5);
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  margin-right: 0.5rem;
+}
+.p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
+  color: red;
+  background: rgb(5, 95, 5);
+}
+//p-table custom css
+.p-datatable .p-datatable-thead > tr > th {
+  color: #dcdcdc !important;
+  padding: 5px !important;
+  background-color: green !important;
+}
+.p-datatable .p-datatable-tbody > tr > td {
+  padding:5px 5px !important;
+}
+
+.table-title{
+  margin-right: 20px;
+  color:green;
+  text-transform: capitalize;
+}
+
+.p-datatable .p-sortable-column {
+  color: #dcdcdc !important;
+  background-color: initial !important;
+}
+
+.p-datatable .p-sortable-column.p-highlight {
+  color: #dcdcdc !important;
+  background-color: #000 !important;
+  
+}
+
+
+
+/* sort icon */
+.p-datatable .p-sortable-column .p-sortable-column-icon {
+  color: #dcdcdc !important;
+  margin-left: 0.5rem;
+}
+/* sort icon */
+.p-datatable .p-sortable-column .p-sortable-column-icon {
+  color: #dcdcdc !important;
+  margin-left: 0.5rem;
+}
+
+
+.visible-phone {
+  @media (max-width: 768px) {
+    display: block;
+  }
+
+  @media (min-width: 767px) {
+    display: none;
+  }
+}
+
+.visible-desktop {
+  @media (min-width: 768px) {
+    display: block;
+  }
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.p-inputgroup p-dropdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pages-body.error-page {
+  background: transparent;
+  background-size: cover;
+}
+
+.ui-float-label textarea:focus~label,
+.ui-float-label textarea.ui-state-filled~label {
+  top: -.75em;
+  font-size: 12px
+}
+
+button[icon='pi pi-angle-double-right'],
+button[icon='pi pi-angle-double-left'] {
+  display: none !important;
+}
+
+.p-button.p-button-primary {
+  background-color: rgb(33, 130, 165) !important;
+  color: white;
+}
+.p-button.p-button-accent {
+  background-color: rgb(143, 195, 22) !important;
+  color: white;
+}
+.p-button.p-button-purple {
+  background-color: rgb(172, 110, 203) !important;
+  color: white;
+}
+.p-button.p-button-voilate {
+  background-color: rgb(124, 136, 210) !important;
+  color: white;
+}
+.p-button.p-button-dark{
+  background-color: rgb(56, 56, 56) !important;
+  color: white;
+}
+.p-buttonset .p-button:enabled:hover,
+.p-buttonset .p-button:enabled:focus {
+  background-color: darkgreen;
+  color: white;
+}
+
+.p-button.p-button-secondary {
+  background-color: rgb(111, 119, 125);
+  color: white;
+}
+
+.p-button.p-button-secondary:hover {
+  background-color: rgb(44, 96, 156) !important;
+  color: white;
+}
+
+
+.card{
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+.p-dropdown{
+  border-radius: 0px !important;
+  height: 30px !important;
+}
+
+.p-calendar{
+  border-radius: 0px !important;
+  padding:0px !important;
+  height: 30px !important;
+}
+.p-inputgroup{
+  border-radius: 0px !important;
+}
+.p-inputtext{
+  border-radius: 0px !important;
+  padding:4px 7px;
+}
+.problem-title p{
+  padding:0px !important;
+  margin:0px;
+}
+.p-button{
+  border-radius: 2px !important;
+  padding:6px 10px !important;
+  font-size:13px !important;
+}
+@media (max-width: 1200px) {
+  .p-dialog{
+    width:80vw !important;
+    padding:0px !important;
+  }
+}
+@media screen and (max-width:570px) {
+  .p-dialog{
+    width:100vw !important;
+    padding:0px !important;
+  }
+  .col-6,
+  .col-5,
+  .col-4, 
+  .col-3, 
+  .col-7, 
+  .col-8, 
+  .col-9, 
+  .col-10, 
+  .col-11, 
+  .col-12{
+    width:100%;
+  }
+
+  .col-2{
+    width:50%;
+  }
+  .p-input-icon-left .pi-search{
+    margin-top:0px;
+  }
+  .p-input-icon-left input{
+    margin-top:15px;
+  }
+}
+.p-multiselect {
+  border-radius: 0;
+  padding:0px !important;
+  /* Removes border radius */
+}
+.p-multiselect.p-multiselect-chip .p-multiselect-token {
+  padding: 0.3rem 0.75rem;
+}
+.p-multiselect {
+  border-radius: 0; 
+  height: auto !important;
+  overflow-y: auto;
+}
+
+
+.p-multiselect .p-multiselect-label {
+  white-space: normal !important;
+  height: auto !important;
+  line-height: 1.1;
+}
+.p-multiselect .p-multiselect-label {
+  white-space: normal;
+  height: auto;
+}
+.p-multiselect .p-multiselect-label {
+  white-space: normal !important;
+  height: auto !important;
+}
+.p-multiselect-token {
+  white-space: normal;
+  margin-bottom: 5px;
+}
+
+// for text editor css
+.header-title h1,.header-title h2,
+.header-title h3, 
+.header-title h4,
+.header-title h5,
+.header-title h6,
+.header-title p{
+ margin-bottom:0px !important;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    /* margin-bottom: .5rem; */
+    line-height: 1;
+}
+.header-title .ql-align-center{
+  text-align: center !important;
+}
+.ql-align-right{
+  text-align: right !important;
+}

@@ -1,0 +1,73 @@
+<div class="grid grid-nogutter">
+  <div class="card p-fluid" style="width: 100%">
+    <p-table #dt1 [value]="list" dataKey="id"
+    [rows]="50" [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+    [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="[]">
+
+      <ng-template pTemplate="caption">
+
+        <div class="table-header">
+
+          <p-toolbar styleClass="p-mb-1">
+            <ng-template pTemplate="left">
+              <h3 style="margin-right: 20px">Role Function</h3>
+              <label pButton pRipple
+                icon="pi pi-plus" class="p-button-primary" label="{{'Add New' | translate}}"
+                style="width:fit-content;" (click)="onCreate()">
+              </label>
+            </ng-template>
+
+            <ng-template pTemplate="right">
+              <span class="p-input-icon-left p-ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal(getVal($event), 'contains')"
+                  placeholder="{{'Search keyword' | translate}}" style="height: 38px;" />
+              </span>
+            </ng-template>
+          </p-toolbar>
+
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Menu FunctionId</th>
+          <th>RoleId</th>
+          <th>Status</th>
+          <th style="text-align: center;">Action</th>
+        </tr>
+
+      </ng-template>
+      <ng-template pTemplate="body" let-i="rowIndex" let-x>
+        <!-- [ngStyle]="{'background': x.suspended?'rgba(255, 0, 0, 0.1)':''}" -->
+        <tr>
+          <td>{{i + 1}}</td>
+          <td>{{x.menuFunctionId}}</td>
+          <td>{{x.roleId ?? ''}}</td>
+          <td>
+            <span pBadge value="{{x.status? 'True': 'False'}}"
+             [severity]="x.status? 'success': 'danger'"
+              style="margin-left:20px;"></span></td>
+         <td style="text-align: center;">
+            <p-menu #menu [popup]="true" appendTo="body" [model]=GetActions(x)></p-menu>
+            <button pButton pRipple icon="pi pi-chevron-down"
+            label="{{ 'Options' | translate }}" class="p-button-primary"
+              (click)="menu.toggle($event)" style="width:fit-content;">
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="20">
+            <p class="text-primary" style="text-align:center; padding: 5px;">NO DATA AVAILABLE</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
