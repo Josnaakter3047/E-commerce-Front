@@ -41,14 +41,16 @@ export class CustomerOrderService {
   GetAllOrderByCustomerId(customerId: any) {
     return this.http.get<any>(`${this.baseUrl}` + this.getAllOrderByCustomerIdUrl + `${customerId}`);
   }
+
   GetAllShippingMethodsByBranchId(branchId: any) {
     return this.http.get<any>(`${this.baseUrl}` + this.getAllShippingMethodsByBranchIdUrl + `${branchId}`);
   }
 
   orderForm = this._fb.group({
     orderCustomerName:[null, Validators.required],
-    orderCustomerPhoneNumber:[null, Validators.required],
+    orderCustomerPhoneNumber:[null, Validators.compose([Validators.required, Validators.maxLength(11), Validators.minLength(11)])],
     deliveryAddress:[null, Validators.required],
+    thanaId:[null, Validators.required],
     branchId: [null],
     companyId: [null],
     customerId: [null],
@@ -59,6 +61,7 @@ export class CustomerOrderService {
     createdById: [null],
     saleItems: [[]]
   });
+
   ResetOrderForm() {
     this.orderForm.reset();
     this.orderForm.setValue({
@@ -67,6 +70,7 @@ export class CustomerOrderService {
       deliveryAddress: null,
       branchId: null,
       companyId: null,
+      thanaId:null,
       customerId: null,
       totalAmount: 0,
       discountAmount: null,
@@ -89,6 +93,7 @@ export class CustomerOrderService {
       shippingCharge: model?.shippingCharge ?? 0,
       discountAmount: model.discountAmount ?? '0',
       note: model.note ?? '',
+      thanaId:model.thanaId?? null,
       totalAmount: model?.totalAmount ?? 0,
       saleItems: model.saleItems?.map((x: any) => ({
         productDetailId: x.productDetailId,

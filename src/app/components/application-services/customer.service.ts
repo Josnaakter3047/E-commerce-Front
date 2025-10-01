@@ -31,10 +31,13 @@ export class CustomerService {
   updateUrl = this.controller + 'update';
   photoUploadUrl: string = this.controller + 'imgUpload/';
   fileDownloadUrl: string = this.controller + 'getfile/';
+  getAllThanaUrl: string =  "/api/Thana/getall";
   GetCustomerProfileById(customerId:any){
     return this.http.get<any>(`${this.baseUrl}`+ this.getByIdUrl + customerId);
   }
-
+  GetAllThanaList() {
+    return this.http.get<any>(`${this.baseUrl}`+this.getAllThanaUrl);
+  }
   form= this._fb.group({
     id:null,
     name:[null, Validators.required],

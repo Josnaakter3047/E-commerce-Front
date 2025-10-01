@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { CustomerOrderService } from '../customer-order-list/customer-order.service';
 import { MyApiService } from 'src/app/shared/my-api.service';
+import { Router } from '@angular/router';
+import { CustomerService } from 'src/app/components/application-services/customer.service';
 
 @Component({
   selector: 'app-shopping-cart-list',
@@ -16,6 +18,9 @@ export class ShoppingCartListComponent implements OnInit {
     public _service:CustomerOrderService,
     public _shoppingCartService:ShoppingCartService,
     private configService: MyApiService,
+    private _router:Router,
+    private _customerService:CustomerService,
+    private _orderService:CustomerOrderService
   ) { 
     this.branchId = this.configService.apiBranchId;
     this.companyId = this.configService.apiCompanyId; 
@@ -25,40 +30,73 @@ export class ShoppingCartListComponent implements OnInit {
       ;
   }
 
-  increaseQty(index: number) {
-    this._shoppingCartService.cartItems[index].quantity++;
-    //this._shoppingCartService.addCart();
-  }
+  increaseQty(product: any) {
+  const existing = this._shoppingCartService.cartItems.find(
+    i => i.productDetailId === product.productDetailId
+  );
 
-  decreaseQty(index: number) {
-    if (this._shoppingCartService.cartItems[index].quantity > 1) {
-      this._shoppingCartService.cartItems[index].quantity--;
+  if (existing) {
+    existing.quantity++;
+  } else {
+    this._shoppingCartService.addProductToCart(product);
+  }
+  this._shoppingCartService.saveCart();
+}
+
+decreaseQty(product: any) {
+  const existing = this._shoppingCartService.cartItems.find(
+    i => i.productDetailId === product.productDetailId
+  );
+
+  if (existing) {
+    if (existing.quantity > 1) {
+      existing.quantity--;
     } else {
-      this._shoppingCartService.removeItem(index);
+      this._shoppingCartService.removeItemByProductDetailId(product.productDetailId);
     }
-    //this._shoppingCartService.addCart();
+    this._shoppingCartService.saveCart();
   }
+}
 
-  onRemoveItem(index: number){
-    setTimeout(() => {
-      this._shoppingCartService.removeItem(index);
-    }, 200);
+getCartQty(productDetailId: any): number {
+  const existing = this._shoppingCartService.cartItems.find(i => i.productDetailId === productDetailId);
+  return existing ? existing.quantity : 0;
+}
+
+ onRemoveItem(item:any) {
+    this._shoppingCartService.removeItemByProductDetailId(item.productDetailId);
   }
 
   //for cash on delivery
+  customer:any;
+  GetCustomerById(customerId:any){
+    this._customerService.GetCustomerProfileById(customerId).subscribe((response)=>{
+      if(response.statusCode === 200){
+        this.customer = response.value;
+        this._orderService.orderForm.patchValue({
+        orderCustomerName:this.customer.name,
+        orderCustomerPhoneNumber:this.customer.phoneNumber,
+        createdById:this.customer.createdById,
+        customerId:this.customer.id,
+        deliveryAddress:this.customer.address
+      });
+      }
+      else{
+        this.customer = null;
+      }
+    })
+  }
   onDisplayOrderModal(){
-    // if (this._service.shippingMethods && this._service.shippingMethods.length > 0) {
-    //   const defaultCategory = this._service.shippingMethods[0];
-    //   this._service.shippingCharge = defaultCategory.charge;
-
-    //   this._service.orderForm.patchValue({
-    //     shippingCharge: defaultCategory.charge
-    //   });
-    //   this._service.totalAmount = this._shoppingCartService.getTotal() + this._service.shippingCharge;
-    // }
-    //this._service.GetAllShippingMethods();
-    alert(this._service.shippingCharge);
-    this._service.displayModal = true;
+    
+    let token = JSON.parse(localStorage.getItem("Token"));
+    if(token){
+      this.GetCustomerById(token.customerId);
+      //this._service.displayModal = true;
+      this._router.navigate(['order-confirmation', token.id]);
+    }
+    else{
+      this._router.navigate(['login']);
+    }
   }
 
   onHideOrderModal(){

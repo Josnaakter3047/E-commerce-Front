@@ -6,6 +6,8 @@ import { ShoppingCartService } from 'src/app/e-commerce/shopping-cart/shopping-c
 import { MyApiService } from 'src/app/shared/my-api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerOrderService } from 'src/app/e-commerce/customer-order-list/customer-order.service';
+import { BranchService } from '../application-services/branch.service';
+import { CompanyDetailService } from '../application-services/company-detail.service';
 
 @Component({
   selector: 'app-user-registration',
@@ -15,6 +17,8 @@ import { CustomerOrderService } from 'src/app/e-commerce/customer-order-list/cus
 export class UserRegistrationComponent implements OnInit {
   branchId: any;
   companyId: any;
+   branch:any;
+  company:any;
   constructor(
     public _service: UserRegistrationService,
     private _sharedService: SharedService,
@@ -23,13 +27,18 @@ export class UserRegistrationComponent implements OnInit {
     public _shoppingCartService: ShoppingCartService,
     private configService: MyApiService,
     private _route:ActivatedRoute,
-    private _router:Router
+    private _router:Router,
+    public _branchService:BranchService,
+    public _companyService:CompanyDetailService,
   ) {
     this.branchId = this.configService.apiBranchId;
     this.companyId = this.configService.apiCompanyId;
   }
 
   ngOnInit(): void {
+    if(this.branchId){
+      this.GetBranchById();
+    }
     this._route.queryParams.subscribe(params => {
       this._service.form.patchValue({
         companyId: this.companyId,
@@ -45,40 +54,32 @@ export class UserRegistrationComponent implements OnInit {
       });
     });
   }
-
-  isProgress = false;
-  onSubmit() {
-    
-    if (this._shoppingCartService.cartItems?.length > 0) {
-      const formattedSaleItems = this._shoppingCartService.cartItems.map((item) => ({
-        productDetailId: item.productDetailId,
-        quantity: item.quantity,
-        discountRate: item.discountAmount?.toString() ?? '0',
-        sellingPrice: item.price,
-        discountAmount: item.discountAmount ?? 0,
-        totalAmount: item.price * item.quantity
-      }));
-
-      this._service.form.patchValue({
-        saleItems: formattedSaleItems
-      });
-      // console.log(this._service.form.value);
-      // this.isProgress = false;
+  GetBranchById(){
+    if(this.branchId){
+        this._branchService.GetById(this.branchId).subscribe((response)=>{
+      if(response.statusCode === 200){
+        this.branch = response.value;
+      }
+      else{
+        this.branch = null;
+      }
+    })
     }
+    else{
+       this.branch = null;
+       console.log("Sorry branch not found");
+    }
+  }
+  isProgress = false;
+  onSubmit() {    
     if (this._service.form.valid) {
       this.isProgress = true;
       this._service.registration(this._service.form.value).subscribe((response) => {
         if (response.statusCode === 200) {
           this._sharedService.showSuccess(response.message);
-          // Clear cart first
-          this._shoppingCartService.clearCart();
-          
-          // Reset and close modal
-          this._orderService.displayModal = false;
-          this._orderService.ResetOrderForm();
           this._service.Init();
           this.isProgress = false;
-          // Navigate after cleanup
+      
           this._router.navigate(['login']);
           
         }
@@ -96,8 +97,9 @@ export class UserRegistrationComponent implements OnInit {
   }
 
   IfEmailExist() {
-    if ((this._service.form.get('email')?.value)?.trim() !== '') {
-      this._service.IfEmailAlreadyExist(null, (this._service.form.get('email')?.value)?.trim())
+    let email =(this._service.form.get('email')?.value)?.trim();
+    if (email) {
+      this._service.IfEmailAlreadyExist(null, email)
         .subscribe((response: any) => {
           if (response.value === true) {
             this._service.form.get('email').setErrors({ 'exists': true });
@@ -106,55 +108,16 @@ export class UserRegistrationComponent implements OnInit {
     }
   }
 
-  IfUserNameExists() {
-    if ((this._service.form.get('userName')?.value)?.trim() !== '') {
-      this._service.IfUserNameAlreadyExist(null, (this._service.form.get('userName')?.value)?.trim())
+  IfPhoneNumberExists() {
+    let phone = (this._service.form.get('phoneNumber')?.value)?.trim();
+    if (phone) {
+      this._service.IfPhoneNumberExist(null, phone)
         .subscribe((response: any) => {
           if (response.value === true) {
-            this._service.form.get('userName').setErrors({ 'exists': true });
+            this._service.form.get('phoneNumber').setErrors({ 'exists': true });
           }
         });
     }
   }
-  //upload logo and certificate
-  uploadInProgress = false;
-  uploadProgress = false;
-  photo: any;
-  onUploadLogo(event) {
-    this.uploadInProgress = true;
-    //console.log(event);
-    this.photo = event.target.files[0];
-    this._service.UploadLogo(this.photo).subscribe((response) => {
-      if (response.statusCode === 200) {
-        //alert(response.value);
-        this._service.form.patchValue({
-          logoUrl: response.value
-        })
-        //this.uploadInProgress = false;
-      }
-      else {
-        this._sharedService.HandleSuccessMessage(response);
-        //this.uploadInProgress = false;
-      }
-    })
-  }
-  certificate: any;
-  onUploadCertificate(event) {
-    this.uploadProgress = true;
-    //console.log(event);
-    this.certificate = event.target.files[0];
-    this._service.UploadCertificate(this.certificate).subscribe((response) => {
-      if (response.statusCode === 200) {
-        //alert(response.value);
-        this._service.form.patchValue({
-          companyCertificateUrl: response.value
-        })
-        //this.uploadInProgress = false;
-      }
-      else {
-        this._sharedService.HandleSuccessMessage(response);
-        //this.uploadInProgress = false;
-      }
-    })
-  }
+ 
 }

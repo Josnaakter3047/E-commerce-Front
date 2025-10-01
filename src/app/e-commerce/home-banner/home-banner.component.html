@@ -41,7 +41,10 @@
                 </span>
             </div>
             <div class="align-items-center justify-content-between logo-img">
-                <img draggable="false" src="assets/images/company-logo.jpg" alt="My Solution Bangladesh">
+                <a href="/home">
+                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{company?.name?? ''}}" height="60px">
+                    <span class="companyTitle" *ngIf="!company?.logoUrl">{{company?.name?? ''}}</span>
+                </a>
             </div>
 
             <div class="flex align-items-center justify-content-between gap-3">
@@ -52,14 +55,13 @@
                     <i class="pi pi-shopping-cart p-text-secondary" severity="danger" pBadge style="font-size: 20px"
                         value="{{cartCount?? 0}}"></i>
                 </span>
-                <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#2182a5;margin-left:30px;">
+                 <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#2182a5;margin-left:30px;">
                     <i class="pi pi-user" style="font-size: 20px;"></i>
                 </span>
-
-                <span *ngIf="userName" style="cursor: pointer;color:#2182a5; margin-left:30px;">
+                <span *ngIf="userName" style="cursor: pointer;color:#2182a5; margin-left:15px; font-size:20px;">
                     <p-menu #userOption [popup]="true" appendTo="body" [model]=GetUserOptions()></p-menu>
                     <button pButton pRipple icon="pi pi-chevron-down" label="{{ userName }}"
-                        class="p-button-primary p-button-text" (click)="userOption.toggle($event)"
+                        class="p-button-text user-optionBtn" (click)="userOption.toggle($event)"
                         style="width:fit-content;">
                     </button>
                 </span>

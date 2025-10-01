@@ -12,9 +12,7 @@ import { MyApiService } from 'src/app/shared/my-api.service';
 
 export class LoginService {
   private baseUrl: string='';
-  loginUrl: string =  '/api/Account/login'
-  refreshTokenUrl: string =  '/api/Account/refresh-token'
-
+  loginUrl: string =  '/api/Account/login';
   constructor(
     private _HttpClient: HttpClient,
     private router: Router,
@@ -27,13 +25,11 @@ export class LoginService {
     return this._HttpClient.post<any>(`${this.baseUrl}`+this.loginUrl, data);
   }
 
-  IsLoggedIn() {
-    return !!localStorage.getItem('Token');
+  IsLoggedIn(): boolean {
+    const token = localStorage.getItem('Token');
+    return !!token;
   }
 
-  RefreshToken(data: RefreshTokenModel) {
-    return this._HttpClient.post<any>(`${this.baseUrl}`+this.refreshTokenUrl, data);
-  }
 
   Logout(){
     localStorage.removeItem('Token');

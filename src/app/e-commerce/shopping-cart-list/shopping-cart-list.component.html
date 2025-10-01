@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12" style="width: 100%;">
+        <div class="col-12 mt-5 mb-5" style="width: 100%;">
             <div class="cart-table" style="width: 100%;">
                     <table class="table cart-desktop-view" style="width: 100%;">
                         <thead>
@@ -48,20 +48,16 @@
                                 </td>
                                 <td style="text-align: center;">
                                     <div class="flex align-items-center justify-content-center">
-                                        <div class="flex align-items-center"
-                                            style="background-color:#eae9e9; border:1px solid grey;">
-                                            <button pButton icon="pi pi-minus"
-                                                class="p-button-sm p-button-primary p-button-text"
-                                                (click)="decreaseQty(i)"></button>
-                                            <div class="align-items-center justify-content-center p-1"
-                                                style="border-left:1px solid grey; border-right:1px solid grey;">
-                                                <span class="px-3">{{ item.quantity }}</span>
+                                        <div class="flex align-items-center" style="background-color:#eae9e9;">
+                                            <button pButton icon="pi pi-minus" class="p-button-sm p-button-primary p-button-text"
+                                                (click)="decreaseQty(item)"></button>
+                                            <div class="align-items-center justify-content-center p-1">
+                                                <span class="px-3" style="font-size:15px;">{{ item.quantity }}</span>
                                             </div>
-                                            <button pButton icon="pi pi-plus"
-                                                class="p-button-sm p-button-primary p-button-text"
-                                                (click)="increaseQty(i)"></button>
+                                            <button pButton icon="pi pi-plus" class="p-button-sm p-button-primary p-button-text"
+                                                (click)="increaseQty(item)"></button>
                                         </div>
-
+                                    
                                     </div>
                                 </td>
                                 <td style="text-align: right;">
@@ -69,7 +65,7 @@
                                 </td>
                                 <td style="text-align: right;">
                                     <button pButton icon="pi pi-trash" class="p-button-danger ml-2 p-button-outlined"
-                                        (click)="onRemoveItem(i)">
+                                        (click)="onRemoveItem(item)">
                                     </button>
                                 </td>
                             </tr>
@@ -77,7 +73,7 @@
                         <tfoot>
                             <tr *ngIf="_shoppingCartService.cartItems?.length === 0">
                                 <td colspan="10">
-                                    Your cart is empty.
+                                    <p style="font-size: 20px;text-align: center;">Your cart is empty.</p>
                                 </td>
                             </tr>
                         </tfoot>
@@ -178,16 +174,11 @@
                             </div>
                         </div>
                         <ng-template #emptySummary>
-                            <h4 class="text-center text-gray-400">No items</h4>
+                            <h4 class="text-center text-gray-400"></h4>
                         </ng-template>
                     </div>
-                </div>
+            </div>
         </div>
     </div>
 </div>
-<p-dialog [(visible)]="this._service.displayModal" [modal]="true"
-   [resizable]="false" position="top" [closable]="true" 
-   header="{{ 'Order Confirmation' | translate}}" [style]="{'width':'50vw'}"
-   (onHide)="onHideOrderModal()" [showHeader]="false">
-   <app-order-confirmation></app-order-confirmation>
-</p-dialog>
+

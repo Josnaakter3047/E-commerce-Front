@@ -3,7 +3,7 @@
     <div class="login-form col-md-12 col-xs-12 right-col-content-register">
       <div class="row text-center">
         <div class="col-md-12" style="font-size: 18px; font-weight: 600; color:#ebff03">
-          Hotline: +88019 0000-0000
+          Hotline: <span *ngIf="branch?.phoneNumber">+88{{branch?.phoneNumber?? ''}}</span>
         </div>
       </div>
 
@@ -66,48 +66,38 @@
                   <span class="input-group-addon">
                     <i class="fa fa-phone"></i>
                   </span>
-                  <input formControlName="phoneNumber" class="form-control"
+                  <input (keyup)="IfPhoneNumberExists()" formControlName="phoneNumber" class="form-control"
                     name="mobile" type="text" id="mobile"
                     [ngClass]="(this._service.form.get('phoneNumber').hasError('required') && (this._service.form.get('phoneNumber').touched)) ||
                     (this._service.form.get('phoneNumber').hasError('maxlength') && (this._service.form.get('phoneNumber').touched)) ||
                     (this._service.form.get('phoneNumber').hasError('minlength') && (this._service.form.get('phoneNumber').touched))? 'ng-invalid ng-dirty': ''">
                 </div>
                 <label
-                  *ngIf="(this._service.form.get('phoneNumber').hasError('required') && (this._service.form.get('phoneNumber').touched)) &&
-              ((this._service.form.get('phoneNumber').hasError('minlength') && (this._service.form.get('phoneNumber').touched)) ||
-              (this._service.form.get('phoneNumber').hasError('maxlength') && (this._service.form.get('phoneNumber').touched)))"
+                  *ngIf="((this._service.form.get('phoneNumber').hasError('minlength') && (this._service.form.get('phoneNumber').touched)) ||
+                  (this._service.form.get('phoneNumber').hasError('maxlength') && (this._service.form.get('phoneNumber').touched)))"
                   style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
                   <small>Phone Number Must Be 11 Digit</small>
                 </label>
                 <label *ngIf="this._service.form.get('phoneNumber').hasError('required') &&
-              (this._service.form.get('phoneNumber').touched)"
+                  (this._service.form.get('phoneNumber').touched)"
                   style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
                   <small>This field is required</small>
                 </label>
+                <label *ngIf="this._service.form.get('phoneNumber').hasError('exists') &&
+                  (this._service.form.get('phoneNumber').touched)"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>Already exist {{(this._service.form.get('phoneNumber').value).trim()}}</small>
+                </label>
               </div>
             </div>
-           
-            <div class="col-md-12 mb-3">
-              <div class="form-group">
-                <label for="address_line_1">Address</label>
-                <div class="input-group">
-                  <span class="input-group-addon">
-                    <i class="fa fa-info"></i>
-                  </span>
-                  <textarea formControlName="address" class="form-control" 
-                    placeholder="House#2, Uttara, Dhaka-1230" type="text"
-                    rows="1"></textarea>
-                </div>
-              </div>
-            </div>
-             <div class="col-md-12 mb-3">
+           <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label for="email">Email</label>
                 <div class="input-group">
                   <span class="input-group-addon">
                     <i class="fa fa-envelope"></i>
                   </span>
-                  <input formControlName="email" class="form-control"
+                  <input (keyup)="IfEmailExist()" formControlName="email" class="form-control"
                     type="text" [ngClass]="(this._service.form.get('email').hasError('pattern') &&
                     (this._service.form.get('email').touched))? 'ng-invalid ng-dirty': ''">
                 </div>
@@ -127,6 +117,20 @@
                 </label>
               </div>
             </div>
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label for="address_line_1">Address</label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-info"></i>
+                  </span>
+                  <textarea formControlName="address" class="form-control" 
+                    placeholder="House#2, Uttara, Dhaka-1230" type="text"
+                    rows="1"></textarea>
+                </div>
+              </div>
+            </div>
+             
             <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label for="password">Password<span class="text-danger">*</span></label>

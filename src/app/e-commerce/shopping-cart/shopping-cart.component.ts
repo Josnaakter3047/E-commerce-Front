@@ -4,6 +4,7 @@ import { Sidebar } from 'primeng/sidebar';
 import { ShoppingCartService } from './shopping-cart.service';
 import { Router } from '@angular/router';
 import { CustomerOrderService } from '../customer-order-list/customer-order.service';
+import { CustomerService } from 'src/app/components/application-services/customer.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -16,7 +17,9 @@ export class AddToCartComponent implements OnInit {
   
   constructor(
     public _shoppingCartService: ShoppingCartService,
+    public _orderService:CustomerOrderService,
     public _service:CustomerOrderService,
+    private _customerService:CustomerService,
     public _router:Router
   ) {}
 
@@ -56,22 +59,37 @@ export class AddToCartComponent implements OnInit {
   onRemoveItem(index: number){
     this._shoppingCartService.removeItem(index);
   }
-  
+  customer:any;
+  GetCustomerById(customerId:any){
+    this._customerService.GetCustomerProfileById(customerId).subscribe((response)=>{
+      if(response.statusCode === 200){
+        this.customer = response.value;
+        this._orderService.orderForm.patchValue({
+        orderCustomerName:this.customer.name,
+        orderCustomerPhoneNumber:this.customer.phoneNumber,
+        createdById:this.customer.createdById,
+        customerId:this.customer.id,
+        deliveryAddress:this.customer.address
+      });
+      }
+      else{
+        this.customer = null;
+      }
+    })
+  }
   onDisplayOrderModal(){
     this.visible = false;
-      // if (this._service.shippingMethods && this._service.shippingMethods.length > 0) {
-      //   const defaultCategory = this._service.shippingMethods[0];
-      //   // Patch into the form
-      //   this._service.orderForm.patchValue({
-      //     shippingCharge: defaultCategory.charge
-      //   });
-
-      //   // Set initial charges
-      //   this._service.shippingCharge = defaultCategory.charge;
-      //   this._service.totalAmount = this._shoppingCartService.getTotal() + this._service.shippingCharge;
-      // }
-    this._service.displayModal = true;
+    let token = JSON.parse(localStorage.getItem("Token"));
+    if(token){
+      this.GetCustomerById(token.customerId);
+      //this._service.displayModal = true;
+      this._router.navigate(['order-confirmation', token.id]);
+    }
+    else{
+      this._router.navigate(['login']);
+    }
   }
+  
   onHideOrderModal(){
     this._service.displayModal = false;
     this._service.ResetOrderForm();

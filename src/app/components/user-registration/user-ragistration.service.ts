@@ -16,9 +16,7 @@ export class UserRegistrationService {
   controller = '/api/AccountRegistration/';
   
   ifEmailExistsUrl: string = this.controller +'ifEmailExist';
-  ifUserNameExistsUrl: string = this.controller +'ifUserNameExist';
-  logoUploadUrl: string = this.controller + 'logoUpload';
-  certificateUploadUrl: string = this.controller + 'uploadCertficate';
+  ifPhoneNumberExistsUrl: string = this.controller +'ifPhoneNumberExist';
 
 
   constructor(
@@ -35,19 +33,10 @@ export class UserRegistrationService {
     email: [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$')])],
     phoneNumber: [null, Validators.compose([Validators.required, Validators.maxLength(11), Validators.minLength(11)])],
     password: [null, Validators.compose([Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$!%*?&])[A-Za-z\\d@#$!%*?&]{8,32}$')])],
-    orderCustomerName:[null],
-    orderCustomerPhoneNumber:[null],
-    deliveryAddress:[null],
-
     confirmPassword:null,
     address:null,
     branchId: [null],
-    companyId: [null],
-    totalAmount: [0],
-    discountAmount:[null],
-    shippingCharge: [0],
-    note: [null],
-    saleItems: [[]] 
+    companyId: [null]
   }, {
       validator: ConfirmedValidator('password', 'confirmPassword')
   });
@@ -58,19 +47,12 @@ export class UserRegistrationService {
       name:null,
       email: null,
       phoneNumber: null,
-      password: null,
-      orderCustomerName:null,
-      orderCustomerPhoneNumber:null,
-      deliveryAddress:null,
-      confirmPassword:null,
       address:null,
+      password: null,
+      confirmPassword:null,
       branchId: null,
       companyId: null,
-      totalAmount: null,
-      discountAmount:null,
-      shippingCharge: null,
-      note: null,
-      saleItems: [] 
+      
     });
   }
   
@@ -89,29 +71,17 @@ export class UserRegistrationService {
       return this.http.post<any>(`${this.baseUrl}`+ this.ifEmailExistsUrl, model);
     }
   }
-  IfUserNameAlreadyExist(Id: any, Name: any) {
+  IfPhoneNumberExist(Id: any, phone: any) {
     const model: IfExistsModel = {
-      name: Name,
+      name: phone,
     }
     if (Id == null) {
-      return this.http.post<any>(`${this.baseUrl}`+ this.ifUserNameExistsUrl, model);
+      return this.http.post<any>(`${this.baseUrl}`+ this.ifPhoneNumberExistsUrl, model);
     } else {
       model.id = Id;
-      return this.http.post<any>(`${this.baseUrl}`+ this.ifUserNameExistsUrl, model);
+      return this.http.post<any>(`${this.baseUrl}`+ this.ifPhoneNumberExistsUrl, model);
     }
   }
-
-  //upload file
-   //file upload without id
-   UploadLogo(file: any) {
-    const data = new FormData();
-    data.append('companyLogo', file, file.name);
-    return this.http.post<any>(`${this.baseUrl}`+this.logoUploadUrl, data);
-  }
-  UploadCertificate(file: any) {
-    const data = new FormData();
-    data.append('companyCertificate', file, file.name);
-    return this.http.post<any>(`${this.baseUrl}`+this.certificateUploadUrl, data);
-  }
+  
 }
 

@@ -53,6 +53,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th>#</th>
+          <th pSortableColumn="sales.invoiceNo">{{ 'Invoice No' | translate }}
+            <p-sortIcon field="sales.invoiceNo"></p-sortIcon>
+          </th>
           <th pSortableColumn="name">{{ 'Name' | translate }}
             <p-sortIcon field="name"></p-sortIcon>
           </th>
@@ -65,12 +68,19 @@
           <th pSortableColumn="customer.name">{{ 'Customer Name' | translate }}
             <p-sortIcon field="customer.name"></p-sortIcon>
           </th>
-         
+         <th pSortableColumn="thana.name">{{ 'Thana/Area' | translate }}
+            <p-sortIcon field="thana.name"></p-sortIcon>
+          </th>
           
           <th pSortableColumn="qurierService.name">{{'Querier' | translate}}
             <p-sortIcon field="qurierService.name"></p-sortIcon>
           </th>
-          
+          <th pSortableColumn="sales.shipmentStatus.name" style="text-align: center;">{{'Status' | translate}}
+            <p-sortIcon field="sales.shipmentStatus.name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="deliveryDate">{{ 'Delivery Date' | translate }}
+            <p-sortIcon field="deliveryDate"></p-sortIcon>
+          </th>
          
         </tr>
       </ng-template>
@@ -79,11 +89,21 @@
         <!-- [ngStyle]="{'background': x.status?'':'rgba(255, 0, 0, 0.1)'}" -->
         <tr>
           <td>{{i + 1}}</td>
+          <td>{{x.sales?.invoiceNo?? ''}}</td>
           <td>{{x.name?? ''}}</td>
           <td>{{x.phoneNumber??''}}</td>
           <td>{{x.address?? ''}}</td>
           <td>{{x.customer?.name?? ''}}</td>
+          <td>{{x.thana?.name?? ''}}</td>
           <td>{{x.qurierService?.name?? ''}}</td>
+          <td style="text-align: center;">
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Ordered')" value="{{x.sales?.shipmentStatus?.name}}" severity="warning"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Packed')" value="{{x.sales?.shipmentStatus?.name}}" severity="info"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Shipped')" value="{{x.sales?.shipmentStatus?.name}}" severity="info"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Delivered')" value="{{x.sales?.shipmentStatus?.name}}" severity="success"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Canceled')" value="{{x.sales?.shipmentStatus?.name}}" severity="danger"></p-badge>
+          </td>
+          <td>{{x.deliveryDate? (x.deliveryDate | date:"dd MMM, yyyy") : ''}}</td>
         </tr>
       </ng-template>
 

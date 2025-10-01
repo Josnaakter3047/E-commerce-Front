@@ -1,12 +1,15 @@
+<app-top-contact-info></app-top-contact-info>
+<app-home-banner></app-home-banner>
+
 <div class="grid grid-nogutter" style="width:100%;background:#fff;">
   <div class="p-fluid pb-3" style="width:100%;background:#fff;">
-    <div class="header">
-      <h4 class="title">Order Confirmation</h4>
-      <button (click)="onHideOrderModal()" pButton pRipple icon="pi pi-times"
-        class="p-button-outlined p-button-danger"></button>
+    <div class="col-12 product-title mb-5" style="width: 100%;">
+      <h2 class="mb-0 text-center">Order Confirmation</h2>
     </div>
-    <form [formGroup]="this._service.orderForm">
-      <div class="grid formgrid py-3 pl-4 pr-0 order-form" style="width: 100%;">
+    <div class="grid pl-4" style="width:100%;">
+       <div class="col-7 ml-auto mr-auto">
+      <form [formGroup]="this._service.orderForm">
+      <div class="grid formgrid" style="width: 100%;">
         <div class="col-12 sm:col-6 md:col-6 lg:col-6">
           <label for="name">{{ 'Name' | translate }}</label>
           <div class="field">
@@ -25,9 +28,15 @@
           <label>{{ 'Phone Number' | translate }}</label>
           <div class="field">
             <input type="text" formControlName="orderCustomerPhoneNumber" pInputText 
-              [ngClass]="this._service.orderForm.get('orderCustomerPhoneNumber').hasError('required') &&
-              (this._service.orderForm.get('orderCustomerPhoneNumber').touched)? 'ng-invalid ng-dirty': ''">
-
+              [ngClass]="(this._service.orderForm.get('orderCustomerPhoneNumber').hasError('required') && (this._service.orderForm.get('orderCustomerPhoneNumber').touched)) ||
+                    (this._service.orderForm.get('orderCustomerPhoneNumber').hasError('maxlength') && (this._service.orderForm.get('orderCustomerPhoneNumber').touched)) ||
+                    (this._service.orderForm.get('orderCustomerPhoneNumber').hasError('minlength') && (this._service.orderForm.get('orderCustomerPhoneNumber').touched))? 'ng-invalid ng-dirty': ''">
+               <label
+                  *ngIf="((this._service.orderForm.get('orderCustomerPhoneNumber').hasError('minlength') && (this._service.orderForm.get('orderCustomerPhoneNumber').touched)) ||
+                  (this._service.orderForm.get('orderCustomerPhoneNumber').hasError('maxlength') && (this._service.orderForm.get('orderCustomerPhoneNumber').touched)))"
+                  style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+                  <small>Phone Number Must Be 11 Digit</small>
+                </label>
             <label *ngIf="this._service.orderForm.get('orderCustomerPhoneNumber').hasError('required') && 
               (this._service.orderForm.get('orderCustomerPhoneNumber').touched)"
               style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
@@ -37,11 +46,26 @@
 
         </div>
         <div class="col-12 sm:col-6 md:col-6 lg:col-6">
+            <label>{{ 'Thana' | translate }}:</label>
+            <p-dropdown inputId="thanaId"
+              [autoDisplayFirst]="false" [options]="thanas" formControlName="thanaId"
+              optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" optionValue="id"
+              [style]="{'width':'100%'}" [ngClass]="this._service.orderForm.get('thanaId').hasError('required') &&
+             (this._service.orderForm.get('thanaId').touched)? 'ng-invalid ng-dirty': ''">
+            </p-dropdown>
+            <label *ngIf="this._service.orderForm.get('thanaId').hasError('required') && 
+              (this._service.orderForm.get('thanaId').touched)"
+              style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+              <small>This field is required</small>
+            </label>
+          </div>
+        <div class="col-12 sm:col-6 md:col-6 lg:col-6">
           <label for="link">{{ 'Delivery Address' | translate }}</label>
           <div class="field">
-            <textarea type="text" rows="2" formControlName="deliveryAddress" pInputText 
-            [ngClass]="this._service.orderForm.get('deliveryAddress').hasError('required') &&
-                (this._service.orderForm.get('deliveryAddress').touched)? 'ng-invalid ng-dirty': ''"></textarea>
+            <textarea type="text" rows="1" formControlName="deliveryAddress" pInputText 
+             [ngClass]="this._service.orderForm.get('deliveryAddress').hasError('required') &&
+             (this._service.orderForm.get('deliveryAddress').touched)? 'ng-invalid ng-dirty': ''">
+            </textarea>
             <label *ngIf="this._service.orderForm.get('deliveryAddress').hasError('required') && 
               (this._service.orderForm.get('deliveryAddress').touched)"
               style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
@@ -50,12 +74,13 @@
           </div>
 
         </div>
-        <div class="col-12 sm:col-6 md:col-6 lg:col-6">
+         
+        <!-- <div class="col-12 sm:col-6 md:col-6 lg:col-6">
           <label for="link">{{ 'Comment' | translate }}</label>
           <div class="field">
             <textarea type="text" rows="2" formControlName="note" pInputText></textarea>
           </div>
-        </div>
+        </div> -->
         <!-- <div class="col-12 sm:col-12 md:col-12 lg:col-12">
           <h5 class="text-underline">{{'Select Shipping a Method' | translate}}:</h5>
           <div class="grid" style="width: 100%;">
@@ -78,46 +103,60 @@
           </div>
         </div> -->
 
-        <!-- <div class="col-12 sm:col-12 md:col-12 lg:col-12" style="width: 100%;">
+        <div class="col-12 sm:col-12 md:col-12 lg:col-12" style="width: 100%;">
           <div class="cart-container">
             <div class="cart-list-title mb-2">
               <h5 style="text-decoration: underline;">{{'Your Cart Items' | translate}}:</h5>
             </div>
           
-            <div *ngFor="let item of _shoppingCartService.cartItems" class="cart-item flex align-items-center mb-2">
+            <div *ngFor="let item of _shoppingCartService.cartItems" class="cart-item flex flex-wrap justify-content-between gap-2 align-items-center mb-2">
               <div class="cart-img-wrapper flex-shrink-0">
                 <img *ngIf="item.image" [src]="_shoppingCartService.baseUrl + '/' + item.image" alt="{{item.name}}"
                   class="cart-img">
                 <img *ngIf="!item.image" src="assets/images/default-img.png" alt="{{item.name}}" class="cart-img">
-                <p-badge value="{{item.quantity}}" severity="danger" class="cart-badge"></p-badge>
+                <!-- <p-badge value="{{item.quantity}}" severity="danger" class="cart-badge"></p-badge> -->
               </div>
-              <div class="cart-item-name flex-grow ml-2">
+              <div class="cart-item-name text-center align-items-center flex-grow ml-2">
                 <h6 class="m-0 text-truncate">{{ item.name }}
                   <span *ngIf="item?.description">- ({{ item?.description?? '' }})</span>
                 </h6>
               </div>
-          
-              <div class="cart-item-price flex-shrink-0 text-right ml-auto">
-                <p class="m-0">Tk {{ item.price | number:"1.2-2"}}</p>
+              <div class="cart-item-price flex-shrink-0 text-center ml-auto">
+                <div class="flex align-items-center text-center" style="background-color:#eae9e9;">
+                  <button pButton icon="pi pi-minus" class="p-button-sm p-button-primary p-button-text"
+                    (click)="decreaseQty(item)"></button>
+                  <div class="align-items-center justify-content-center p-1">
+                    <span class="px-3" style="font-size:15px;">{{ item.quantity }}</span>
+                  </div>
+                  <button pButton icon="pi pi-plus" class="p-button-sm p-button-primary p-button-text"
+                    (click)="increaseQty(item)"></button>
+                </div>
               </div>
-          
+              <div class="cart-item-price flex-shrink-0 text-right ml-auto">
+                <p class="m-0" style="font-size:15px;">Tk {{ item.price * item.quantity | number:"1.2-2"}}</p>
+              </div>
+              <div class="cart-item-price flex-shrink-0 text-right ml-auto">
+                <button pButton icon="pi pi-trash" class="p-button-danger ml-2 p-button-outlined"
+                   (click)="onRemoveItem(item.productDetailId)">
+                </button>
+              </div>
             </div>
           </div>
-        </div> -->
+        </div>
 
         <div class="col-12 sm:col-12 md:col-12 lg:col-12 mb-3">
           <div class="grid px-2">
-            <div class="col-12" style="background-color: #ececec;">
+            <div class="col-12">
               <div class="cart-subtotal">
                 <span class="subtotal-title font-medium">Subtotal</span>
                 <span class="subtotal-price font-medium">Tk {{ _shoppingCartService.getTotal() | number:"1.2-2"
                   }}</span>
               </div>
-              <div class="cart-subtotal" style="border-bottom:1px solid grey;">
+              <div class="cart-subtotal" style="border-bottom:1px solid #e0e0e0;">
                 <span class="subtotal-title font-medium">Delivery Charge</span>
                 <span class="subtotal-price font-medium">Tk {{ this._service.shippingCharge | number:"1.2-2" }}</span>
               </div>
-              <div class="cart-subtotal">
+              <div class="cart-subtotal" style="border-bottom:1px solid #e0e0e0;">
                 <span class="subtotal-title font-medium">Total Payable</span>
                 <span class="subtotal-price font-medium">Tk {{ this._shoppingCartService.getTotal() + this._service.shippingCharge | number:"1.2-2" }}</span>
               </div>
@@ -144,5 +183,8 @@
 
       </div>
     </form>
+    </div>
+    </div>
   </div>
+  
 </div>

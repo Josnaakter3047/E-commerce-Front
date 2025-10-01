@@ -26,6 +26,7 @@ import { AllProductBycategoryComponent } from './e-commerce/all-product-bycatego
 import { CustomerOrderListComponent } from './e-commerce/customer-order-list/customer-order-list.component';
 import { CustomerProfileComponent } from './e-commerce/customer-profile/customer-profile.component';
 import { MoreSearchResultComponent } from './e-commerce/more-search-result/more-search-result.component';
+import { OrderConfirmationComponent } from './e-commerce/order-confirmation/order-confirmation.component';
 
 const routes: Routes = [
   { path: '', component: AllHomeSectionComponent },
@@ -34,15 +35,16 @@ const routes: Routes = [
   { path: 'cart', component: ShoppingCartListComponent },
   { path: 'product-detail/:id', component: ProductDetailComponent },
   { path: 'more-product', component: MoreSearchResultComponent },
+  
   { path: 'products/:categoryName/:categoryId', component: AllProductBycategoryComponent },
   { path: 'registration', component: UserRegistrationComponent },
-  
+  { path: 'order-confirmation/:userId', component: OrderConfirmationComponent },
   
   {
-    path: '',
-    component: AppMainComponent,
+    path: '', component: AppMainComponent,
     children: [
-      { path: 'dashboard/:id', component: AdminDashboardComponent, canActivate: [AuthGuard] },
+      { path: 'dashboard/:id', component: AdminDashboardComponent, canActivate: [AuthGuard]},
+        
       //for customer dashboard
       { path: 'order-list/:id', component: CustomerOrderListComponent, canActivate: [AuthGuard] },
       { path: 'customer-profile/:customerId', component: CustomerProfileComponent, canActivate: [AuthGuard] },

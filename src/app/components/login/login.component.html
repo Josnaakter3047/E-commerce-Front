@@ -3,10 +3,10 @@
   <div class="col-7 bg-img none-992">
       <div class="info">
           <h1>Welcome To<br>
-            <span>MySolution Bangladesh</span>
+            <span>{{company?.name?? ''}}</span>
           </h1>
           <p>
-            MySolution Bangladesh is an online software where possible to manage all types of shops perfectly. It plans to connect clients who have shops but they need to manage. We will focus on providing our clients with User-friendly, Fast &amp; Secure software that helps them manage their shop easily.
+            {{company?.name?? ''}} is an online software where possible to manage all types of shops perfectly. It plans to connect clients who have shops but they need to manage. We will focus on providing our clients with User-friendly, Fast &amp; Secure software that helps them manage their shop easily.
           </p>
       </div>
   </div>
@@ -17,7 +17,7 @@
                   <img src="https://amarsolution.com/images/logo.png" style="height: 80px" alt="logo">
               </a> -->
               <h1 class="text-light text-center">SIGN IN</h1>
-              <h3 style="color: #fff;text-align: center;">Continue to MySolution Bangladesh</h3>
+              <h3 style="color: #fff;text-align: center;">Continue to {{company?.name?? ''}}</h3>
           </div>
 
             <div class="login-inner-form">
@@ -42,8 +42,8 @@
                       
                   </div>
                   <p style="font-size: 14px;color:#fff;">
-                    If you are not registration yet. Please Registration
-                    <a routerLink="/ragistration" style="text-decoration: underline;color:blue;"> Here</a>
+                    If you are not registration yet. Please
+                    <a routerLink="/registration" style="text-decoration: underline;color:blue;">Registration Here</a>
                   </p>
                   <p style="font-size: 14px;color:#fff;">
                     <a routerLink="/home" style="text-decoration: underline;color:blue;">Go to home</a>

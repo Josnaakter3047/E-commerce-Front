@@ -10,6 +10,7 @@ import { MenuItem } from 'primeng/api';
 import { CompanyDetailService } from 'src/app/components/application-services/company-detail.service';
 import { BranchService } from 'src/app/components/application-services/branch.service';
 import { DatePipe } from '@angular/common';
+import { LoginService } from 'src/app/components/login/login.service';
 
 
 @Component({
@@ -51,7 +52,8 @@ export class HomeBannerComponent implements OnInit {
     public _branchService:BranchService,
     public _companyService:CompanyDetailService,
     private datePipe:DatePipe,
-    private _route:ActivatedRoute
+    private _route:ActivatedRoute,
+    private loginService:LoginService
   ) {
     this.baseUrl = this.configService.apiBaseUrl;
     this.branchId = this.configService.apiBranchId;
@@ -249,8 +251,13 @@ export class HomeBannerComponent implements OnInit {
     this._sharedService.showSuccess("Log Out Successfully!!");
     this.userName = null;
   }
-  onGoDashboard(){
-    this._router.navigate(['/dashboard/9262992a-e4d4-4fdf-edb2-08dd7e90139e']);
+  onGoDashboard() {
+    let token = JSON.parse(localStorage.getItem("Token"));
+    if(token){
+      const dashboardId = '9262992a-e4d4-4fdf-edb2-08dd7e90139e';
+      this._router.navigate(['/dashboard', dashboardId]);
+    }
+    
   }
   GetUserOptions(){
      let menuItems: MenuItem[];
