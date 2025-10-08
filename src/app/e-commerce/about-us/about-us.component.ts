@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { EcommarceSettingsService } from 'src/app/components/application-services/ecommarce-settings.service';
 import { MyApiService } from 'src/app/shared/my-api.service';
-
 @Component({
-  selector: 'app-banner-image',
-  templateUrl: './banner-image.component.html',
-  styleUrls: ['./banner-image.component.css']
+  selector: 'app-about-us',
+  templateUrl: './about-us.component.html',
+  styleUrls: ['./about-us.component.css']
 })
-export class BannerImageComponent implements OnInit {
-  settings:any;
-  baseUrl: string = '';
-  branchId:any;
-  companyId:any;
+export class AboutUsComponent implements OnInit {
 
+  settings: any;
+  baseUrl: string = '';
+  branchId: any;
+  companyId: any;
+  
   constructor(
-    public _ecommarceService:EcommarceSettingsService,
+    public _ecommarceService: EcommarceSettingsService,
     private configService: MyApiService,
-  ) { 
+  ) {
     this.baseUrl = this.configService.apiBaseUrl;
     this.branchId = this.configService.apiBranchId;
     this.companyId = this.configService.apiCompanyId;
@@ -26,19 +26,23 @@ export class BannerImageComponent implements OnInit {
     this.GetEcommarceSettings();
   }
 
-  GetEcommarceSettings(){  
-    if(this.branchId){
-      this._ecommarceService.GetByBranchId(this.branchId).subscribe((response)=>{
-        if(response.statusCode === 200 && response.value){
+  GetEcommarceSettings() {
+    if (this.branchId) {
+      this._ecommarceService.GetByBranchId(this.branchId).subscribe((response) => {
+        if (response.statusCode === 200 && response.value) {
           this.settings = response.value;
+
         }
-        else{
+        else {
           this.settings = null;
         }
       })
     }
-    else{
+    else {
       console.log("branch not found");
     }
   }
+
+
+
 }

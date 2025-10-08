@@ -11,8 +11,8 @@
             </div>
             <div class="col-6 align-items-center justify-content-center m-0 p-2">
                 <a href="/home">
-                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{company?.name?? ''}}" height="60px">
-                    <span class="companyTitle" *ngIf="!company?.logoUrl">{{company?.name?? ''}}</span>
+                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{settings?.title?? ''}}" height="60px">
+                    <span class="companyTitle" *ngIf="!company?.logoUrl">{{settings?.title?? ''}}</span>
                 </a>
             </div>
             <div class="col-3">
@@ -42,8 +42,8 @@
             </div>
             <div class="align-items-center justify-content-between logo-img">
                 <a href="/home">
-                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{company?.name?? ''}}" height="60px">
-                    <span class="companyTitle" *ngIf="!company?.logoUrl">{{company?.name?? ''}}</span>
+                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{settings?.title?? ''}}" height="60px">
+                    <span class="companyTitle" *ngIf="!company?.logoUrl">{{settings?.title?? ''}}</span>
                 </a>
             </div>
 
@@ -109,9 +109,9 @@
         <div class="col-12 sm:col-3 text-left flex align-items-center justify-content-center sm:justify-content-start mb-2 sm:mb-0">
             <!-- <img draggable="false" src="assets/images/company-logo.jpg" height="40" alt="My Solution Bangladesh"> -->
             <a href="/home">
-                <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{company?.name?? ''}}"
+                <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{settings?.title?? ''}}"
                     height="60px">
-                <span class="companyTitle" *ngIf="!company?.logoUrl">{{company?.name?? ''}}</span>
+                <span class="companyTitle" *ngIf="!company?.logoUrl">{{settings?.title?? ''}}</span>
             </a>
         </div>
 

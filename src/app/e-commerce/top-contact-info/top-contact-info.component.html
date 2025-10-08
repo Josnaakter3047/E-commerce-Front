@@ -3,12 +3,12 @@
         <div class="contact-info">
             <p>
                 আমাদের যে কোন পণ্য অর্ডার করতে কল বা WhatsApp করুন:
-                <a href="tel:+88{{branch?.phoneNumber}}" style="text-decoration: none; color: inherit;margin-right: 10px;">
-                    <i class="pi pi-whatsapp"></i> +88{{branch?.phoneNumber}}
+                <a href="tel:{{settings?.contactNumber}}" style="text-decoration: none; color: inherit;margin-right: 10px;">
+                    <i class="pi pi-whatsapp"></i> {{settings?.contactNumber}}
                 </a>
                 <span> | </span>
-                <a href="tel:+88{{branch?.phoneNumber}}" style="text-decoration: none; color: inherit; margin-left: 10px;">
-                    <i class="pi pi-phone"></i> হট লাইন: +88{{branch?.phoneNumber}}
+                <a style="text-decoration: none; color: inherit; margin-left: 10px;">
+                    <i class="pi pi-phone"></i> হট লাইন: {{settings?.hotLine}}
                 </a>
             </p>
         </div>

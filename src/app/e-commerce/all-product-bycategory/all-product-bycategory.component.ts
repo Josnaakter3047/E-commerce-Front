@@ -12,7 +12,8 @@ import { CategoryService } from 'src/app/components/application-services/item-ca
   styleUrls: ['./all-product-bycategory.component.css']
 })
 export class AllProductBycategoryComponent implements OnInit {
-  productList:any;
+  productList: any[] = [];
+allProducts: any[] = [];
   baseUrl: string = '';
   visibleCart = false;
   branchId:any;
@@ -42,6 +43,7 @@ export class AllProductBycategoryComponent implements OnInit {
 
       if (this.categoryId) {
         this.GetAllProduct(this.categoryId);
+        //this.filterProductsByPrice();
       }
     });
     this.GetFeaturedOptions();
@@ -52,12 +54,13 @@ export class AllProductBycategoryComponent implements OnInit {
     if(this.companyId){
       this._productService.GetAllProductByCompanyIdAndCategory(this.companyId, cagoryId).subscribe(response=>{
       if(response.statusCode === 200){
-        this.productList = response.value;
+        this.allProducts = response.value || [];
+        this.productList = [...this.allProducts];
        
         //console.log(response.value);
       }
       else{
-        this.productList = null;
+        this.productList = [];
       }
     })
     }
@@ -88,6 +91,7 @@ export class AllProductBycategoryComponent implements OnInit {
     this._shoppingCartService.addProductToCart(product);
     //this._shoppingCartService.showCart();
   }
+
   increaseQty(product: any) {
   const existing = this._shoppingCartService.cartItems.find(
     i => i.productDetailId === product.productDetailId
@@ -188,23 +192,59 @@ onRemoveItem(productDetailId: any) {
       this.selectedLayout = layout;
     }
   }
+
+ //filter with price
  priceRange: number[] = [0, 5000];
  minInput: number = 0;
  maxInput: number = 5000;
+ inStockOnly: boolean = false;
+// filterProductsByPrice() {
+//   const [min, max] = this.priceRange;
 
+//   // ✅ always filter from the full list, not the current one
+//   this.productList = this.allProducts.filter(p => {
+//     const price = this.onCalculateDiscountedPrice(p.sellingPrice, p.discount);
+//     return price >= min && price <= max;
+//   });
+// }
 // When min input changes
+private filterTimeout: any;
+
+// filter with in stock
+filterProductsByPriceAndStock() {
+  const [min, max] = this.priceRange;
+
+  this.productList = this.allProducts.filter(p => {
+    const price = this.onCalculateDiscountedPrice(p.sellingPrice, p.discount);
+
+    const withinPrice = price >= min && price <= max;
+    const inStock = !this.inStockOnly || p.isStockAvailable === true;
+
+    return withinPrice && inStock;
+  });
+}
+
+
 onMinInputChange(value: any) {
+  clearTimeout(this.filterTimeout);
   if (value > this.maxInput) value = this.maxInput;
   if (value < 0) value = 0;
   this.minInput = value;
   this.priceRange = [this.minInput, this.maxInput]; // assign new array
+   this.filterTimeout = setTimeout(() => this.filterProductsByPriceAndStock(), 200);
 }
 
 // When max input changes
 onMaxInputChange(value: any) {
+  clearTimeout(this.filterTimeout);
   if (value < this.minInput) value = this.minInput;
   if (value > 5000) value = 5000;
   this.maxInput = value;
   this.priceRange = [this.minInput, this.maxInput]; // assign new array
+   this.filterTimeout = setTimeout(() => this.filterProductsByPriceAndStock(), 200);
 }
+
+
+
+
 }

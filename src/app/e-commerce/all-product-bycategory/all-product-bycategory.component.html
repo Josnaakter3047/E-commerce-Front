@@ -29,7 +29,8 @@
                         <p-accordion [activeIndex]="0">
                             <p-accordionTab header="Availability" class="availabilty">
                                 <div class="stock-in mb-3 flex p-2">
-                                    <p-checkbox [binary]="true"></p-checkbox>
+                                    <p-checkbox [(ngModel)]="inStockOnly" [binary]="true" inputId="inStock"
+                                        (onChange)="filterProductsByPriceAndStock()"></p-checkbox>
                                     <label class="ml-2">In Stock</label>
                                 </div>
                                 <div class="stock-in flex p-2">
@@ -42,7 +43,8 @@
                             <p-accordionTab header="Price" class="slider-price-range">
                                 <div class="price-range-container">
                                     <!-- Slider -->
-                                    <p-slider [(ngModel)]="priceRange" [range]="true" [min]="0" [max]="5000">
+                                    <p-slider (onChange)="filterProductsByPriceAndStock()" [(ngModel)]="priceRange"
+                                        [range]="true" [min]="0" [max]="5000">
                                     </p-slider>
 
                                     <!-- Min/Max Inputs -->
@@ -145,7 +147,7 @@
                                                 severity="{{product?.isStockAvailable? 'success':'danger'}}"></p-badge>
                                         </p>
                                     </div>
-                                    <div class="mt-auto ml-auto mr-auto">       
+                                    <div class="mt-auto ml-auto mr-auto">
                                         <div class="flex align-items-center">
                                             <div class="flex items-center"
                                                 style="background-color:#eae9e9; border:1px solid grey;">
@@ -214,7 +216,7 @@
                                             <p-badge value="{{product?.isStockAvailable? 'Available':'Stock Out'}}"
                                                 severity="{{product?.isStockAvailable? 'success':'danger'}}"></p-badge>
                                         </p>
-                                        
+
                                         <div class="mt-auto ml-auto mr-auto">
                                             <div class="flex align-items-center">
                                                 <div class="flex items-center"

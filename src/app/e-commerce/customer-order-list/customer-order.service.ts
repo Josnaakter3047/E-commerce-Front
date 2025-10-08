@@ -13,13 +13,15 @@ export class CustomerOrderService {
   displayModal: boolean = false;
   shippingMethods: any[] = [];
   shippingCharge: number = 0;
+  salesMasterDiscount:any;
   totalAmount: number = 0;
   totalDiscountAmount: number = 0;
-
+  customerOrderAddress:any;
   controller: string = '/api/OrderConfirmation/';
   getAllOrderByCustomerIdUrl: string = this.controller + 'getAllOrderByCustomerId/';
   getAllShippingMethodsByBranchIdUrl: string = '/api/ShippingMethod/getallByBranchId/';
   addEcommarceSalesRangeUrl: string = '/api/SalesProduct/addSalesFrom-ecommerce';
+  getVoucharByBranchAndVoucharNoUrl: string = '/api/Vouchar/getByBranchAndVoucharNo/';
   
   private shippingMethodItemsSubject = new BehaviorSubject<any[]>([]);
   shippingMethodItems$ = this.shippingMethodItemsSubject.asObservable();
@@ -45,12 +47,16 @@ export class CustomerOrderService {
   GetAllShippingMethodsByBranchId(branchId: any) {
     return this.http.get<any>(`${this.baseUrl}` + this.getAllShippingMethodsByBranchIdUrl + `${branchId}`);
   }
-
+  GetVaoucharByBranchAndVoucharNumber(branchId: any, voucharNumber:any) {
+    return this.http.get<any>(`${this.baseUrl}` + this.getVoucharByBranchAndVoucharNoUrl + `${branchId}/${voucharNumber}`);
+  }
   orderForm = this._fb.group({
     orderCustomerName:[null, Validators.required],
     orderCustomerPhoneNumber:[null, Validators.compose([Validators.required, Validators.maxLength(11), Validators.minLength(11)])],
     deliveryAddress:[null, Validators.required],
     thanaId:[null, Validators.required],
+    voucharNo:null,
+    voucharId:null,
     branchId: [null],
     companyId: [null],
     customerId: [null],
@@ -69,6 +75,8 @@ export class CustomerOrderService {
       orderCustomerPhoneNumber: null,
       deliveryAddress: null,
       branchId: null,
+      voucharNo:null,
+      voucharId:null,
       companyId: null,
       thanaId:null,
       customerId: null,
@@ -80,7 +88,7 @@ export class CustomerOrderService {
       saleItems: []
     })
   }
-  
+  salesDiscount:number = 0;
   AddEcommerceSale(model: any) {
     const data: any = {
       branchId: model.branchId,
@@ -90,6 +98,8 @@ export class CustomerOrderService {
       name: model.orderCustomerName,
       phoneNumber: model.orderCustomerPhoneNumber,
       address: model.deliveryAddress,
+      voucharNo:model.voucharNo,
+      voucharId:model.voucharId,
       shippingCharge: model?.shippingCharge ?? 0,
       discountAmount: model.discountAmount ?? '0',
       note: model.note ?? '',

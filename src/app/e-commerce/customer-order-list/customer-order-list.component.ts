@@ -39,6 +39,7 @@ export class CustomerOrderListComponent implements OnInit {
     };
     this.GetAllCustomerOrderList();
   }
+  
   GetMenuByPermission() {
     let token = JSON.parse(localStorage.getItem("Token")).roles[0];
     if (this.menuId) {
@@ -90,6 +91,7 @@ export class CustomerOrderListComponent implements OnInit {
       })
     }
   }
+
   GetAllCustomerOrderList() {
     let token = JSON.parse(localStorage.getItem("Token"));
     if (token.customerId) {
@@ -119,6 +121,7 @@ export class CustomerOrderListComponent implements OnInit {
       this.loading = false;
     }
   }
+
   getVal(event: any) {
     if ((event.target as HTMLInputElement)?.value) {
       return (event.target as HTMLInputElement).value;

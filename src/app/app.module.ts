@@ -112,6 +112,11 @@ import { BannerImageComponent } from './e-commerce/banner-image/banner-image.com
 import { CustomerOrderListComponent } from './e-commerce/customer-order-list/customer-order-list.component';
 import { CustomerProfileComponent } from './e-commerce/customer-profile/customer-profile.component';
 import { MoreSearchResultComponent } from './e-commerce/more-search-result/more-search-result.component';
+import { AboutUsComponent } from './e-commerce/about-us/about-us.component';
+import { ContactUsComponent } from './e-commerce/contact-us/contact-us.component';
+import { ReturnPolicyComponent } from './e-commerce/return-policy/return-policy.component';
+import { RefundPolicyComponent } from './e-commerce/refund-policy/refund-policy.component';
+import { CustomerCareComponent } from './e-commerce/customer-care/customer-care.component';
 
 
 export function initializeApp(appConfigService: MyApiService) {
@@ -182,6 +187,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     CustomerOrderListComponent,
     CustomerProfileComponent,
     MoreSearchResultComponent,
+    AboutUsComponent,
+    ContactUsComponent,
+    ReturnPolicyComponent,
+    RefundPolicyComponent,
+    CustomerCareComponent
   ],
 
   imports: [

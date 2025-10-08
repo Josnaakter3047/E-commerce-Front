@@ -1,0 +1,62 @@
+<app-top-contact-info></app-top-contact-info>
+<app-home-banner></app-home-banner>
+<div class="grid grid-nogutter" style="width: 100%;">
+    <div class="p-fluid" style="width: 100%;">
+        <div class="col-12 page-header" style="width: 100%;">
+            <h1 class="page-header-title">Contact Us</h1>
+            <div class="header-breadcrumb mt-2">
+                <div class="flex -mx-4 align-items-center justify-content-center">
+                    <span>
+                        <a href="#" class="bread-crumb-item" title="Back to the home page">Home</a>
+                    </span>
+                    <span class="pi pi-angle-right"></span>
+                    <span class="">Contact Us</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-8 ml-auto mr-auto mt-3" style="padding-bottom: 50px;">
+            <div class="mb-3 text-center">
+                <p *ngIf="successMessage" style="color: green;font-size: 15px;font-weight: 600;">
+                    {{successMessage}}
+                </p>
+                <p *ngIf="errorMessage" style="color: rgb(207, 17, 17);font-size: 15px;font-weight: 600;">
+                    {{errorMessage}}
+                </p>
+            </div>
+            <form [formGroup]="_service.form">
+                
+                <div class="card p-0">
+                    <div class="card-header">
+                        <h4 style="font-weight: 600;">We would love to hear from you.</h4>
+                    </div>
+                    <div class="grid px-3 pb-5" style="width: 100%;">
+                    <div class="col-6">
+                      <label for="">Full Name</label>
+                      <input formControlName="name" type="text" pInputText 
+                      [ngClass]="this._service.form.get('name').hasError('required') &&
+                      (this._service.form.get('name').touched)? 'ng-invalid ng-dirty': ''">
+                    </div>
+                    <div class="col-6">
+                      <label for="">Email</label>
+                      <input formControlName="email" type="text" pInputText
+                      [ngClass]="this._service.form.get('email').hasError('required') &&
+                      (this._service.form.get('email').touched)? 'ng-invalid ng-dirty': ''">
+                    </div>
+                    <div class="col-12">
+                        <label for="">Please write your comment</label>
+                        <textarea formControlName="message" rows="5" pInputTextarea
+                        [ngClass]="this._service.form.get('message').hasError('required') &&
+                      (this._service.form.get('message').touched)? 'ng-invalid ng-dirty': ''"></textarea>
+                    </div>
+                    
+                    <div class="col-2 ml-auto text-right">
+                        <button [disabled]="processing" (click)="onSubmit()" class="p-button-primary" icon="pi pi-check" label="{{processing? 'Please Wait':'Submit'}}" style="width: fit-content;" pButton pRipple></button>
+                    </div>
+                </div>
+                </div>
+            </form>
+        </div>
+       
+    </div>
+</div>

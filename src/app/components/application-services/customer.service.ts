@@ -16,6 +16,7 @@ export class CustomerService {
   lastTableLazyLoadEvent?: LazyLoadEvent;
   private baseUrl: string='';
   branch:any;
+  orderAddressList:any[] =[];
   constructor(
     private http: HttpClient,
     private _fb:FormBuilder,
@@ -32,9 +33,16 @@ export class CustomerService {
   photoUploadUrl: string = this.controller + 'imgUpload/';
   fileDownloadUrl: string = this.controller + 'getfile/';
   getAllThanaUrl: string =  "/api/Thana/getall";
+  getCustomerOrderAddressByCustomerIdUrl: string =  "/api/OrderConfirmation/getAllCustomersOrderAddressCustomerId/";
+  
+  GetCustomerOrderAddressByCustomerId(customerId:any){
+    return this.http.get<any>(`${this.baseUrl}`+ this.getCustomerOrderAddressByCustomerIdUrl + customerId);
+  }
+
   GetCustomerProfileById(customerId:any){
     return this.http.get<any>(`${this.baseUrl}`+ this.getByIdUrl + customerId);
   }
+ 
   GetAllThanaList() {
     return this.http.get<any>(`${this.baseUrl}`+this.getAllThanaUrl);
   }

@@ -1,0 +1,48 @@
+/* General Layout */
+.text-underline{
+  text-decoration: underline;
+}
+.page-header {
+    padding: 1.5rem 0;
+    background-color: #CCF3F4;
+    color:#000;
+}
+.page-header-title {
+  text-align: center;
+  color:#000;
+  text-transform: capitalize;
+}
+.header-breadcrumb {
+    padding: 2px 10px;
+    font-size: 13px;
+}
+.pi-angle-right {
+    color: #b8b5b5;
+    padding: 0 10px;
+}
+.bread-crumb-item {
+   color:#000;
+}
+.bread-crumb-item:hover {
+    cursor: pointer;
+    color: #b8b5b5;
+    text-decoration: underline;
+}
+@media (max-width: 1269px) {
+  .col-8{
+    width:85% !important;
+  }
+}
+@media (max-width: 768px) {
+  .col-8{
+    width:85% !important;
+  }
+  .col-6{
+    width:100% !important;
+  }
+}
+@media (max-width: 480px) {
+  .col-8{
+    width:100% !important;
+  }
+}

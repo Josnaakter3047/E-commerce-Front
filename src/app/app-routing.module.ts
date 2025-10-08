@@ -27,24 +27,35 @@ import { CustomerOrderListComponent } from './e-commerce/customer-order-list/cus
 import { CustomerProfileComponent } from './e-commerce/customer-profile/customer-profile.component';
 import { MoreSearchResultComponent } from './e-commerce/more-search-result/more-search-result.component';
 import { OrderConfirmationComponent } from './e-commerce/order-confirmation/order-confirmation.component';
+import { ContactUsComponent } from './e-commerce/contact-us/contact-us.component';
+import { AboutUsComponent } from './e-commerce/about-us/about-us.component';
+import { ReturnPolicyComponent } from './e-commerce/return-policy/return-policy.component';
+import { RefundPolicyComponent } from './e-commerce/refund-policy/refund-policy.component';
+import { CustomerCareComponent } from './e-commerce/customer-care/customer-care.component';
 
 const routes: Routes = [
   { path: '', component: AllHomeSectionComponent },
+  
   { path: 'home', component: AllHomeSectionComponent },
   { path: 'login', component: LoginComponent },
   { path: 'cart', component: ShoppingCartListComponent },
   { path: 'product-detail/:id', component: ProductDetailComponent },
   { path: 'more-product', component: MoreSearchResultComponent },
-  
   { path: 'products/:categoryName/:categoryId', component: AllProductBycategoryComponent },
   { path: 'registration', component: UserRegistrationComponent },
   { path: 'order-confirmation/:userId', component: OrderConfirmationComponent },
+  { path: 'contact-us', component: ContactUsComponent },
+  { path: 'customer-care', component: CustomerCareComponent },
+  { path: 'about-us', component: AboutUsComponent },
+  { path: 'return-policy', component: ReturnPolicyComponent },
+  { path: 'refund-policy', component: RefundPolicyComponent },
   
+
   {
     path: '', component: AppMainComponent,
     children: [
       { path: 'dashboard/:id', component: AdminDashboardComponent, canActivate: [AuthGuard]},
-        
+      
       //for customer dashboard
       { path: 'order-list/:id', component: CustomerOrderListComponent, canActivate: [AuthGuard] },
       { path: 'customer-profile/:customerId', component: CustomerProfileComponent, canActivate: [AuthGuard] },

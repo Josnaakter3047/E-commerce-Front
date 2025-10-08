@@ -69,11 +69,25 @@ export class AddToCartComponent implements OnInit {
         orderCustomerPhoneNumber:this.customer.phoneNumber,
         createdById:this.customer.createdById,
         customerId:this.customer.id,
-        deliveryAddress:this.customer.address
+        deliveryAddress:this.customer.address,
+        thanaId:this.customer.thanaId,
+        voucharNo:null
       });
       }
       else{
         this.customer = null;
+      }
+    })
+  }
+  
+  GetAllOrderAddress(customerId:any){
+    this._customerService.GetCustomerOrderAddressByCustomerId(customerId).subscribe((response)=>{
+      if(response.statusCode === 200){
+        this._customerService.orderAddressList = response.value;
+        //console.log(this._customerService.orderAddressList);
+      }
+      else{
+        this._customerService.orderAddressList = [];
       }
     })
   }
@@ -83,6 +97,7 @@ export class AddToCartComponent implements OnInit {
     if(token){
       this.GetCustomerById(token.customerId);
       //this._service.displayModal = true;
+      this.GetAllOrderAddress(token.customerId);
       this._router.navigate(['order-confirmation', token.id]);
     }
     else{

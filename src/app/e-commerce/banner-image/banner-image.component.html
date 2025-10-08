@@ -1,4 +1,4 @@
 <section class="banner">
-  <img src="assets/images/banner-02.webp" alt="banner" class="banner-img" style="width: 100%;">
+  <img *ngIf="this.settings?.sliderImageUrl" src="{{baseUrl}}/{{this.settings?.sliderImageUrl}}" alt="banner" class="banner-img" style="width: 100%;">
 </section>
 

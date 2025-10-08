@@ -11,6 +11,7 @@ import { CompanyDetailService } from 'src/app/components/application-services/co
 import { BranchService } from 'src/app/components/application-services/branch.service';
 import { DatePipe } from '@angular/common';
 import { LoginService } from 'src/app/components/login/login.service';
+import { EcommarceSettingsService } from 'src/app/components/application-services/ecommarce-settings.service';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class HomeBannerComponent implements OnInit {
   isSticky = false;
   branch:any;
   company:any;
-
+  settings: any
 
   @ViewChild('searchSidebar') sidebarRef!: Sidebar;
   private typingTimer: any;
@@ -53,13 +54,38 @@ export class HomeBannerComponent implements OnInit {
     public _companyService:CompanyDetailService,
     private datePipe:DatePipe,
     private _route:ActivatedRoute,
-    private loginService:LoginService
+    private loginService:LoginService,
+    public _ecommarceService: EcommarceSettingsService,
   ) {
     this.baseUrl = this.configService.apiBaseUrl;
     this.branchId = this.configService.apiBranchId;
     this.companyId = this.configService.apiCompanyId; 
   }
-
+  @HostListener('window:scroll', [])
+ onWindowScroll(): void {
+  
+  const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  if(scrollPosition > 5 && scrollPosition < 500){
+    this.isSticky = true;
+  }
+ 
+  else{
+    this.isSticky = false;
+  }
+  // const threshold = 50;
+  // if(threshold){
+  //   this.isSticky = scrollY > threshold;
+  // }
+  // else{
+  //   this.isSticky=false;
+  // }
+  
+  // if (!this.isSticky && scrollY > threshold) {
+    
+  // } else if (this.isSticky && scrollY < threshold) {
+  //   this.isSticky = false;
+  // }
+}
   cartCount$ = this._shoppingCartService.cartCount$;
   cartCount: number = 0;
   onLogIn(){
@@ -68,18 +94,19 @@ export class HomeBannerComponent implements OnInit {
   search_result:any;
   result_count:any;
   ngOnInit(): void {
+    this._shoppingCartService.cartCount$.subscribe(count => {
+      this.cartCount = count;
+    });
     this.getCartCount();
     this.GetAllProduct();   
     this.GetAllCategories();
     this.GetAllTopProductList();
-    
+    this.GetEcommarceSettings();
     let token = JSON.parse(localStorage.getItem("Token"));
     if(token){
       this.userName = token.fullName;
     }
-    this._shoppingCartService.cartCount$.subscribe(count => {
-      this.cartCount = count;
-    });
+    
     if(this.branchId){
       this.GetBranchById();
     }
@@ -91,6 +118,22 @@ export class HomeBannerComponent implements OnInit {
       this.result_count = +params['result_count'] || 0;
       this.loadProducts(this.search_result);
     });
+  }
+  GetEcommarceSettings() {
+    if (this.branchId) {
+      this._ecommarceService.GetByBranchId(this.branchId).subscribe((response) => {
+        if (response.statusCode === 200 && response.value) {
+          this.settings = response.value;
+
+        }
+        else {
+          this.settings = null;
+        }
+      })
+    }
+    else {
+      console.log("branch not found");
+    }
   }
   loadProducts(searchText: any) {
     if (searchText) {
@@ -156,11 +199,7 @@ export class HomeBannerComponent implements OnInit {
        console.log("Sorry branch not found");
     }
   }
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    this.isSticky = scrollPosition > 10 && scrollPosition <= 550;
-  }
+ 
   
   GetAllProduct(){
     if(this.companyId){
@@ -278,8 +317,6 @@ export class HomeBannerComponent implements OnInit {
     
         return menuItems
   }
-
- 
   discountedPrice:number = 0;
   discountAmount:number = 0;
   onCalculateDiscountedPrice(price:any, disocunt):number{

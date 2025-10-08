@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { BranchService } from 'src/app/components/application-services/branch.service';
 import { CompanyDetailService } from 'src/app/components/application-services/company-detail.service';
+import { EcommarceSettingsService } from 'src/app/components/application-services/ecommarce-settings.service';
 import { MyApiService } from 'src/app/shared/my-api.service';
 
 @Component({
@@ -17,10 +18,12 @@ export class HomeFooterComponent implements OnInit {
   branchId:any;
   companyId:any;
   baseUrl:any;
+  settings: any;
   constructor(
     public _branchService:BranchService,
     public _companyService:CompanyDetailService,
     private configService: MyApiService,
+    public _ecommarceService: EcommarceSettingsService,
   ) {
     this.branchId = this.configService.apiBranchId;
     this.companyId = this.configService.apiCompanyId;
@@ -48,12 +51,28 @@ export class HomeFooterComponent implements OnInit {
     if(this.companyId){
       this.GetCompany();
     }
+    this.GetEcommarceSettings();
   }
-  
+  GetEcommarceSettings() {
+    if (this.branchId) {
+      this._ecommarceService.GetByBranchId(this.branchId).subscribe((response) => {
+        if (response.statusCode === 200 && response.value) {
+          this.settings = response.value;
+
+        }
+        else {
+          this.settings = null;
+        }
+      })
+    }
+    else {
+      console.log("branch not found");
+    }
+  }
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    this.showScrollTopButton = scrollPosition >= 350;
+    this.showScrollTopButton = scrollPosition > 150;
   }
 
   scrollToTop() {
@@ -85,7 +104,7 @@ export class HomeFooterComponent implements OnInit {
         this._branchService.GetById(this.branchId).subscribe((response)=>{
       if(response.statusCode === 200){
         this.branch = response.value;
-        console.log(this.branch);
+        //console.log(this.branch);
       }
       else{
         this.branch = null;

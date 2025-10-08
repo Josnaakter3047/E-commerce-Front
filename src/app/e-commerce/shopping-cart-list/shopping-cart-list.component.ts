@@ -27,23 +27,23 @@ export class ShoppingCartListComponent implements OnInit {
   }
   
   ngOnInit(): void {
-      ;
+      
   }
 
   increaseQty(product: any) {
-  const existing = this._shoppingCartService.cartItems.find(
-    i => i.productDetailId === product.productDetailId
-  );
+    const existing = this._shoppingCartService.cartItems.find(
+      i => i.productDetailId === product.productDetailId
+    );
 
-  if (existing) {
-    existing.quantity++;
-  } else {
-    this._shoppingCartService.addProductToCart(product);
+    if (existing) {
+      existing.quantity++;
+    } else {
+      this._shoppingCartService.addProductToCart(product);
+    }
+    this._shoppingCartService.saveCart();
   }
-  this._shoppingCartService.saveCart();
-}
 
-decreaseQty(product: any) {
+  decreaseQty(product: any) {
   const existing = this._shoppingCartService.cartItems.find(
     i => i.productDetailId === product.productDetailId
   );
@@ -56,19 +56,19 @@ decreaseQty(product: any) {
     }
     this._shoppingCartService.saveCart();
   }
-}
-
-getCartQty(productDetailId: any): number {
+  }
+  
+  getCartQty(productDetailId: any): number {
   const existing = this._shoppingCartService.cartItems.find(i => i.productDetailId === productDetailId);
   return existing ? existing.quantity : 0;
-}
+  }
 
- onRemoveItem(item:any) {
+  onRemoveItem(item:any) {
     this._shoppingCartService.removeItemByProductDetailId(item.productDetailId);
   }
 
   //for cash on delivery
-  customer:any;
+ customer:any;
   GetCustomerById(customerId:any){
     this._customerService.GetCustomerProfileById(customerId).subscribe((response)=>{
       if(response.statusCode === 200){
@@ -78,7 +78,9 @@ getCartQty(productDetailId: any): number {
         orderCustomerPhoneNumber:this.customer.phoneNumber,
         createdById:this.customer.createdById,
         customerId:this.customer.id,
-        deliveryAddress:this.customer.address
+        deliveryAddress:this.customer.address,
+        thanaId:this.customer.thanaId,
+        voucharNo:null
       });
       }
       else{
@@ -86,19 +88,29 @@ getCartQty(productDetailId: any): number {
       }
     })
   }
+  GetAllOrderAddress(customerId:any){
+    this._customerService.GetCustomerOrderAddressByCustomerId(customerId).subscribe((response)=>{
+      if(response.statusCode === 200){
+        this._customerService.orderAddressList = response.value;
+        //console.log(this._customerService.orderAddressList);
+      }
+      else{
+        this._customerService.orderAddressList = [];
+      }
+    })
+  }
   onDisplayOrderModal(){
-    
     let token = JSON.parse(localStorage.getItem("Token"));
     if(token){
       this.GetCustomerById(token.customerId);
-      //this._service.displayModal = true;
+      this.GetAllOrderAddress(token.customerId);
       this._router.navigate(['order-confirmation', token.id]);
     }
     else{
       this._router.navigate(['login']);
     }
   }
-
+  
   onHideOrderModal(){
     this._service.displayModal = false;
     this._service.ResetOrderForm();

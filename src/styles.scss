@@ -314,7 +314,11 @@ button[icon='pi pi-angle-double-left'] {
     /* margin-bottom: .5rem; */
     line-height: 1;
 }
-.header-title .ql-align-center{
+//for quill css
+.ql-align-left{
+  text-align: left !important;
+}
+.ql-align-center{
   text-align: center !important;
 }
 .ql-align-right{

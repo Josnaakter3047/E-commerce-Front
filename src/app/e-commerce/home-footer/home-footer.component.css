@@ -1,6 +1,8 @@
+
 .app-footer{
-    padding:20px 15px;
+    padding:20px 15px 0px 15px;
     background-color: #ccf3f4;
+    margin:0px;
 }
 .footer-nav{
     background-color: #2182a5;
@@ -10,10 +12,7 @@
     justify-content: center;
     padding:20px 0px;
 }
-.company-info p{
-    align-items: center;
-    justify-content: left;
-}
+
 .company-title h5{
     font-weight: 700;
 }
@@ -21,13 +20,29 @@ ul{
     list-style: none;
     padding-left:0px;
 }
+ul li{
+ padding:5px 0px;
+}
 li a{
-    color:#767575;
+    color:#4f4c4c;
 }
 li a:hover{
     cursor: pointer;
     color:#097197;
     text-decoration: underline;
+}
+li span{
+  color:#4f4c4c;
+}
+li i{
+    padding:5px;
+    border-radius: 50%;
+    background-color: #d6dbdb;
+    color:#079a0a;
+}
+li i:hover{
+    color:#d6dbdb;
+    background-color: #079a0a;
 }
 .footer-nav p a{
     color:#000;

@@ -32,8 +32,8 @@
 }
 .cart-subtotal .subtotal-title, 
 .cart-subtotal .subtotal-price{
-  font-size:18px;
-  padding:10px 0px;
+  font-size:16px;
+  padding:5px 0px;
 }
 .cart-list-title{
   margin-bottom:5px;
@@ -43,7 +43,6 @@
   align-items: center;
   justify-content: flex-start;
   padding: 0.5rem 0;
-  border-bottom: 1px solid #e0e0e0;
 }
 
 .cart-img-wrapper {
@@ -101,21 +100,45 @@
   color:#fff;
 }
 .confirmation-btn{
-  background-color: #2182A5;
-  color: #fff;
+  background-color: #ccf3f4;
+  color:#000;
 }
 .confirmation-btn:hover{
-  background-color: rgb(112, 183, 112);
+  background-color: #85c4c6;
   color: #fff;
 }
 /* On very small screens, keep inline */
-@media (max-width: 1269px) {
+.order-form-container{
+  padding:15px 150px 50px 150px;
+}
+.order-form-container input, 
+.order-form-container textarea{
+  width:95% !important;
+}
+.vouchar-apply-btn{
+  margin-top:20px;
+}
+@media (max-width: 1285px) {
   .col-7{
     width:80% !important;
   }
- 
+  .order-form-container{
+    padding:15px 50px 20px 50px;
+  }
 }
 @media (max-width: 769px) {
+  .order-form-container{
+    padding:10px 10px 20px 10px;
+  }
+  .col-8{
+    width:100% !important;
+  }
+  .col-4{
+    width:100% !important;
+  }
+  .vouchar-apply-btn{
+   margin-top:0px;
+  }
   .col-7{
     width:100% !important;
   }
