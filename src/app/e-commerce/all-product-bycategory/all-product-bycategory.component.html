@@ -126,28 +126,36 @@
 
                                 <div class="p-3 flex flex-column justify-between flex-grow-1">
                                     <div class="align-items-center text-center">
-                                        <h3 class="text-lg font-semibold m-0">
+                                        <a class="product-name m-0" routerLink="/product-detail/{{product.id}}">
                                             {{ product.name }}
                                             <span *ngIf="product?.description">- ({{ product?.description?? ''
                                                 }})</span>
-                                        </h3>
-                                        <p *ngIf="!product.discount" class="text-gray-600 mt-1">৳ {{
-                                            product.sellingPrice |
-                                            number:"1.2-2" }}</p>
-                                        <p *ngIf="product.discount" class="text-gray-600 mt-1">
-                                            <span>৳ {{ onCalculateDiscountedPrice(product.sellingPrice,
-                                                product.discount) |
-                                                number:"1.2-2" }}</span>
-                                            <span style="text-decoration: line-through;padding-left:15px;">৳ {{
-                                                product.sellingPrice |
-                                                number:"1.2-2" }}</span>
-                                        </p>
-                                        <p class="mb-2">
+                                        </a>
+                                        <div class="product-price">
+                                             <p *ngIf="!product.discount">
+                                                ৳ {{product.sellingPrice | number:"1.2-2" }}
+                                            </p>
+                                            <p *ngIf="product.discount">
+                                                <span>
+                                                    ৳ {{ onCalculateDiscountedPrice(product.sellingPrice,
+                                                    product.discount) | number:"1.2-2" }}
+                                                </span>
+                                                <span style="text-decoration: line-through;padding-left:15px;">৳ {{
+                                                    product.sellingPrice |
+                                                    number:"1.2-2" }}
+                                                </span>
+                                            </p>
+                                        </div>
+                                       
+                                        
+                                    </div>
+                                    <div class="mt-auto ml-auto mr-auto">
+                                         <div class="product-stock">
+                                            <p>
                                             <p-badge value="{{product?.isStockAvailable? 'Available':'Stock Out'}}"
                                                 severity="{{product?.isStockAvailable? 'success':'danger'}}"></p-badge>
                                         </p>
-                                    </div>
-                                    <div class="mt-auto ml-auto mr-auto">
+                                         </div>
                                         <div class="flex align-items-center">
                                             <div class="flex items-center"
                                                 style="background-color:#eae9e9; border:1px solid grey;">
@@ -187,37 +195,43 @@
 
                                     <!-- INFO -->
                                     <div class="col-9">
-                                        <h4 class="text-2xl font-bold m-0">
+                                         <a class="product-name m-0" routerLink="/product-detail/{{product.id}}">
                                             {{ product.name }}
                                             <span *ngIf="product?.description">- ({{ product?.description?? ''
                                                 }})</span>
-                                        </h4>
+                                        </a>
 
                                         <!-- Price -->
-                                        <p style="font-size: 16px;" *ngIf="!product.discount"
-                                            class="text-gray-600 mt-1">
-                                            ৳ {{ product.sellingPrice | number:"1.2-2" }}
-                                        </p>
+                                        <div class="product-price">
+                                            
+                                            <p *ngIf="!product.discount">
+                                               Price:  ৳ {{ product.sellingPrice | number:"1.2-2" }}
+                                            </p>
 
-                                        <p style="font-size: 16px;" *ngIf="product.discount" class="text-gray-600 mt-1">
-                                            <span>৳ {{ onCalculateDiscountedPrice(product.sellingPrice,
-                                                product.discount) | number:"1.2-2"
-                                                }}</span>
-                                            <span style="text-decoration: line-through; padding-left:15px;">
-                                                ৳ {{ product.sellingPrice | number:"1.2-2" }}
-                                            </span>
-                                        </p>
+                                            <p *ngIf="product.discount">
+                                                
+                                                <span>Price:  ৳ {{ onCalculateDiscountedPrice(product.sellingPrice,
+                                                    product.discount) | number:"1.2-2"}}
+                                                </span>
+                                                <span style="text-decoration: line-through; padding-left:15px;">
+                                                    ৳ {{ product.sellingPrice | number:"1.2-2" }}
+                                                </span>
+                                            </p>
+
+                                            <p style="font-size: 13px; color:#666;" *ngIf="product?.description">
+                                                Size: {{ product?.description }}
+                                            </p>
+                                            </div>
 
                                         <!-- Extra Info -->
-                                        <p *ngIf="product?.description" style="font-size: 16px;"
-                                            class="text-gray-500 mb-2">Size: {{ product.description }}</p>
-
-                                        <p class="mb-2">
-                                            <p-badge value="{{product?.isStockAvailable? 'Available':'Stock Out'}}"
-                                                severity="{{product?.isStockAvailable? 'success':'danger'}}"></p-badge>
-                                        </p>
 
                                         <div class="mt-auto ml-auto mr-auto">
+                                            <div class="product-stock" style="text-align: left;">
+                                                <p>
+                                                    <p-badge value="{{product?.isStockAvailable? 'Available':'Stock Out'}}"
+                                                    severity="{{product?.isStockAvailable? 'success':'danger'}}"></p-badge>
+                                                </p>
+                                            </div>
                                             <div class="flex align-items-center">
                                                 <div class="flex items-center"
                                                     style="background-color:#eae9e9; border:1px solid grey;">

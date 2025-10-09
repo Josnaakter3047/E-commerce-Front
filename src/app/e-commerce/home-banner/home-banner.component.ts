@@ -65,26 +65,14 @@ export class HomeBannerComponent implements OnInit {
  onWindowScroll(): void {
   
   const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-  if(scrollPosition > 5 && scrollPosition < 500){
+  if(scrollPosition > 5){
     this.isSticky = true;
   }
  
   else{
     this.isSticky = false;
   }
-  // const threshold = 50;
-  // if(threshold){
-  //   this.isSticky = scrollY > threshold;
-  // }
-  // else{
-  //   this.isSticky=false;
-  // }
-  
-  // if (!this.isSticky && scrollY > threshold) {
-    
-  // } else if (this.isSticky && scrollY < threshold) {
-  //   this.isSticky = false;
-  // }
+
 }
   cartCount$ = this._shoppingCartService.cartCount$;
   cartCount: number = 0;
@@ -200,10 +188,15 @@ export class HomeBannerComponent implements OnInit {
     }
   }
  
-  
+  goProductCategory(row:any){
+    if(row){
+      this._router.navigate([`/products/${row.name}/${row.id}`]);
+      this.sidebarVisible = false;
+    }
+  }
   GetAllProduct(){
-    if(this.companyId){
-      this._productService.GetAllProductsCompanyId(this.companyId).subscribe(response=>{
+    if(this.branchId){
+      this._productService.GetAllProductsBranchId(this.branchId).subscribe(response=>{
       if(response.statusCode === 200){
         this.productList = response.value;
       }
@@ -214,7 +207,7 @@ export class HomeBannerComponent implements OnInit {
     }
     else{
       this.productList = [];
-      console.log("Company not found");
+      console.log("Branch not found");
     }
   }
   

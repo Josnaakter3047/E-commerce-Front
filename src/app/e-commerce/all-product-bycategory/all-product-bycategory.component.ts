@@ -51,8 +51,8 @@ allProducts: any[] = [];
   }
 
   GetAllProduct(cagoryId:any){
-    if(this.companyId){
-      this._productService.GetAllProductByCompanyIdAndCategory(this.companyId, cagoryId).subscribe(response=>{
+    if(this.branchId){
+      this._productService.GetAllProductByBranchIdAndCategory(this.branchId, cagoryId).subscribe(response=>{
       if(response.statusCode === 200){
         this.allProducts = response.value || [];
         this.productList = [...this.allProducts];
@@ -243,8 +243,6 @@ onMaxInputChange(value: any) {
   this.priceRange = [this.minInput, this.maxInput]; // assign new array
    this.filterTimeout = setTimeout(() => this.filterProductsByPriceAndStock(), 200);
 }
-
-
 
 
 }

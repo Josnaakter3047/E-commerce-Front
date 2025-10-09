@@ -126,7 +126,7 @@ export class CustomerOrderService {
           this.shippingMethods = response.value;
           this.shippingMethodItemsSubject.next(this.shippingMethods);
           const defaultCategory = this.shippingMethods[0];
-          this.shippingCharge = defaultCategory.charge;
+          this.shippingCharge = defaultCategory?.charge;
           this.orderForm.patchValue({
             shippingCharge: this.shippingCharge
           });

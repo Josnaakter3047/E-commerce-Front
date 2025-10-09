@@ -132,7 +132,7 @@ export class OrderConfirmationComponent implements OnInit {
         branchId: this.branchId,
         companyId: this.companyId,
         saleItems: formattedSaleItems,
-        voucharId:this.vouchar.id,
+        voucharId:this.vouchar? this.vouchar?.id :null,
         discountAmount: this.vouchar?.voucharValue,
         shippingCharge: this._service.shippingCharge,
         totalAmount: this._shoppingCartService.getTotal() + this._service.shippingCharge - this.discountValue

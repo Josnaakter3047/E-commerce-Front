@@ -32,8 +32,8 @@ export class AllProductComponent implements OnInit {
   }
 
   GetAllProduct(){
-    if(this.companyId){
-      this._productService.GetAllProductsCompanyId(this.companyId).subscribe(response=>{
+    if(this.branchId){
+      this._productService.GetAllProductsBranchId(this.branchId).subscribe(response=>{
       if(response.statusCode === 200){
         this.productList = response.value;
        
@@ -49,6 +49,7 @@ export class AllProductComponent implements OnInit {
       console.log("Company not found");
     }
   }
+
   addToCart(product: any) {
     this._shoppingCartService.addProductToCart(product);
   }

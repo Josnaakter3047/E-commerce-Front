@@ -20,27 +20,32 @@
 
                     <div class="p-3 flex flex-column justify-between flex-grow-1">
                         <div class="align-items-center text-center">
-                            <h3 class="text-lg font-semibold m-0">
-                                {{ product.name }}
-                                <span *ngIf="product?.description">- ({{ product?.description?? '' }})</span>
-                            </h3>
-                            <p *ngIf="!product.discount" class="text-gray-600 mt-1">৳ {{ product.sellingPrice |
+                            <a class="product-name m-0" routerLink="/product-detail/{{product.id}}">
+                               {{ product.name }}
+                               <span *ngIf="product?.description">- ({{ product?.description?? '' }})</span>
+                            </a>
+                            <div class="product-price">
+                                 <p *ngIf="!product.discount">৳ {{ product.sellingPrice |
                                 number:"1.2-2" }}</p>
-                            <p *ngIf="product.discount" class="text-gray-600 mt-1">
+                            <p *ngIf="product.discount">
                                 <span>৳ {{ onCalculateDiscountedPrice(product.sellingPrice, product.discount) |
                                     number:"1.2-2" }}</span>
-                                <span style="text-decoration: line-through;padding-left:15px;">৳ {{ product.sellingPrice
-                                    | number:"1.2-2" }}</span>
+                                <span style="text-decoration: line-through;padding-left:15px;">
+                                    ৳ {{ product.sellingPrice | number:"1.2-2" }}
+                                </span>
                             </p>
-                            <p class="mb-2">
-                                <p-badge value="{{product?.isStockAvailable? 'Available':'Stock Out'}}"
-                                severity="{{product?.isStockAvailable? 'success':'danger'}}"></p-badge>
-                            </p>
+                            </div>
+                           
+                            
                         </div>
                         <div class="mt-auto ml-auto mr-auto">
-                            <!-- <button pButton label="Add to Cart" icon="pi pi-shopping-cart" class="p-button-sm w-full p-button-primary"
-                                                        (click)="addToCart(product)">
-                                                    </button> -->
+                            <div class="product-stock">
+                             <p>
+                                <p-badge value="{{product?.isStockAvailable? 'Available':'Stock Out'}}"
+                                    severity="{{product?.isStockAvailable? 'success':'danger'}}">
+                                </p-badge>
+                              </p>
+                            </div>
                             <div class="flex align-items-center">
                                 <div class="flex items-center" style="background-color:#eae9e9; border:1px solid grey;">
                                     <button pButton icon="pi pi-minus" class="p-button-sm p-button-primary p-button-text"

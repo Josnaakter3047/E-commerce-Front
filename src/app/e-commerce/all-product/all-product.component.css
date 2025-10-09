@@ -11,6 +11,22 @@
   margin: 0px;
   
 }
+.product-name{
+  text-transform: capitalize;
+  font-size: 14px;
+}
+.product-price{
+  font-size: 16px;
+  font-weight: 700;
+}
+.product-stock{
+  margin-bottom:10px;
+  text-align: center;
+}
+.product-name:hover{
+  cursor: pointer;
+  color: #616161;
+}
 .product-container{
     padding:0px 100px 80px 100px;
     margin:0px;

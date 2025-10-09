@@ -44,8 +44,8 @@ export class MoreSearchResultComponent implements OnInit {
   }
 
   GetAllProduct() {
-    if (this.companyId) {
-      this._productService.GetAllProductsCompanyId(this.companyId).subscribe(response => {
+    if (this.branchId) {
+      this._productService.GetAllProductsBranchId(this.branchId).subscribe(response => {
         if (response.statusCode === 200) {
           this.productList = response.value;
           if (this.searchName) {
@@ -66,7 +66,7 @@ export class MoreSearchResultComponent implements OnInit {
     else {
       this.productList = null;
       this._productService.searchResultProductList = [];
-      console.log("Company not found");
+      console.log("Branch not found");
     }
   }
   paginate(event: any) {

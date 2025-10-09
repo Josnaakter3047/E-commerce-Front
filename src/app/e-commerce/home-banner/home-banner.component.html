@@ -91,14 +91,29 @@
 
 
 <!-- menu sidebar -->
-<p-sidebar [(visible)]="sidebarVisible" position="left" styleClass="p-sidebar-sm">
-    <ul class="list-none p-0 m-0">
-        <li class="menu-item p-3 border-b" *ngFor="let x of productCategories">
-            <a routerLink="{{x.routerLink ?? '#'}}" routerLinkActive="active-link" class="block w-full">
-                {{x.name ?? ''}}
-            </a>
-        </li>
-    </ul>
+<p-sidebar [(visible)]="sidebarVisible" position="left" styleClass="custom-sidebar" [showCloseIcon]="false">
+    <ng-template pTemplate="headless">
+        <div class="flex flex-column h-full" style="background-color: #fff;">
+            <!-- Header -->
+            <div class="flex align-items-center justify-content-between px-3 py-2 flex-shrink-0 border-bottom-1 border-gray-300">
+                <span class="font-semibold">Items</span>
+                <button pButton (click)="sidebarVisible = false" icon="pi pi-times" class="p-button-danger p-button-text"
+                    style="width: fit-content;">
+                </button>
+            </div>
+            <div class="overflow-y-auto px-3 py-2">
+            <ul class="list-none p-0 m-0">
+                <li class="side-menu-item" *ngFor="let x of productCategories">
+                    <a *ngIf="x.id" (click)="goProductCategory(x)" routerLinkActive="side-active-link" class="block w-full">
+                        <i class="pi pi-directions mr-2"></i> {{x.name ?? ''}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        </div>
+        
+    </ng-template>
+   
 </p-sidebar>
 
 <!-- search display -->
