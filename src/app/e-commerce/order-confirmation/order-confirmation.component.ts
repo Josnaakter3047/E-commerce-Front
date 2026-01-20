@@ -114,67 +114,84 @@ export class OrderConfirmationComponent implements OnInit {
   }
 
   onSubmit() {
+    let address = this._service.orderForm.get('address').value;
     if (this.voucharIsUsed === false) {
       this._sharedService.showWarn(this.voucharError || "Invalid or expired voucher.");
       return;
-    }
-    if (this._shoppingCartService.cartItems?.length > 0) {
-      const formattedSaleItems = this._shoppingCartService.cartItems.map((item) => ({
-        productDetailId: item.productDetailId,
-        quantity: item.quantity,
-        discountRate: item.discountAmount?.toString() ?? '0',
-        sellingPrice: item.price,
-        discountAmount: item.discountAmount ?? 0,
-        totalAmount: item.price * item.quantity
-      }));
-
-      this._service.orderForm.patchValue({
-        branchId: this.branchId,
-        companyId: this.companyId,
-        saleItems: formattedSaleItems,
-        voucharId:this.vouchar? this.vouchar?.id :null,
-        discountAmount: this.vouchar?.voucharValue,
-        shippingCharge: this._service.shippingCharge,
-        totalAmount: this._shoppingCartService.getTotal() + this._service.shippingCharge - this.discountValue
-      });
-
     }
     if (this._shoppingCartService.cartItems?.length == 0) {
       this._sharedService.showWarn("Please Add To Cart");
       return;
     }
+   
+   
     let token = JSON.parse(localStorage.getItem('Token'));
     if (token) {
+       const formattedSaleItems = this._shoppingCartService.cartItems.map((item) => ({
+        productDetailId: item.productDetailId,
+        quantity: item.quantity,
+        
+        discountRate: item.discountAmount?.toString() ?? '0',
+        sellingPrice: item.price,
+        discountAmount: item.discountAmount ?? 0,
+        totalAmount: item.price * item.quantity
+      }));
+      
       this._service.orderForm.patchValue({
+        branchId: this.branchId,
+        companyId: this.companyId,
         customerId: token.customerId,
-        createdById: token.id
+        createdById: token.id,
+        voucharId:this.vouchar? this.vouchar?.id :null,
+        discountAmount: this.vouchar?.voucharValue? this.vouchar?.voucharValue: '0',
+        shippingCharge: this._service.shippingCharge,
+        totalAmount: this._shoppingCartService.getTotal() + this._service.shippingCharge - this.discountValue,
+        saleItems: formattedSaleItems,
+        deliveryAddress:address
       });
-
+     
+      //console.log(this._service.orderForm.value);
       if (this._service.orderForm.valid) {
         this.inProgress = true;
-        this._service.AddEcommerceSale(this._service.orderForm.value).subscribe({
-          next: (response) => {
-            if (response.statusCode === 200) {
-              this._sharedService.showSuccess("Sales added successfully.");
-              this._shoppingCartService.clearCart();
-              this.inProgress = false;
-              this._router.navigate(['home']);
-              this.onHideOrderModal();
-            } else {
-              this._sharedService.showWarn(response.message);
-              this.inProgress = false;
-            }
-
-          },
-          error: (error) => {
-            console.error(error);
-            this._sharedService.showError(error.message || "Something went wrong.");
+        this._service.AddEcommerceSale(this._service.orderForm.value).subscribe((response)=>{
+          if(response.statusCode === 200){
+            this._sharedService.showSuccess("Sales added successfully.");
+            this._shoppingCartService.clearCart();
+            this._router.navigate(['home']);
+            this.inProgress = false;
+            this.onHideOrderModal();
+          }
+          else{
+            this._sharedService.showWarn(response.message);
             this.inProgress = false;
           }
+          // next: (response) => {
+          //   if (response.statusCode === 200) {
+          //     this._sharedService.showSuccess("Sales added successfully.");
+          //     this._shoppingCartService.clearCart();
+          //     this.inProgress = false;
+          //     this._router.navigate(['home']);
+          //     this.onHideOrderModal();
+          //   } else {
+          //     this._sharedService.showWarn(response.message);
+          //     this.inProgress = false;
+          //   }
+
+          // },
+          // error: (error) => {
+          //   console.error(error);
+          //   this._sharedService.showError('Api Error');
+          //   this.inProgress = false;
+          // }
+        },error=>{
+          console.log(error);
+          this._sharedService.showError(error.message);
+          this.inProgress = false;
         });
       } else {
         this._service.orderForm.markAllAsTouched();
         this._sharedService.showError("Invalid request");
+         this.inProgress = false;
       }
     }
     else {
@@ -290,10 +307,10 @@ export class OrderConfirmationComponent implements OnInit {
   // }
 
   onNewAddressEntered() {
-  const control = this._service.orderForm.get('deliveryAddress');
+  const control = this._service.orderForm.get('address');
   const newAddress = control?.value?.trim();
 
-  // 🧹 If user cleared the input
+  //If user cleared the input
   if (!newAddress) {
     if (this.lastAddedAddressId) {
       // Remove last added "new" address from the list

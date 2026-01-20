@@ -64,15 +64,19 @@ export class AddToCartComponent implements OnInit {
     this._customerService.GetCustomerProfileById(customerId).subscribe((response)=>{
       if(response.statusCode === 200){
         this.customer = response.value;
-        this._orderService.orderForm.patchValue({
-        orderCustomerName:this.customer.name,
-        orderCustomerPhoneNumber:this.customer.phoneNumber,
-        createdById:this.customer.createdById,
+        
+      if(this.customer){
+          this.GetAllOrderAddress(this.customer?.id);
+          this._orderService.orderForm.patchValue({
+        name:this.customer?.name,
+        phoneNumber:this.customer?.phoneNumber,
         customerId:this.customer.id,
-        deliveryAddress:this.customer.address,
-        thanaId:this.customer.thanaId,
+        address:this.customer?.address,
+        deliveryAddress:this.customer?.address,
+        thanaId:this.customer?.thanaId,
         voucharNo:null
       });
+      }
       }
       else{
         this.customer = null;
@@ -94,10 +98,10 @@ export class AddToCartComponent implements OnInit {
   onDisplayOrderModal(){
     this.visible = false;
     let token = JSON.parse(localStorage.getItem("Token"));
-    if(token){
+    if(token && token.customerId){
+      //alert(token.customerId);
       this.GetCustomerById(token.customerId);
-      //this._service.displayModal = true;
-      this.GetAllOrderAddress(token.customerId);
+    
       this._router.navigate(['order-confirmation', token.id]);
     }
     else{

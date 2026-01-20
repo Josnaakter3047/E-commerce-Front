@@ -17,7 +17,7 @@ import { CompanyDetailService } from '../application-services/company-detail.ser
 export class UserRegistrationComponent implements OnInit {
   branchId: any;
   companyId: any;
-   branch:any;
+  branch:any;
   company:any;
   constructor(
     public _service: UserRegistrationService,
@@ -71,7 +71,11 @@ export class UserRegistrationComponent implements OnInit {
     }
   }
   isProgress = false;
-  onSubmit() {    
+  onSubmit() {   
+    this._service.form.patchValue({
+      branchId:this.branchId,
+      companyId:this.companyId
+    }) 
     if (this._service.form.valid) {
       this.isProgress = true;
       this._service.registration(this._service.form.value).subscribe((response) => {

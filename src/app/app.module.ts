@@ -117,6 +117,8 @@ import { ContactUsComponent } from './e-commerce/contact-us/contact-us.component
 import { ReturnPolicyComponent } from './e-commerce/return-policy/return-policy.component';
 import { RefundPolicyComponent } from './e-commerce/refund-policy/refund-policy.component';
 import { CustomerCareComponent } from './e-commerce/customer-care/customer-care.component';
+import { AddCurrencyComponent } from './components/currency/add-currency/add-currency.component';
+import { CompanyDetailComponent } from './components/company-detail/company-detail.component';
 
 
 export function initializeApp(appConfigService: MyApiService) {
@@ -191,7 +193,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContactUsComponent,
     ReturnPolicyComponent,
     RefundPolicyComponent,
-    CustomerCareComponent
+    CustomerCareComponent,
+    AddCurrencyComponent,
+    CompanyDetailComponent
   ],
 
   imports: [

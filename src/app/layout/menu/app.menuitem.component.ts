@@ -23,7 +23,7 @@ import { AppMainComponent } from "../main/app.main.component";
         <span class="layout-menuitem-text">{{item.name}}</span>
         <i class="pi pi-fw pi-angle-down layout-submenu-toggler" *ngIf="item?.items"></i>
       </a>
-      <!-- <a (click)="itemClick($event)"
+      <a (click)="itemClick($event)"
          *ngIf="(!item.items)"
          [routerLink]="item.routerLink" routerLinkActive="active-menuitem-routerlink text-primary"
          [routerLinkActiveOptions]="{exact: true}"
@@ -34,7 +34,7 @@ import { AppMainComponent } from "../main/app.main.component";
         <span class="p-badge p-component p-badge-no-gutter" [ngClass]="item.badgeClass"
               *ngIf="item.badge && !root">{{item.badge}}</span>
         <i class="pi pi-fw pi-angle-down layout-submenu-toggler" *ngIf="item.items"></i>
-      </a> -->
+      </a>
       <ul style="margin-bottom:0px;padding-bottom:0px;" *ngIf="((item.items && root) || (item.items && active)) && item.status !== false"
           [@children]="root ? 'visible' : active ? 'visibleAnimated' : 'hiddenAnimated'">
         <ng-template ngFor let-child let-i="index" [ngForOf]="item.items">

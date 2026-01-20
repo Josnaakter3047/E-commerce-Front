@@ -12,6 +12,7 @@ import { MenuFunctionService } from '../application-menu/function/menu-function/
 import { BranchService } from '../application-services/branch.service';
 import { CompanyDetailService } from '../application-services/company-detail.service';
 import { MyApiService } from 'src/app/shared/my-api.service';
+import { UserRegistrationService } from '../user-registration/user-ragistration.service';
 
 @Component({
   selector: 'app-login',
@@ -51,6 +52,7 @@ export class LoginComponent implements OnInit {
     public _branchService:BranchService,
     public _companyService:CompanyDetailService,
     private configService: MyApiService,
+    private _registrationService:UserRegistrationService
   ) {
     this.branchId = this.configService.apiBranchId;
     this.companyId = this.configService.apiCompanyId;
@@ -230,5 +232,8 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['registration']);
   }
   imageurl = imgUrl;
-
+  onGoToRegistration(){
+    this._registrationService.Init();
+    this.router.navigate(['registration']);
+  }
 }

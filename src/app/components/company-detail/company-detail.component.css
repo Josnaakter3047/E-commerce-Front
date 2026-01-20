@@ -1,0 +1,27 @@
+@media screen and (max-width:450px) {
+    .col-6{
+        width:100%;
+    }
+    .file-upload .col-7{
+        width:100%;
+        padding:0;
+        margin:0;
+    }
+    .file-upload .col-7 #fileUpload{
+        width:fit-content;
+    }
+    .file-upload .col-4{
+        width:100%;
+    }
+}
+
+.header-toolbar ::ng-deep .p-editor-toolbar {
+  display: none !important;
+}
+::ng-deep .ql-size {
+  min-width: 100px;
+}
+::ng-deep .ql-editor img {
+  max-width: 100%;
+  height: auto;
+}

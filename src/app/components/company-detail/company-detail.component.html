@@ -1,0 +1,210 @@
+<!-- <div class="grid grid-nogutter" style="background-color: #fff;width:100%">
+  <div class="p-fluid p-0 m-0" style="width:100%">
+    <div class="col-12 p-0 mb-2">
+      <div class="card p-0" style="width:100%">
+        <div class="card-header mb-0">
+          <h4>
+            {{ 'Package Information' | translate }}:
+          </h4>
+        </div>
+        <div class="card-body pb-0">
+          <div class="grid">
+            <div class="col-6">
+              <h5>{{'Package Name' | translate}} : {{this.company?.billPackage?.name}}</h5>
+              <h5>{{'Installation Charge' | translate}} : {{this.branch?.installationCharge | number: "1.2-2"}}</h5>
+              <h5>{{'Monthly Fee' | translate}} : {{this.branch?.monthlyFee | number:"1.2-2"}}</h5>
+            </div>
+            <div class="col-6">
+              <h5>{{'Start Date' | translate}} : {{this.branch?.startDate | date:"dd MMM, yyyy"}}</h5>
+              <h5>{{'License Expired Date' | translate}} : {{this.branch?.expiredDate | date:"dd MMM, yyyy"}}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 p-0 mb-3">
+      <h4 style="text-align: left;color:green;">
+        {{ 'Company Information' | translate }}
+      </h4>
+    </div>
+   <form [formGroup]="this._service.form">
+     <div class="grid nogutter">
+       <div class="col-6" style="padding-bottom: 0">
+         <div class="field">
+             <span class="p-float-label">
+             <input type="text" id="name" pInputText formControlName="name"
+             [ngClass]="this._service.form.get('name').hasError('required') && (this._service.form.get('name').touched)? 'ng-invalid ng-dirty': ''">
+             <label for="name">{{ 'Company Name' | translate }}</label>
+           </span>
+         </div>
+       </div>
+       <div class="col-6" style="padding-bottom: 0">
+        <span class="p-float-label">
+          <input type="text" id="companyOwnerName" formControlName="companyOwnerName" pInputText
+            [ngClass]="this._service.form.get('companyOwnerName').hasError('required') &&
+            (this._service.form.get('companyOwnerName').touched)? 'ng-invalid ng-dirty': ''">
+          <label for="companyOwnerName">{{ 'Company Owner Name' | translate }}<span style="color:red">*</span></label>
+        </span>
+
+        <label *ngIf="this._service.form.get('companyOwnerName').hasError('required') &&
+          (this._service.form.get('companyOwnerName').touched)"
+          style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+          <small>This field is required!!</small>
+        </label>
+      </div>
+     
+       <div class="col-12" style="padding-bottom: 0">
+        <div class="field">
+            <span class="p-float-label">
+            <input type="text" id="name" pInputText formControlName="email">
+            <label for="name">{{ 'Email' | translate }}</label>
+          </span>
+        </div>
+      </div>
+      <div class="col-6" style="padding-bottom: 0">
+        <div class="field">
+            <span class="p-float-label">
+            <input type="text" id="nid" pInputText formControlName="nationalIdNumber"
+            [ngClass]="this._service.form.get('nationalIdNumber').hasError('required') &&
+            (this._service.form.get('nationalIdNumber').touched)? 'ng-invalid ng-dirty': ''">
+            <label for="nid">{{ 'NID' | translate }} <span class="text-danger">*</span></label>
+          </span>
+          <label *ngIf="this._service.form.get('nationalIdNumber').hasError('required') &&
+            (this._service.form.get('nationalIdNumber').touched)"
+            style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+            <small>This field is required</small>
+          </label>
+        </div>
+      </div>
+       <div class="col-6" style="padding-bottom: 0">
+        <div class="field">
+            <span class="p-float-label">
+            <input type="text" id="phone" pInputText formControlName="phoneNumber"
+            [ngClass]="(this._service.form.get('phoneNumber').hasError('required') && (this._service.form.get('phoneNumber').touched)) ||
+            (this._service.form.get('phoneNumber').hasError('maxlength') && (this._service.form.get('phoneNumber').touched)) ||
+            (this._service.form.get('phoneNumber').hasError('minlength') && (this._service.form.get('phoneNumber').touched))? 'ng-invalid ng-dirty': ''">
+            <label for="phone">{{ 'Phone Number' | translate }}<span class="text-danger">*</span></label>
+          </span>
+        </div>
+        <label *ngIf="(this._service.form.get('phoneNumber').hasError('required') && (this._service.form.get('phoneNumber').touched)) &&
+            ((this._service.form.get('phoneNumber').hasError('minlength') && (this._service.form.get('phoneNumber').touched)) ||
+            (this._service.form.get('phoneNumber').hasError('maxlength') && (this._service.form.get('phoneNumber').touched)))"
+            style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+           <small>Phone Number Must Be 11 Digit</small>
+        </label>
+        <label *ngIf="this._service.form.get('phoneNumber').hasError('exists') && (this._service.form.get('phoneNumber').touched)"
+          style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+          <small>{{(_service.form.get('phoneNumber').value).trim()}} already exists!!</small>
+        </label>
+       </div>
+       <div class="col-6" style="padding-bottom: 0">
+        <div class="field">
+            <span class="p-float-label">
+            <input type="text" id="website" pInputText formControlName="website"
+            [ngClass]="this._service.form.get('website').hasError('required') &&
+            (this._service.form.get('website').touched)? 'ng-invalid ng-dirty': ''">
+            <label for="website">{{ 'Website' | translate }}</label>
+          </span>
+        </div>
+      </div>
+       <div class="col-6" style="padding-bottom: 0">
+        <div class="field">
+            <span class="p-float-label">
+            <textarea [rows]="1" type="text" id="address" pInputText formControlName="address"></textarea>
+            <label for="address??">{{ 'Address' | translate }}</label>
+          </span>
+        </div>
+       </div>
+       <div class="col-6 flex flex-wrap" style="padding-bottom: 0">
+        <div class="field"  style="width:90%">
+          <span class="p-float-label">
+            <p-dropdown inputId="currencyId"
+               [autoDisplayFirst]="false" [options]="currencies" formControlName="currencyId"
+               optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" optionValue="id"
+               [style]="{'width':'100%'}"
+               [ngClass]="(this._service.form.get('currencyId').hasError('required') &&
+               (this._service.form.get('currencyId').touched))? 'ng-invalid ng-dirty': ''">
+            </p-dropdown>
+
+            <label for="name">{{ 'Currency' | translate }} <span class="text-danger">*</span></label>
+          </span>
+          <label *ngIf="this._service.form.get('currencyId').hasError('required') &&
+            (this._service.form.get('currencyId').touched)"
+            style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
+          <small>This field is required!!</small>
+        </label>
+        </div>
+        <div class="field" style="width:10%">
+          <label (click)="onDisplayAddCurrency()" class="p-button-info ml-2" pButton pRipple icon="pi pi-plus" style="width: fit-content;"></label>
+        </div>
+
+       </div>
+       <div class="col-6" style="padding-bottom: 0">
+
+        <div class="field">
+          <span class="p-float-label">
+            <p-dropdown inputId="vatLabel"
+               [autoDisplayFirst]="false" [options]="vatLabels" formControlName="vatLabel"
+               optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" optionValue="name"
+               [style]="{'width':'100%'}">
+            </p-dropdown>
+
+            <label for="name">{{ 'VAT/SST/TAX Label' | translate }}</label>
+          </span>
+        </div>
+
+
+       </div>
+
+       <div class="col-6 header-toolbar">
+        <h3>{{ 'Header Title' | translate }}</h3>
+        <p-editor [modules]="editorModules" formControlName="headerTitle" [style]="{'height':'275px'}"></p-editor>
+       </div>
+       <div class="col-6 header-toolbar">
+        <h3>{{ 'Footer Title' | translate}}</h3>
+        <p-editor [modules]="editorModules" formControlName="footerTitle" [style]="{'height':'275px'}"></p-editor>
+       </div>
+       
+      
+
+        <div class="col-6">
+          <input #companyLogoInput class="form-control" pInputText type="file" accept="image/*" 
+          (change)="onFileSelected($event)" style="width: 100%;text-align: center;"  />
+        </div>
+        <div class="col-6">
+          <div class="preview mb-2 text-center" style="width: 100%;">
+                <img *ngIf="this._service.logoPreviewUrl" draggable="false" 
+                  [src]="this._service.logoPreviewUrl" alt="Preview" 
+                  style="width: 40%;height: 130px;"/>
+
+                <img *ngIf="!this._service.logoPreviewUrl" draggable="false" 
+                  src="assets/images/default-img.png" alt="Preview" 
+                  style="width: 40%;height: 130px;" />
+
+                <div *ngIf="selectedFile" class="mt-2 text-center">
+                  <label *ngIf="selectedFile" pButton pRipple icon="pi pi-times" 
+                    label="Remove Image" class="p-button-primary" (click)="removeSelectedFile(companyLogoInput)"
+                    style="width:fit-content;">
+                  </label>
+                </div>
+                 <div *ngIf="!selectedFile" class="mt-2 text-center">
+                  <label *ngIf="!selectedFile && company?.logoUrl" pButton pRipple icon="pi pi-times" 
+                    label="Remove Image" class="p-button-warning" (click)="deleteCompanyLogo(this._service.form.get('id').value)"
+                    style="width:fit-content;">
+                  </label>
+                </div>
+              
+          </div>
+        </div>
+      <div class="col-6 ml-auto text-end">
+        <button style="width:fit-content;" pButton pRipple [disabled]="inProgress"
+        label="{{ inProgress? this.translate.instant('Please Wait'):this._service.form.get('id').value? this.translate.instant('Update'):this.translate.instant('Add') }} {{ 'Detail' | translate }}"
+        icon="pi pi-check" class="p-button-primary" (click)="onSubmit(companyLogoInput)">
+        </button>
+       </div>
+
+     </div>
+   </form>
+  </div>
+</div>
+ -->

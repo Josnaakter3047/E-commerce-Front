@@ -71,7 +71,7 @@ export class ShoppingCartService {
     const savedCart = localStorage.getItem('cart');
     this.cartItems = savedCart ? JSON.parse(savedCart) : [];
     this.cartItemsSubject.next(this.cartItems);
-    this.cartCountSubject.next(this.cartItems.length);
+    this.cartCountSubject.next(this.cartItems?.length);
   }
 
   showCart() {
@@ -91,6 +91,8 @@ export class ShoppingCartService {
     this.cartItems = this.cartItems.filter(i => i.productDetailId !== productDetailId);
     this.saveCart();
   }
+
+
   clearCart() {
     localStorage.removeItem('cart');
     localStorage.setItem('cart', JSON.stringify([]));

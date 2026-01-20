@@ -25,44 +25,44 @@ export class AppMenuComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.model = [
-    //   {
-    //     items: [
-    //       { label: 'Dashboard',
-    //         roleName:[Role_Admin],
-    //         icon: 'pi pi-home',
-    //         routerLink: 'dashboard',
-    //       },
-    //     ]
-    //   },
+    this.model = [
+      {
+        items: [
+          { label: 'Dashboard',
+            roleName:[Role_Admin],
+            icon: 'pi pi-home',
+            routerLink: 'dashboard',
+          },
+        ]
+      },
 
-    //   {
-    //     items: [
-    //       {
-    //       label: 'Menu Settings', icon: 'pi pi-cog',
-    //       roleName: [Role_Admin],
-    //       routerLink: ['components'],
-    //       items: [
-    //         { label: 'Menu Items',
-    //           icon: 'pi pi-clone',
-    //           routerLink: 'menu-list',
-    //           roleName:[Role_Admin]
-    //         },
-    //         { label: 'Menu Function',
-    //           icon: 'pi pi-clone',
-    //           routerLink: 'menu-function-list',
-    //           roleName:[Role_Admin]
-    //         },
-    //         { label: 'Role Function',
-    //           icon: 'pi pi-clone',
-    //           routerLink: 'role-permission',
-    //           roleName:[Role_Admin]
-    //         },
-    //       ]
-    //     }]
-    //   },
+      {
+        items: [
+          {
+          label: 'Menu Settings', icon: 'pi pi-cog',
+          roleName: [Role_Admin],
+          routerLink: ['components'],
+          items: [
+            { label: 'Menu Items',
+              icon: 'pi pi-clone',
+              routerLink: 'menu-list',
+              roleName:[Role_Admin]
+            },
+            { label: 'Menu Function',
+              icon: 'pi pi-clone',
+              routerLink: 'menu-function-list',
+              roleName:[Role_Admin]
+            },
+            { label: 'Role Function',
+              icon: 'pi pi-clone',
+              routerLink: 'role-permission',
+              roleName:[Role_Admin]
+            },
+          ]
+        }]
+      },
 
-    // ];
+    ];
 
     // let token = JSON.parse(localStorage.getItem("Token")).roles[0];
     // if(token){

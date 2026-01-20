@@ -51,8 +51,7 @@ export class UserRegistrationService {
       password: null,
       confirmPassword:null,
       branchId: null,
-      companyId: null,
-      
+      companyId: null,      
     });
   }
   

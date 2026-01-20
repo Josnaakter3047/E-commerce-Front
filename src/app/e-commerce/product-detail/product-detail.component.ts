@@ -102,6 +102,7 @@ export class ProductDetailComponent implements OnInit {
       console.log("Branch not found");
     }
   }
+  
   addToCart(product: any){
     this._shoppingCartService.addProductToCart(product);
     //this._shoppingCartService.showCart();

@@ -113,7 +113,9 @@ export class RoleFunctionService {
     return this.http.delete<any>(`${this.baseUrl}`+this.deleteMenuUrl+`${id}`);
   }
 
-
+  GetAllSidebarMenuBysp(roleId:string, companyId:any){
+    return this.http.get<any>(`${this.baseUrl}/api/RoleFunction/getAllSidebarMenuBySp/${roleId}/${companyId}`);
+  }
 
   IfExistRole(id:any, menuId:any){
     return this.http.get<any>(`${this.baseUrl}`+this.checkExistRoleUrl+ `${id}/${menuId}`);

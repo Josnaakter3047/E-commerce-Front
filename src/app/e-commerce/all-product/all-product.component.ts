@@ -42,7 +42,7 @@ export class AllProductComponent implements OnInit {
       else{
         this.productList = null;
       }
-    })
+     })
     }
     else{
       this.productList = null;

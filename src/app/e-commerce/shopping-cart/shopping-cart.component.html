@@ -50,14 +50,14 @@
       <!-- Cart Summary: fixed 50% bottom -->
       <div class="cart-footer-container flex-shrink-0 bg-gray-100 flex flex-col justify-center" style="height: 50vh;">
         <div class="cart-footer-content" *ngIf="_shoppingCartService.cartItems?.length > 0; else emptySummary">
-           <div class="cart-action">
+           <!-- <div class="cart-action">
             <button pTooltip="Add note" tooltipPosition="top" class="cart-note-btn">
                 <span class="pi pi-pencil"></span><span>Note</span>
             </button>
             <button pTooltip="Add coupon" tooltipPosition="top">
                 <span class="pi pi-ticket"></span><span>Coupon</span>
             </button>
-          </div>
+          </div> -->
           <div class="shipping-method-option">
             <h5>{{'Select your area' | translate}}:</h5>
             <div class="grid p-0 m-0" style="width: 100%;">
@@ -96,7 +96,7 @@
           </div>
           <div class="cart-payment-action">
                <button (click)="onDisplayOrderModal()" label="Cash on Delivery" icon="pi pi-shopping-cart" class="w-full p-button-primary" pButton pRipple></button>
-               <button label="Pay Online" icon="pi pi-credit-card" class="w-full p-button-warning" pButton pRipple></button>
+               <!-- <button label="Pay Online" icon="pi pi-credit-card" class="w-full p-button-warning" pButton pRipple></button> -->
                <p class="go-to-cart" (click)="goCartList()">
                 <a>View Cart</a>
                </p>

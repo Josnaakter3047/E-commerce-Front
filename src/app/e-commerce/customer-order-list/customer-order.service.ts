@@ -51,15 +51,19 @@ export class CustomerOrderService {
     return this.http.get<any>(`${this.baseUrl}` + this.getVoucharByBranchAndVoucharNoUrl + `${branchId}/${voucharNumber}`);
   }
   orderForm = this._fb.group({
-    orderCustomerName:[null, Validators.required],
-    orderCustomerPhoneNumber:[null, Validators.compose([Validators.required, Validators.maxLength(11), Validators.minLength(11)])],
+    branchId: [null, Validators.required],
+    companyId: [null],
+    name:[null, Validators.required],
+    phoneNumber:[null, Validators.compose([Validators.required, Validators.maxLength(11), Validators.minLength(11)])],
+    address:[null, Validators.required],
     deliveryAddress:[null, Validators.required],
     thanaId:[null, Validators.required],
+    customerId: [null, Validators.required],
     voucharNo:null,
     voucharId:null,
-    branchId: [null],
-    companyId: [null],
-    customerId: [null],
+    
+    
+   
     totalAmount: [0],
     discountAmount: [null],
     shippingCharge: [0],
@@ -71,8 +75,9 @@ export class CustomerOrderService {
   ResetOrderForm() {
     this.orderForm.reset();
     this.orderForm.setValue({
-      orderCustomerName: null,
-      orderCustomerPhoneNumber: null,
+      name: null,
+      phoneNumber: null,
+      address:null,
       deliveryAddress: null,
       branchId: null,
       voucharNo:null,
@@ -95,9 +100,10 @@ export class CustomerOrderService {
       companyId: model.companyId,
       customerId: model.customerId,
       createdById: model.createdById,
-      name: model.orderCustomerName,
-      phoneNumber: model.orderCustomerPhoneNumber,
-      address: model.deliveryAddress,
+      name: model.name,
+      phoneNumber: model.phoneNumber,
+      address: model.address,
+      deliveryAddress:model.deliveryAddress,
       voucharNo:model.voucharNo,
       voucharId:model.voucharId,
       shippingCharge: model?.shippingCharge ?? 0,
