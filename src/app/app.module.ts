@@ -3,7 +3,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from "@angular/common/http";
 import { MenuService } from "./layout/menu/app.menu.service";
 import { AppBreadcrumbService } from "./layout/breadcrumb/app.breadcrumb.service";
 import { AuthGuard } from "./shared/auth.guard";
@@ -119,6 +119,8 @@ import { RefundPolicyComponent } from './e-commerce/refund-policy/refund-policy.
 import { CustomerCareComponent } from './e-commerce/customer-care/customer-care.component';
 import { AddCurrencyComponent } from './components/currency/add-currency/add-currency.component';
 import { CompanyDetailComponent } from './components/company-detail/company-detail.component';
+import { AuthInterceptor } from './shared/interceptor/auth-interceptor';
+import { LoginService } from './components/login/login.service';
 
 
 export function initializeApp(appConfigService: MyApiService) {
@@ -263,17 +265,23 @@ export function HttpLoaderFactory(http: HttpClient) {
 
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: APP_INITIALIZER, 
+      useFactory: initializeApp, 
+      deps: [MyApiService],
+      multi: true 
+    },
+    {
+     provide: HTTP_INTERCEPTORS,
+     useClass: AuthInterceptor,
+     multi: true
+    },
+    LoginService,
     DatePipe,
     MenuService, 
     AppBreadcrumbService, 
     AuthGuard, 
     MessageService, 
-    ConfirmationService,
-    { provide: APP_INITIALIZER, 
-      useFactory: initializeApp, 
-      deps: [MyApiService], 
-      multi: true 
-    }
+    ConfirmationService
   ],
 
   bootstrap: [AppComponent]

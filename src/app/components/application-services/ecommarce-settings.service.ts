@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
-import { IfExistsModel } from 'src/app/other-models/if-exists.model';
 
 import { MyApiService } from 'src/app/shared/my-api.service';
 

@@ -33,10 +33,9 @@ export class AllProductComponent implements OnInit {
 
   GetAllProduct(){
     if(this.branchId){
-      this._productService.GetAllProductsBranchId(this.branchId).subscribe(response=>{
+      this._productService.GetAllProductForSearch_Sales(this.companyId, this.branchId).subscribe(response=>{
       if(response.statusCode === 200){
         this.productList = response.value;
-       
         //console.log(response.value);
       }
       else{

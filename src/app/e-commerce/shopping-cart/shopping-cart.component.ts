@@ -98,15 +98,12 @@ export class AddToCartComponent implements OnInit {
   onDisplayOrderModal(){
     this.visible = false;
     let token = JSON.parse(localStorage.getItem("Token"));
-    if(token && token.customerId){
-      //alert(token.customerId);
-      this.GetCustomerById(token.customerId);
-    
+    if(token){
+       this.GetCustomerById(token.customerId);
       this._router.navigate(['order-confirmation', token.id]);
     }
-    else{
-      this._router.navigate(['login']);
-    }
+   
+   
   }
   
   onHideOrderModal(){

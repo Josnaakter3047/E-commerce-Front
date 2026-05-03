@@ -37,7 +37,8 @@ export class LoginComponent implements OnInit {
     userName: [null, Validators.required],
     password: [null, Validators.required],
     rememberMe:false,
-    isSystemAdmin:false
+    isSystemAdmin:false,
+    branchId:null
   });
 
   constructor(
@@ -163,9 +164,23 @@ export class LoginComponent implements OnInit {
        console.log("Sorry branch not found");
     }
   }
+  onUpdateRefreshToken(){
+    //console.log(this.loginService.refreshTokenForm.value);
+    this.loginService.updateRefreshToken(this.loginService.refreshTokenForm.value).subscribe(rResponse=>{
+        if(rResponse.statusCode === 200){
+          //alert(rResponse.branchId);
+          console.log("refresh token branch updated");
+        }
+        else{
+          console.log("refresh token not updated");
+        }
+      },error=>{
+        console.log("refresh token not updated, api error");
+    });
+  }
   OnSubmit() {
-    this.form.patchValue({
-      isSystemAdmin:false
+    this.form.patchValue({      
+      branchId: this.branchId
     });
     if (this.form.valid) {
       this.inProgress = true;
@@ -180,10 +195,13 @@ export class LoginComponent implements OnInit {
             this._sharedService.showError(response.message, 'Unauthorized', true);
           else if (response.statusCode === HttpStatusCode.Ok) {
             this._sharedService.showSuccess('Login successful');
+            
             let token: AuthModel = response.value;
+           
+            token.branchId = this.branchId;
+            
             localStorage.setItem('Token', JSON.stringify(token));
-            // const dashboardId = '9262992a-e4d4-4fdf-edb2-08dd7e90139e';
-            // this.router.navigate(['/dashboard', dashboardId]);
+           
             this.router.navigate([this.returnUrl]);
           } else{
             this._sharedService.showWarn("Failed Login");
@@ -195,6 +213,7 @@ export class LoginComponent implements OnInit {
         (error: any) => {
           this._sharedService.HandleError(error);
           this.inProgress = false;
+          console.log(error);
         })
       }
       else{
@@ -204,10 +223,11 @@ export class LoginComponent implements OnInit {
           else if (response.statusCode === HttpStatusCode.Ok) {
             this._sharedService.showSuccess('Login successful');
             let token: AuthModel = response.value;
-            //token.branchId = this.branchId;
+            token.branchId = this.branchId;
+           
+            token.branchId = this.branchId;
+           
             localStorage.setItem('Token', JSON.stringify(token));
-            //const dashboardId = '9262992a-e4d4-4fdf-edb2-08dd7e90139e';
-            //this.router.navigateByUrl('/dashboard/9262992a-e4d4-4fdf-edb2-08dd7e90139e');
             this.router.navigate([this.returnUrl]);
           } else{
             this._sharedService.showWarn("Failed Login");
@@ -217,6 +237,7 @@ export class LoginComponent implements OnInit {
         },
         (error: any) => {
           this._sharedService.HandleError(error);
+          console.log(error);
           this.inProgress = false;
         })
       }

@@ -7,9 +7,12 @@ export interface AuthModel {
   email: string;
   phoneNumber:string;
   token: string;
-  //refreshToken: string;
   tokenExpireTime: Date;
-  //refreshTokenExpireTime: Date,
   isActive?: boolean;
   isSystemAdmin?:boolean;
+  isRestrarant?:boolean;
+  isAddPaxNumber?:boolean;
+  isDemo?:boolean;
+  refreshToken: string;
+  refreshTokenExpireTime: Date;
 }

@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
           this.settings = { title: 'Online Shopping' }; // fallback
         }
         const iconUrl = `${this.baseUrl}/${this.company?.logoUrl ?? ''}`;
-        this.titleService.setTitle(this.settings.title);
+        this.titleService.setTitle(this.settings?.title?? 'Online Shopping');
         const link: HTMLLinkElement =
         document.querySelector("link[rel*='icon']") || document.createElement('link');
         link.type = 'image/x-icon';
@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
       },
       error: () => {
         this.settings = { title: 'Online Shopping' }; // fallback
-        this.titleService.setTitle(this.settings.title);
+        this.titleService.setTitle(this.settings?.title?? 'Online Shopping');
       }
     });
   }

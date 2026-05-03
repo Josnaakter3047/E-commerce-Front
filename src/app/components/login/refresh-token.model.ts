@@ -1,4 +1,5 @@
 export interface RefreshTokenModel {
-  refreshToken: string,
-  actualToken: string
+  refreshToken: string
+  actualToken: string;
+  branchId:string;
 }

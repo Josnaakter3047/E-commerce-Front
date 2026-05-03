@@ -28,7 +28,7 @@ export class ProductService {
   getAllProductForEcommerceUrl:string= this.controller + 'getAllProductForEcommerceByBranchId/';
   getAllProductsForEcommerceByBranchAndCategoryUrl:string= this.controller + 'getAllProductsForEcommerceByBranchAndCategoryId/';
   getProductDetailsByIdForEcomerceUrl = this.controller + 'getProductDetailsByProductIdForEcommerce/';
-  
+  getAllProductsForSearch_SalesUrl:string = this.controller + 'getAllProductListForSales/';
 
   constructor(
     private http: HttpClient,
@@ -44,6 +44,9 @@ export class ProductService {
 
   GetAllProductsBranchId(branchId:any){
     return this.http.get<any>(`${this.baseUrl}`+ this.getAllProductForEcommerceUrl + branchId);
+  }
+  GetAllProductForSearch_Sales(companyId:any, branchId:any){
+    return this.http.get<any>(`${this.baseUrl}`+ this.getAllProductsForSearch_SalesUrl + companyId + "/"+ branchId);
   }
   GetAllProductByBranchIdAndCategory(branchId:any, categoryId:any){
     return this.http.get<any>(`${this.baseUrl}`+ this.getAllProductsForEcommerceByBranchAndCategoryUrl + branchId + "/" + categoryId);
