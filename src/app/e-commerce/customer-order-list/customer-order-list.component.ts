@@ -128,5 +128,8 @@ export class CustomerOrderListComponent implements OnInit {
     }
     return '';
   }
+  GetTotalBillAmount(){
+    return this.list?.reduce((acc, data)=>acc+ data.sales?.totalAmount, 0);
+  }
  
 }

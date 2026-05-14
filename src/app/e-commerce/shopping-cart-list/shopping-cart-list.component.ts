@@ -4,6 +4,7 @@ import { CustomerOrderService } from '../customer-order-list/customer-order.serv
 import { MyApiService } from 'src/app/shared/my-api.service';
 import { Router } from '@angular/router';
 import { CustomerService } from 'src/app/components/application-services/customer.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-shopping-cart-list',
@@ -20,7 +21,8 @@ export class ShoppingCartListComponent implements OnInit {
     private configService: MyApiService,
     private _router:Router,
     private _customerService:CustomerService,
-    private _orderService:CustomerOrderService
+    private _orderService:CustomerOrderService,
+    private _sharedService:SharedService
   ) { 
     this.branchId = this.configService.apiBranchId;
     this.companyId = this.configService.apiCompanyId; 
@@ -101,12 +103,14 @@ export class ShoppingCartListComponent implements OnInit {
   }
   onDisplayOrderModal(){
     let token = JSON.parse(localStorage.getItem("Token"));
-    if(token){
+    //alert(token.id);
+    if(token.id){
       this.GetCustomerById(token.customerId);
       this.GetAllOrderAddress(token.customerId);
       this._router.navigate(['order-confirmation', token.id]);
     }
     else{
+      this._sharedService.showWarn("Please Log in first!!");
       this._router.navigate(['login']);
     }
   }

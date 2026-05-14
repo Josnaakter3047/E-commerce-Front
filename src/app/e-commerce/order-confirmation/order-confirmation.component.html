@@ -169,12 +169,13 @@
                     }}</span>
                 </div>
                 <div class="cart-subtotal">
-                  <span class="subtotal-title font-medium">Discount (-)</span>
-                  <span *ngIf="isPercentage" class="subtotal-price font-medium">
-                    {{ this.vouchar?.voucharValue}}
-                  </span>
-                   <span *ngIf="!isPercentage" class="subtotal-price font-medium">
-                    Tk {{ discountValue | number:"1.2-2"}}
+                  <span class="subtotal-title font-medium">
+                    Discount <span *ngIf="isPercentage" class="subtotal-price font-medium">
+                      ({{ this.vouchar?.voucharValue}})
+                    </span>
+                  </span>                  
+                   <span class="subtotal-price font-medium">
+                     {{ this._service.orderForm.get('saleDiscount').value | number:"1.2-2"}}
                   </span>
                 </div>
                 <div class="cart-subtotal" style="border-bottom:1px solid #e0e0e0;">

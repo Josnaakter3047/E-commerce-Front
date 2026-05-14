@@ -182,6 +182,7 @@ export class LoginComponent implements OnInit {
     this.form.patchValue({      
       branchId: this.branchId
     });
+    //alert(this.branchId);
     if (this.form.valid) {
       this.inProgress = true;
       let existCredendial = JSON.parse(localStorage.getItem("credential"));

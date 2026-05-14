@@ -23,11 +23,11 @@
             <div class="login-inner-form">
               <form [formGroup]="form" (ngSubmit)="OnSubmit()">
                   <div class="form-group form-box">
-                    <input type="text" id="username" formControlName="userName" pInputText
+                    <input placeholder="Enter your email or phone number" type="text" id="username" formControlName="userName" pInputText
                     [ngClass]="this.form.get('userName').hasError('required') && (this.form.get('userName').touched)? 'ng-invalid ng-dirty': ''">
                   </div>
                   <div class="form-group form-box">
-                    <input [type]="passwordFieldType" id="password" formControlName="password" pInputText
+                    <input placeholder="Enter your password" [type]="passwordFieldType" id="password" formControlName="password" pInputText
                     [ngClass]="this.form.get('password').hasError('required') && (this.form.get('password').touched)? 'ng-invalid ng-dirty': ''">
                     <i class="eye-icon {{ passwordFieldType === 'password' ? 'pi pi-eye' : 'pi pi-eye-slash' }}" (click)="togglePasswordVisibility()"></i>
                   </div>

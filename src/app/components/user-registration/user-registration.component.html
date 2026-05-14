@@ -66,7 +66,7 @@
                   <span class="input-group-addon">
                     <i class="fa fa-phone"></i>
                   </span>
-                  <input (keyup)="IfPhoneNumberExists()" formControlName="phoneNumber" class="form-control"
+                  <input placeholder="01544466689" (keyup)="IfPhoneNumberExists()" formControlName="phoneNumber" class="form-control"
                     name="mobile" type="text" id="mobile"
                     [ngClass]="(this._service.form.get('phoneNumber').hasError('required') && (this._service.form.get('phoneNumber').touched)) ||
                     (this._service.form.get('phoneNumber').hasError('maxlength') && (this._service.form.get('phoneNumber').touched)) ||
@@ -86,7 +86,7 @@
                 <label *ngIf="this._service.form.get('phoneNumber').hasError('exists') &&
                   (this._service.form.get('phoneNumber').touched)"
                   style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
-                  <small>Already exist {{(this._service.form.get('phoneNumber').value).trim()}}</small>
+                  <small>Already used this phone number {{(this._service.form.get('phoneNumber').value).trim()}}</small>
                 </label>
               </div>
             </div>
@@ -113,7 +113,7 @@
                 <label
                   *ngIf="this._service.form.get('email').hasError('exists') && (this._service.form.get('email').touched)"
                   style="padding-top: 5px; padding-left: 5px; padding-bottom: 0; margin:0; color: darkred; text-align: left">
-                  <small>{{(this._service.form.get('email').value).trim()}} already exists!!</small>
+                  <small>Already used this email {{(this._service.form.get('email').value).trim()}}!!</small>
                 </label>
               </div>
             </div>

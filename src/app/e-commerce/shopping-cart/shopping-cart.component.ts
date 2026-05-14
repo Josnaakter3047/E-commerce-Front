@@ -5,6 +5,7 @@ import { ShoppingCartService } from './shopping-cart.service';
 import { Router } from '@angular/router';
 import { CustomerOrderService } from '../customer-order-list/customer-order.service';
 import { CustomerService } from 'src/app/components/application-services/customer.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -20,7 +21,8 @@ export class AddToCartComponent implements OnInit {
     public _orderService:CustomerOrderService,
     public _service:CustomerOrderService,
     private _customerService:CustomerService,
-    public _router:Router
+    public _router:Router,
+    private _sharedService:SharedService
   ) {}
 
   ngOnInit(): void {
@@ -98,11 +100,13 @@ export class AddToCartComponent implements OnInit {
   onDisplayOrderModal(){
     this.visible = false;
     let token = JSON.parse(localStorage.getItem("Token"));
-    if(token){
+    if(token.customerId){
        this.GetCustomerById(token.customerId);
       this._router.navigate(['order-confirmation', token.id]);
     }
-   
+    else{
+      this._sharedService.showWarn("Please Log in first!!");
+    }
    
   }
   

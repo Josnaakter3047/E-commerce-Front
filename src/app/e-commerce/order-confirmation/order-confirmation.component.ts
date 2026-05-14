@@ -83,16 +83,23 @@ export class OrderConfirmationComponent implements OnInit {
               if (regex.test(this.vouchar?.voucharValue)) {
                 this.isPercentage = true;
                 const percentage = parseFloat(this.vouchar.voucharValue) / 100;
+                const discount = this._shoppingCartService.getTotal() * percentage;
                 this.discountValue = this._shoppingCartService.getTotal() * percentage;
+                this._service.orderForm.patchValue({
+                  saleDiscount: discount
+                })
               } else {
                 this.isPercentage = false;
+                const discount = Number(this.vouchar.voucharValue) || 0;
                 this.discountValue = Number(this.vouchar.voucharValue) || 0;
+                this._service.orderForm.patchValue({
+                  saleDiscount: discount
+                })
               }
             }
             else{
               this.isPercentage = false;
               this.discountValue = 0;
-             
             }
           }
           else if (response.statusCode === 400) {
@@ -115,6 +122,9 @@ export class OrderConfirmationComponent implements OnInit {
 
   onSubmit() {
     let address = this._service.orderForm.get('address').value;
+    let discount = this._service.orderForm.get('saleDiscount').value;
+    //alert(discount);
+    let deliveryCharge = this._service.shippingCharge || 0;
     if (this.voucharIsUsed === false) {
       this._sharedService.showWarn(this.voucharError || "Invalid or expired voucher.");
       return;
@@ -144,8 +154,8 @@ export class OrderConfirmationComponent implements OnInit {
         createdById: token.id,
         voucharId:this.vouchar? this.vouchar?.id :null,
         discountAmount: this.vouchar?.voucharValue? this.vouchar?.voucharValue: '0',
-        shippingCharge: this._service.shippingCharge,
-        totalAmount: this._shoppingCartService.getTotal() + this._service.shippingCharge - this.discountValue,
+        shippingCharge: deliveryCharge,
+        totalAmount: this._shoppingCartService.getTotal() + deliveryCharge - discount,
         saleItems: formattedSaleItems,
         deliveryAddress:address
       });
@@ -190,7 +200,7 @@ export class OrderConfirmationComponent implements OnInit {
         });
       } else {
         this._service.orderForm.markAllAsTouched();
-        this._sharedService.showError("Invalid request");
+        this._sharedService.showWarn("Please fill all requirement!!");
          this.inProgress = false;
       }
     }

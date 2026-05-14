@@ -26,7 +26,7 @@
     [tableStyle]="{ 'width': 'auto' }"
     styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [globalFilterFields]="['invoiceNo', 'customer.name']">
+    [globalFilterFields]="['sales.invoiceNo','name','phoneNumber', 'customer.name','thana.name','qurierService.name','sales.shipmentStatus.name']">
 
     <ng-template pTemplate="caption">
         <div class="table-header">
@@ -86,7 +86,9 @@
           <th pSortableColumn="deliveryDate">{{ 'Delivery Date' | translate }}
             <p-sortIcon field="deliveryDate"></p-sortIcon>
           </th>
-         
+          <th pSortableColumn="sales.totalAmount">{{ 'Total Bill' | translate }}
+            <p-sortIcon field="sales.totalAmount"></p-sortIcon>
+          </th>
         </tr>
       </ng-template>
 
@@ -103,7 +105,6 @@
           <td>{{x.vouchar?.voucharNo?? ''}}</td>
           <td>{{x.vouchar?.voucharValue?? ''}}</td>
           <td>{{x.qurierService?.name?? ''}}</td>
-          
           <td style="text-align: center;">
             <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Ordered')" value="{{x.sales?.shipmentStatus?.name}}" severity="warning"></p-badge>
             <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Packed')" value="{{x.sales?.shipmentStatus?.name}}" severity="info"></p-badge>
@@ -112,14 +113,23 @@
             <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Canceled')" value="{{x.sales?.shipmentStatus?.name}}" severity="danger"></p-badge>
           </td>
           <td>{{x.deliveryDate? (x.deliveryDate | date:"dd MMM, yyyy") : ''}}</td>
+          <td style="text-align: right;">{{x.sales?.totalAmount | number:"1.2-2"}}</td>
         </tr>
       </ng-template>
 
+     
+      
       <ng-template pTemplate="emptymessage">
         <tr>
           <td colspan="20">
             <p class="text-primary" style="text-align:center; padding: 5px;">NO DATA AVAILABLE</p>
           </td>
+        </tr>
+      </ng-template>
+       <ng-template pTemplate="footer">
+        <tr class="footer-tr">
+          <td colspan="12">{{'Total' | translate}}</td>
+          <td>{{this.GetTotalBillAmount() | number:"1.2-2"}}</td>
         </tr>
       </ng-template>
     </p-table>

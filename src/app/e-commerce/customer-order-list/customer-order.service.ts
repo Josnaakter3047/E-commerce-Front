@@ -61,10 +61,8 @@ export class CustomerOrderService {
     customerId: [null, Validators.required],
     voucharNo:null,
     voucharId:null,
-    
-    
-   
     totalAmount: [0],
+    saleDiscount:0,
     discountAmount: [null],
     shippingCharge: [0],
     note: [null],
@@ -86,6 +84,7 @@ export class CustomerOrderService {
       thanaId:null,
       customerId: null,
       totalAmount: 0,
+      saleDiscount:0,
       discountAmount: null,
       shippingCharge: 0,
       note: null,
@@ -93,7 +92,7 @@ export class CustomerOrderService {
       saleItems: []
     })
   }
-  salesDiscount:number = 0;
+  saleDiscount:number = 0;
   AddEcommerceSale(model: any) {
     const data: any = {
       branchId: model.branchId,
@@ -111,6 +110,7 @@ export class CustomerOrderService {
       note: model.note ?? '',
       thanaId:model.thanaId?? null,
       totalAmount: model?.totalAmount ?? 0,
+      saleDiscount:model.saleDiscount?model.saleDiscount:0,
       saleItems: model.saleItems?.map((x: any) => ({
         productDetailId: x.productDetailId,
         quantity: x.quantity,
