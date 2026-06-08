@@ -104,14 +104,14 @@ export class ShoppingCartListComponent implements OnInit {
   onDisplayOrderModal(){
     let token = JSON.parse(localStorage.getItem("Token"));
     //alert(token.id);
-    if(token.id){
+    if(token){
       this.GetCustomerById(token.customerId);
       this.GetAllOrderAddress(token.customerId);
       this._router.navigate(['order-confirmation', token.id]);
     }
     else{
-      this._sharedService.showWarn("Please Log in first!!");
       this._router.navigate(['login']);
+      this._sharedService.showInfo("Please Log in first!!");
     }
   }
   

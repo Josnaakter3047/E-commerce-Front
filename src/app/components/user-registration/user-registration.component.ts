@@ -8,6 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerOrderService } from 'src/app/e-commerce/customer-order-list/customer-order.service';
 import { BranchService } from '../application-services/branch.service';
 import { CompanyDetailService } from '../application-services/company-detail.service';
+import { SystemManagementService } from './system-management.service';
+
+
 
 @Component({
   selector: 'app-user-registration',
@@ -30,6 +33,7 @@ export class UserRegistrationComponent implements OnInit {
     private _router:Router,
     public _branchService:BranchService,
     public _companyService:CompanyDetailService,
+    public _managementService: SystemManagementService,
   ) {
     this.branchId = this.configService.apiBranchId;
     this.companyId = this.configService.apiCompanyId;
@@ -70,8 +74,100 @@ export class UserRegistrationComponent implements OnInit {
        console.log("Sorry branch not found");
     }
   }
+
+  //email varification
   isProgress = false;
-  onSubmit() {   
+  isVerifying = false;
+  isProcessing = false;
+  interval: any;
+  showVerifyDialog = false;
+  verifyCode: any;
+  countdown: number = 120;
+  adminEmail: string = null;
+  showErrorPopUp = false;
+  startCountdown() {
+    this.countdown = 120; // reset 2 minutes
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+
+    this.interval = setInterval(() => {
+      if (this.countdown > 0) {
+        this.countdown--;
+      } else {
+        clearInterval(this.interval);
+        this._sharedService.showWarn("Verification code expired. Please request again.");
+        this.showVerifyDialog = false;
+      }
+    }, 1000);
+  }
+  get formattedCountdown(): string {
+    const minutes = Math.floor(this.countdown / 60);
+    const seconds = this.countdown % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+  onSubmit() {
+    this.isProgress = true;
+    this.verifyCode =  null;
+    let email = this._service.form.get("email").value;
+    if(email == null){
+      this.isProgress = false;
+      this.showErrorPopUp = true;
+      return;
+    }
+    if (email) {
+      this.startCountdown();
+      this._managementService.sendVerificationCodeByEmail(email).subscribe(
+        {next: () => {
+          this._sharedService.showSuccess("Varification code Send Your Email " + email);
+          this.showVerifyDialog = true;
+          this.isProgress = false;
+        },
+        error: (err) => {
+          //this._sharedService.showError("Failed to send verification code.Please try again.");
+          this.isProgress = false;
+          this.showVerifyDialog = false;
+           this.showErrorPopUp = true;
+        }
+      });
+    } else {
+      this._sharedService.showWarn("Please add email");
+      this.isProgress = false;
+    }
+  }
+
+  //verify code
+  private anyDeleteChecked(): boolean {
+    const controls = this._service.form.controls;
+    return Object.keys(controls).some(key =>
+      key !== 'branchId' &&
+      key !== 'companyId' &&
+      controls[key].value === true
+    );
+  }
+
+  verifyAndSubmit() {
+    this.isVerifying = true;
+    let email = this._service.form.get("email").value;
+    this._managementService.verifyCode(email, this.verifyCode).subscribe((res: any) => {
+      if (res.valid) {        
+        this.onRegistration();
+      } else {
+        this._sharedService.showWarn("Invalid verification code.");
+        this.isVerifying = false;
+       
+      }
+    }, (error) => {
+      this._sharedService.showError(error.message);
+      this.isVerifying = false;
+    });
+  }
+  onHideErrorPopup(){
+    clearInterval(this.interval);
+    this.showErrorPopUp = false;
+  };
+
+  onRegistration() {   
     this._service.form.patchValue({
       branchId:this.branchId,
       companyId:this.companyId
@@ -83,13 +179,15 @@ export class UserRegistrationComponent implements OnInit {
           this._sharedService.showSuccess(response.message);
           this._service.Init();
           this.isProgress = false;
-      
+          this.showVerifyDialog = false;
+          this.isVerifying = false;
           this._router.navigate(['login']);
           
         }
         else {
           this._sharedService.showWarn(response.message);
           this.isProgress = false;
+          this.isVerifying = false;
         }
       })
     }
@@ -97,6 +195,7 @@ export class UserRegistrationComponent implements OnInit {
       this._service.form.markAllAsTouched();
       this._sharedService.showWarn("Please Fill all required field");
       this.isProgress = false;
+      this.isVerifying = false;
     }
   }
 

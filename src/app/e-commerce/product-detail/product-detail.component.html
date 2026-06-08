@@ -45,7 +45,7 @@
                                 (click)="decreaseQty(product)"></button>
                             <div class="align-items-center justify-content-center p-1"
                                 style="border-left:1px solid grey; border-right:1px solid grey;">
-                                <span class="px-3"> {{ getCartQty(product.productDetailId) }}</span>
+                                <span class="px-3"> {{ getCartQty(product?.productDetailId) }}</span>
                             </div>
                             <button pButton icon="pi pi-plus" class="p-button-sm p-button-primary p-button-text"
                                 (click)="increaseQty(product)"></button>
@@ -177,7 +177,7 @@
                                         (click)="decreaseQty(product)"></button>
                                     <div class="align-items-center justify-content-center p-1"
                                         style="border-left:1px solid grey; border-right:1px solid grey;">
-                                        <span class="px-3"> {{ getCartQty(product.productDetailId) }}</span>
+                                        <span class="px-3"> {{ getCartQty(product?.productDetailId) }}</span>
                                     </div>
                                     <button pButton icon="pi pi-plus" class="p-button-sm p-button-primary p-button-text"
                                         (click)="increaseQty(product)"></button>

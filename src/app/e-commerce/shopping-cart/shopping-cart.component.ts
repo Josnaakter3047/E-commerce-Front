@@ -100,12 +100,13 @@ export class AddToCartComponent implements OnInit {
   onDisplayOrderModal(){
     this.visible = false;
     let token = JSON.parse(localStorage.getItem("Token"));
-    if(token.customerId){
+    if(token){
        this.GetCustomerById(token.customerId);
       this._router.navigate(['order-confirmation', token.id]);
     }
     else{
-      this._sharedService.showWarn("Please Log in first!!");
+      this._router.navigate(['login']);
+      this._sharedService.showInfo("Please Log in first!!");
     }
    
   }

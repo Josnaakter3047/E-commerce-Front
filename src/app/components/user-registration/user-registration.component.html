@@ -10,11 +10,9 @@
 
       <p class="form-header text-center" style="color: #ebff03">Register and Get Started in minutes</p>
       <form [formGroup]="this._service.form">
-        
-
-        <h3 style="font-weight: bold; color: #fff; font-size: 16px;text-align: center;">❑ Software Login Information</h3>
+        <h3 class="mb-0 pb-0" style="font-weight: bold; color: #fff; font-size: 16px;text-align: center;">❑ Software Login Information</h3>
        
-          <div class="row">
+          <div class="row mt-0">
             <!-- <div class="col-md-6 mb-3">
               <div class="form-group">
                 <label for="username">User Name<span class="text-danger">*</span></label>
@@ -196,13 +194,16 @@
      
 
         <div class="registration-btn mt-2">
-          <button pButton pRipple [disabled]="isProgress" class="btn p-button-info p-3" (click)="onSubmit()"
+          <button pButton pRipple [disabled]="isProgress" class="btn p-button-info p-3" 
+          (click)="onSubmit()"
             label="{{ isProgress? this.translate.instant('Please Wait'):'SUBMIT'}}" icon="pi pi-check">
           </button>
 
           <p class="m-2" style="font-size: 15px;">
             If you are registered. Please
-            <a routerLink="/login" style="color:#fff;text-decoration: underline;">Log In</a>
+            <a routerLink="/login" style="color:blue;text-decoration: underline;">
+              LOG IN
+            </a>
           </p>
           <button routerLink="/home" class="p-button-secondary" label="Go Back Home" icon="pi pi-arrow-left" pButton
             pRipple></button>
@@ -212,3 +213,49 @@
     </div>
   </div>
 </div>
+
+<p-dialog header="{{'Verification Required' | translate}}" [modal]="true"
+    [(visible)]="showVerifyDialog" [closable]="false" [style]="{'width':'50vw'}">
+
+  <div class="p-fluid p-3">
+    <label for="verifyCode">
+        {{'Enter Verification Code' | translate}}
+       
+    </label>
+    <input id="verifyCode" type="text" pInputText [(ngModel)]="verifyCode"/>
+    <small class="text-danger">
+      <b>{{'Code expires in' | translate}}: {{ formattedCountdown }}</b>
+    </small>
+     <p *ngIf="this._service.form.get('email').value && formattedCountdown">
+        {{'Varification code already send your email address: ' | translate}} 
+        <span class="text-success">{{this._service.form.get('email').value?? ''}}</span>
+     </p>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple (click)="verifyAndSubmit()"
+        label="{{isVerifying? this.translate.instant('Please Wait'):this.translate.instant('Verify')}}"
+        [disabled]="isVerifying" class="p-button-primary" icon="pi pi-verified">
+    </button>
+
+    <button pButton label="{{'Cancel' | translate}}" icon="pi pi-times"
+        (click)="showVerifyDialog=false" class="p-button-warning">
+    </button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="showErrorPopUp" [modal]="true" [closable]="false" 
+    [style]="{'width':'55vw','background':'#ddd'}"
+ class="no-dialog-header" [styleClass]="'no-header-dialog'">
+    <ng-template pTemplate="content">
+        <div class="grid p-5" style="width:100%;">
+            <div class="col-12 text-center" style="width:100%;">
+                <h3 class="text-danger">You are not permitted to delete data!!</h3>
+                <h3 class="text-warning">Please contact system admin</h3>
+            </div>
+            <div class="col-12 text-center">
+                <button class="p-button-danger" pButton pRipple icon="pi pi-times" label="{{'Close' | translate}}" (click)="onHideErrorPopup()" style="width:fit-content;"></button>
+            </div>
+        </div>
+    </ng-template>
+</p-dialog>
