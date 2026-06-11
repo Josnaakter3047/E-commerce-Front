@@ -1,0 +1,215 @@
+<div class="grid" style="width:100%;">
+  <div class="p-fluid" style="width:100%;background-color: #fff;">
+    <div class="card p-0" style="width:100%;">
+      <div class="filter-header p-1">
+        <button (click)="toggleFilter()" pButton label="Filter" icon="pi pi-filter" style="width:fit-content;"
+          class="p-button-success filter-btn"></button>
+      </div>
+      <div class="body" *ngIf="showBody">
+        <form [formGroup]="this._ecommarceOrderService.filterForm">
+          <div class="grid formgrid" style="width:100%">
+            <div class="col-12 md:col-2 lg:col-2">
+              <label for="">{{'From Date' | translate}}: <span class="text-danger">*</span></label>
+              <p-calendar (onSelect)="startDateCheck()" [ngClass]="this._ecommarceOrderService.filterForm.get('startDate').hasError('required')
+                    && (this._ecommarceOrderService.filterForm.get('startDate').touched)? 'ng-invalid ng-dirty': ''"
+                [showButtonBar]="true" dateFormat="dd/mm/yy" formControlName="startDate" [yearNavigator]="true"
+                [style]="{'width':'100%','height':'30px'}" [inputStyle]="{'width':'100%'}" [monthNavigator]="true"
+                yearRange="1900:2200" [showIcon]="true">
+              </p-calendar>
+            </div>
+            <div class="col-12 md:col-2 lg:col-2">
+              <label for="">{{'To Date' | translate}}: <span class="text-danger">*</span></label>
+              <p-calendar (onSelect)="endDateCheck()" [ngClass]="this._ecommarceOrderService.filterForm.get('endDate').hasError('required') &&
+              (this._ecommarceOrderService.filterForm.get('endDate').touched)? 'ng-invalid ng-dirty': ''" [showButtonBar]="true"
+                dateFormat="dd/mm/yy" formControlName="endDate" [yearNavigator]="true"
+                [style]="{'width':'100%','height':'30px'}" [inputStyle]="{'width':'100%'}" [monthNavigator]="true"
+                yearRange="1900:2200" [showIcon]="true">
+              </p-calendar>
+            </div>
+            <div class="col-12 md:col-3 lg:col-3">
+              <label for="">{{'Status' | translate}}:</label>
+              <p-dropdown formControlName="status" inputId="status" [options]="orderStatus" filterBy="name"
+                [showClear]="true" [autoDisplayFirst]="false" optionLabel="name" [filter]="true" optionValue="name"
+                [style]="{'width':'100%'}">
+              </p-dropdown>
+            </div>
+            <div *ngIf="!this.isCustomer" class="col-12 md:col-3 lg:col-3">
+              <label for="">{{'Customers' | translate}}:</label>
+              <p-dropdown formControlName="customerId" inputId="customerId" [options]="customers" filterBy="name"
+                [showClear]="true" [autoDisplayFirst]="false" optionLabel="name" [filter]="true" optionValue="id"
+                [style]="{'width':'100%'}">
+              </p-dropdown>
+            </div>
+            
+           <div class="col-12 md:col-2 lg:col-2 mt-4">
+            <button [disabled]="loading" (click)="GetAll()" 
+                pButton pRipple class="p-button-info pt-1 pb-1" style="width:fit-content;"
+                label="{{ loading? this.translate.instant('Please Wait'):this.translate.instant('Load') }}">
+              </button>
+           </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-12 p-0" style="width: 100%">
+      <p-table #dt1 [value]="list" dataKey="id" [paginator]="true" [rows]="50"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+        [tableStyle]="{'min-width':'100%'}" styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
+        [breakpoint]="'0px'" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['invoiceNo','customer.name','employee.name','restrarantTable.serialNo','status','createdBy.fullName']">
+    
+        <ng-template pTemplate="caption">
+          <div class="grid p-1 m-0" style="width: 100%;">
+            <div class="col-12 md:col-8">
+              <h4 class="table-title mb-0 md:mb-0">{{'Order List' | translate}}</h4>
+            </div>
+    
+            <div class="col-12 md:col-4">
+              <!-- <div class="flex md:mb-0 mb-0" style="width:65%">
+                <div class="field p-0 m-0" style="width:30%">
+                  <h6 class="text-right pr-2 pt-2" style="font-weight: 600;">{{ 'Show Column' | translate}}</h6>
+                </div>
+                <div class="field p-0 m-0" style="width:70%">
+                  <p-multiSelect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+                    [style]="{'height':'30px'}" placeholder="{{ 'Choose Columns' | translate }}" appendTo="body"
+                    showClear="true">
+                  </p-multiSelect>
+                </div>
+              </div> -->
+              <div class="keyword-search-input" style="width:100%">
+                <span class="p-input-icon-left w-full">
+                  <i class="pi pi-search"></i>
+                  <input pInputText type="text" (input)="dt1.filterGlobal(getVal($event), 'contains')"
+                    placeholder="{{'Search keyword' | translate}}" 
+                    class="w-full" style="height: 30px;width:100%;" />
+                </span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th>#</th>
+            <th pSortableColumn="invoiceNo">{{ 'Order No' | translate }}
+              <p-sortIcon field="invoiceNo"></p-sortIcon>
+            </th>
+            <th pSortableColumn="customer.name">{{ 'Customer Name' | translate }}
+              <p-sortIcon field="customer.name"></p-sortIcon>
+            </th>
+             <th pSortableColumn="deliveredTo">{{ 'Delivered Address' | translate }}
+              <p-sortIcon field="deliveredTo"></p-sortIcon>
+            </th>
+            
+            <th pSortableColumn="saleDate">
+              {{'Order Date' | translate}}
+              <p-sortIcon field="saleDate"></p-sortIcon>
+            </th>
+            <th pSortableColumn="status">{{ 'Status' | translate }}
+              <p-sortIcon field="status"></p-sortIcon>
+            </th>
+            <th pSortableColumn="discountAmount">{{ 'Discount' | translate }}
+              <p-sortIcon field="discountAmount"></p-sortIcon>
+            </th>
+            <th pSortableColumn="saleTaxAmount">{{ this._companyService.company?.vatLabel | translate }}
+              <p-sortIcon field="saleTaxAmount"></p-sortIcon>
+            </th>
+              <th pSortableColumn="shippingCharge">{{ 'Charge' | translate }}
+              <p-sortIcon field="shippingCharge"></p-sortIcon>
+            </th>
+            <th style="text-align:right;" pSortableColumn="totalAmount">{{ 'Total Amount' | translate }}
+              <p-sortIcon field="totalAmount"></p-sortIcon>
+            </th>
+            <th style="text-align:right;" pSortableColumn="totalPaid">{{ 'Total Paid' | translate }}
+              <p-sortIcon field="totalPaid"></p-sortIcon>
+            </th>
+            <th style="text-align:right;" pSortableColumn="totalDue">{{ 'Total Due' | translate }}
+              <p-sortIcon field="totalDue"></p-sortIcon>
+            </th>
+            <th>{{ 'Option' | translate }}</th>
+          
+          </tr>
+    
+        </ng-template>
+        <ng-template pTemplate="body" let-i="rowIndex" let-x let-columns="columns">
+          <tr>
+            <td>{{i+1}}</td>
+            <td>{{x.invoiceNo}}</td>
+            <td>{{x.customer?.name?? ''}}</td>
+            <td>{{x.deliveredTo?? ''}}</td>
+            <td>{{x.saleDate | date:"dd MMM, yyyy"}}</td>
+            <td style="width:fit-content;">
+              <p-badge *ngIf="x.status == 'Pending'" value="{{x.status}}" severity="warning"></p-badge>
+              <p-badge *ngIf="x.status == 'Order'" value="{{x.status}}" severity="info"></p-badge>
+              <p-badge *ngIf="x.status == 'Cancel'" value="{{x.status}}" severity="danger"></p-badge>
+              <p-badge *ngIf="x.status == 'Sales'" value="{{x.status}}" severity="success"></p-badge>
+            </td>
+            <td style="text-align:right;">{{x.saleDiscount}}</td>
+            <td style="text-align:right;">{{x.taxAmount}}</td>
+            <td style="text-align:right;">{{x.shippingCharge}}</td>
+            <td style="text-align:right;">{{x.totalAmount | number:"1.2-2"}}</td>
+            <td style="text-align:right;">{{x.totalPayment | number:"1.2-2"}}</td>
+            <td style="text-align:right;">{{x.totalDue | number:"1.2-2"}}</td>
+           
+            <td style="text-align: center;">
+              <span>
+                <p-menu #menu [popup]="true" appendTo="body" [model]="GetActions(x)"></p-menu>
+                <button pButton pRipple icon="pi pi-chevron-down" label="{{ 'Options' | translate }}"
+                  class="p-button-primary" (click)="menu.toggle($event)" style="width:fit-content;">
+                </button>
+              </span>
+            </td>
+          
+  
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="20">
+              <p class="text-primary" style="text-align:center; padding: 5px;">NO DATA AVAILABLE</p>
+            </td>
+          </tr>
+        </ng-template>
+        <!-- <ng-template pTemplate="footer" let-columns>
+          <tr style="font-size:13px;">
+            <td colspan="7"></td>
+            <td style="text-align:end;">
+              <b>{{'Total' | translate}}</b>
+            </td>
+    
+            <td style="text-align: end;">
+              <b>{{getTotalAmount() | number:"1.2-2"}}</b>
+            </td>
+            <td style="text-align: end;">
+              <b>{{getTotalPayment() | number:"1.2-2"}}</b>
+            </td>
+            <td style="text-align: end;">
+              <b>{{getTotalDue() | number:"1.2-2"}}</b>
+            </td>
+            <td></td>
+            <td *ngFor="let col of columns" style="text-align: end;"
+              [ngStyle]="{'text-align': col.field === 'totalPayment' ? 'right' : 'left'}">
+              <ng-container *ngIf="col.field === 'totalPayment'">
+              </ng-container>
+            </td>
+  
+          </tr>
+        </ng-template> -->
+      </p-table>
+    </div>
+  </div>
+</div>
+
+
+<!--for show order details -->
+<p-dialog [(visible)]="isDisplayOrderDetails" 
+  header="Order Details" [modal]="true" [resizable]="false" [closable]="true" 
+   [contentStyle]="{ 'padding': '0', 'background': '#fff' }"
+  [draggable]="false" [style]="{'width':'80vw'}">
+    <div class="p-3">
+      <app-quotation-sale-print-pdf></app-quotation-sale-print-pdf>
+    </div>
+</p-dialog>
+
+
+
+

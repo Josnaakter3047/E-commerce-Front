@@ -6,6 +6,8 @@ import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { CustomerOrderService } from '../customer-order-list/customer-order.service';
 import { CompanyDetailService } from 'src/app/components/application-services/company-detail.service';
 import { BranchService } from 'src/app/components/application-services/branch.service';
+import { CustomerService } from 'src/app/components/application-services/customer.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -33,6 +35,8 @@ export class ProductDetailComponent implements OnInit {
     private _router:Router,
     public _branchService:BranchService,
     public _companyService:CompanyDetailService,
+    private _sharedService:SharedService,
+    private _customerService:CustomerService,
   ) { 
     this.baseUrl = this.configService.apiBaseUrl;
     this.branchId = this.configService.apiBranchId;
@@ -199,19 +203,68 @@ onRemoveItem(productDetailId: any) {
     this.discountAmount = price - discountedPrice;
     return this.discountAmount;
   }
-
-   onDisplayOrderModal(){
-    if (this._customerOrderService.shippingMethods && this._customerOrderService.shippingMethods.length > 0) {
-      const defaultCategory = this._customerOrderService.shippingMethods[0];
-      this._customerOrderService.shippingCharge = defaultCategory.charge;
-
-      this._customerOrderService.orderForm.patchValue({
-        shippingCharge: defaultCategory.charge
-      });
-      this._customerOrderService.totalAmount = this._shoppingCartService.getTotal() + this._customerOrderService.shippingCharge;
-    }
-    this._customerOrderService.displayModal = true;
+  GetAllOrderAddress(customerId:any){
+    this._customerService.GetCustomerOrderAddressByCustomerId(customerId).subscribe((response)=>{
+      if(response.statusCode === 200){
+        this._customerService.orderAddressList = response.value;
+        //console.log(this._customerService.orderAddressList);
+      }
+      else{
+        this._customerService.orderAddressList = [];
+      }
+    })
   }
+  customer:any;
+  GetCustomerById(customerId:any){
+    this._customerService.GetCustomerProfileById(customerId).subscribe((response)=>{
+      if(response.statusCode === 200){
+        this.customer = response.value;
+        
+        if (this.customer) {
+          this.GetAllOrderAddress(this.customer?.id);
+          this._customerOrderService.orderForm.patchValue({
+            name: this.customer?.name,
+            phoneNumber: this.customer?.phoneNumber,
+            customerId: this.customer.id,
+            address: this.customer?.address,
+            deliveryAddress: this.customer?.address,
+            thanaId: this.customer?.thanaId,
+            voucharNo: null
+          });
+        }
+      }
+      else{
+        this.customer = null;
+      }
+    })
+  }
+  visible = false;
+   onDisplayOrderModal(){
+    this.visible = false;
+    let token = JSON.parse(localStorage.getItem("Token"));
+    if(token){
+       this.GetCustomerById(token.customerId);
+      this._router.navigate(['order-confirmation', token.id]);
+    }
+    else{
+      this._router.navigate(['login']);
+      this._sharedService.showInfo("Please Log in first!!");
+    }
+   
+  }
+  //  onDisplayOrderModal(){
+  //   if (this._customerOrderService.shippingMethods && this._customerOrderService.shippingMethods?.length > 0) {
+  //     const defaultCategory = this._customerOrderService.shippingMethods[0];
+  //     this._customerOrderService.shippingCharge = defaultCategory.charge;
+
+  //     this._customerOrderService.orderForm.patchValue({
+  //       shippingCharge: defaultCategory.charge
+  //     });
+  //     this._customerOrderService.totalAmount = this._shoppingCartService.getTotal() + this._customerOrderService.shippingCharge;
+  //     this._customerOrderService.displayModal = true;
+  //   }
+    
+  // }
   onHideOrderModal(){
     this._customerOrderService.displayModal = false;
     this._customerOrderService.ResetOrderForm();

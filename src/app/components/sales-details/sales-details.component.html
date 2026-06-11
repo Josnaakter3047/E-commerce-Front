@@ -1,0 +1,201 @@
+<div class="layout-invoice-page" id="sale-report-print" style="width: 100%;">
+ <div class="grid layout-invoice-content p-3" style="width: 100%;">
+    <div class="col-12 mb-0 pb-0" style="width: 100%;">
+       <div class="grid m-0 p-0" style="width:100%;">
+      <div class="col p-0 m-0">
+        <img *ngIf="this._companyService.company?.logoUrl" src="{{baseUrl}}/{{this._companyService.company?.logoUrl}}" height="60px" width="60px" alt="">
+         <img *ngIf="!this._companyService.company?.logoUrl" src='assets/images/default-img.png' height="60px" width="60px" alt="">
+      </div>
+      <div class="col-fixed p-0 m-0 header">
+        <h4 class="text-uppercase company-title">{{this._companyService.company?.name}}</h4>
+        <div class="branch-title" 
+          [innerHTML]="this._branchService.branch?.headerTitle">
+        </div>
+        <!-- {{ company?.headerTitle }} -->
+      </div>
+      <div class="col p-0 m-0 "></div>
+    </div>
+    </div>
+    <div class="col-12 pt-0 mt-0" style="width:100%">
+      <h5 class="title text-center mt-1">Sales Invoice</h5>
+      <!-- company header -->
+      <div class="grid formgrid" style="width:100%;">
+        <div class="col-6" style="padding-bottom: 0">
+            <div class="grid mb-2">
+             <div class="col-fixed">Served By</div>
+             <div class="col-fixed" style="padding-left:48px;">:</div>
+             <div class="col-fixed">{{this._service.sale?.createdBy?.fullName?? ''}}</div>
+            </div>
+            <div class="grid mb-2">
+             <div class="col-fixed">Customer Name</div>
+             <div class="col-fixed" style="padding-left:10px;">:</div>
+             <div class="col-fixed">{{this._service.sale?.customer?.name?? ''}}</div>
+            </div>
+            <div class="grid mb-2">
+              <div class="col-fixed">Address</div>
+              <div class="col-fixed" style="padding-left:61px;">:</div>
+              <div class="col-fixed">{{this._service.sale?.customer?.address?? ''}}</div>
+            </div>
+          
+            
+             <div class="grid mb-2">
+              <div class="col-fixed">Shipment Details</div>
+              <div class="col-fixed" style="padding-left:6px;">:</div>
+              <div class="col-fixed">{{this._service.sale?.shippingDetails?? ''}}</div>
+            </div>
+              <div class="grid mb-2">
+              <div class="col-fixed">Note</div>
+              <div class="col-fixed" style="padding-left:70px;">:</div>
+              <div class="col-fixed">{{this._service.sale?.note?? ''}}</div>
+              
+            </div>
+            
+        </div>
+        <div class="col-6" style="padding-bottom: 0">
+            <div class="grid mb-2">
+              <div class="col-fixed">{{'Invoice No' | translate}}</div>
+              <div class="col-fixed" style="padding-left:32px;">:</div>
+              <div class="col-fixed">{{this._service.sale?.invoiceNo?? ''}}</div>
+            </div>
+             
+            <div class="grid mb-2">
+              <div class="col-fixed">Date</div>
+              <div class="col-fixed">:</div>
+              <div class="col-fixed">{{this._service.sale?.saleDate | date:"dd MMM, yyyy"}}</div>
+            </div>
+            <div class="grid mb-2">
+              <div class="col-fixed">{{'Reference' | translate}}</div>
+              <div class="col-fixed" style="padding-left:34px;">:</div>
+              <div class="col-fixed">{{this._service.sale?.referenceNo?? ''}}</div>
+            </div>
+            <!-- <div class="grid mb-0 pb-0">        
+              <div class="col-fixed">
+                <img src="{{generateBarcode(this._service.sale?.invoiceNo)}}" alt="" height="50">
+              </div>
+            </div> -->
+            
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 pr-0 mr-0 mb-1" style="width:100%;">
+     <table class="table table-bordered add-product-price-table table-condensed">
+            <thead>
+              <tr style="background:green;color:#fff;">
+                <th>#</th>
+                <th style="text-align: left;">{{ 'Product Name' | translate }}</th>
+                <th style="text-align: right;">{{'Quantity' | translate}}</th>
+                <th style="text-align: center;">{{'Unit' | translate}}</th>
+                <th style="text-align: right;">{{'Price' | translate}}</th>
+                <th style="text-align: right;">{{'Discount' | translate}}</th>
+                <th style="text-align: right;">{{this._companyService.vatLabel | translate}}</th>
+                <th style="text-align: right;">{{'Total' | translate}}</th>
+             </tr>
+             
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of this._saleItemService.saleItemList; let i = index">
+              <td>{{i+1}}</td>
+              <td style="text-align: left;">
+                  <label *ngIf="x.name" for="single_dpp">
+                    {{x.name}} ({{x.productCode?? '-'}})
+                    <br>
+                    <span *ngIf="x.description">
+                     ( {{x.description}})
+                    </span>
+                  </label>
+                  <span *ngIf="!x.name"></span>
+              </td>
+              <td style="text-align: right;">{{x.quantity | number:"1.2-3"}}</td>
+              <td style="text-align: center;">{{x.unitName?? ''}}</td>
+              <td style="text-align: right;">{{x.sellingPrice | number:"1.2-3"}}</td>
+              <td style="text-align: right;">{{x.discountRate?? '0'}}</td>
+            <td style="text-align: right;">{{x.productTax?? '0'}}</td>
+            <td style="text-align: right;">{{x.totalAmount | number:"1.2-3"}}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th colspan="2" style="text-align: right;">Total =</th>
+              <th style="text-align: right">{{this._saleItemService.getTotalQuantity() | number:"1.2-2"}}</th>
+              <td style="text-align: right"></td>
+              <td style="text-align: right"></td>
+              <td style="text-align: right">{{this._saleItemService.getTotalDiscountAmount() | number:"1.2-2"}}</td>
+              <td style="text-align: right">{{this._saleItemService.getTotalVatAmount() | number:"1.2-2"}}</td>
+              <th style="text-align: right">{{this._saleItemService.getTotalAmount() | number:"1.2-2"}}</th>
+            </tr>
+            <tr>
+              <th rowspan="7" colspan="2" style="text-align: center">
+                Net Amount In Word <br>
+                <span>{{this.netAmountTransform(this._service.sale?.totalAmount?? 0)}}</span>
+              </th>
+              <th colspan="5" style="text-align: right;">
+                {{'Discount' | translate}} 
+                <span *ngIf="this._service.sale?.discountAmount">({{this._service.sale?.discountAmount?? '0'}})</span>
+              </th>
+              <th style="text-align: right;">{{this._service.sale?.saleDiscount | number:"1.2-2"}}</th>
+            
+            </tr>
+            <tr>
+              <th colspan="5" style="text-align: right;">{{this._companyService.vatLabel | translate}}</th>
+              <th id="vatValue" style="text-align: right">
+                {{this._service.sale?.saleTaxAmount?? '0.00'}}
+              </th>
+            </tr>
+            <tr>
+              <th colspan="5" style="text-align: right;">Shipping Charge</th>
+              <th id="vatValue" style="text-align: right">
+                {{this._service.sale?.shippingCharge?? '0.00' | number:"1.2-2"}}
+              </th>
+            </tr>
+            <tr>
+              <th colspan="5" style="text-align: right;">{{'Net Amount' | translate}}</th>
+              <th style="text-align: right">
+                {{this._service.sale?.totalAmount?? '0.00' | number:"1.2-2"}}
+              </th>
+            </tr>
+            <tr>
+              <th colspan="5" style="text-align: right;">Paid {{'Amount' | translate}}</th>
+              <th style="text-align: right">
+                {{this._service.sale?.totalPayment?? '0.00' | number:"1.2-2"}}
+              </th>
+            </tr>
+            <tr>
+              <th colspan="5" style="text-align: right;">Current Due {{'Amount' | translate}}</th>
+              <th style="text-align: right">
+                {{this._service.sale?.totalDue?? '0.00' | number:"1.2-2"}}
+              </th>
+            </tr>
+             <tr>
+              <th colspan="5" style="text-align: right;">Total Due {{'Amount' | translate}}</th>
+              <th style="text-align: right">
+                {{this._service.totalSalesDueAmount?? '0.00' | number:"1.2-2"}}
+              </th>
+            </tr>
+            </tfoot>
+          </table>
+     
+    </div>
+    
+    <!-- signature -->
+    <div class="col-12 mt-0 pt-0 invoice-report-footer" style="width:100%;">       
+        <!-- <div style="display: flex;justify-content: center;margin-left:1px !important;">
+          <img src="{{generateBarcode(this._service.sale?.invoiceNo)}}" alt="" height="50">
+        </div> -->
+       <div>
+         <p style="font-size:12px;margin:0px;">Software Development By: <b>MySolution Bangladesh</b></p>
+       </div>
+    </div>
+ </div>
+</div>
+
+
+ <!-- <ngx-barcode
+              [bc-value]="this._service.sale?.invoiceNo" 
+              [bc-format]="'CODE128'"
+              [bc-height]="40"
+              [bc-width]="1.5"
+              [bc-display-value]="true">
+ </ngx-barcode> -->
+
+

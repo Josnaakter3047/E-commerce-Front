@@ -121,6 +121,12 @@ import { AddCurrencyComponent } from './components/currency/add-currency/add-cur
 import { CompanyDetailComponent } from './components/company-detail/company-detail.component';
 import { AuthInterceptor } from './shared/interceptor/auth-interceptor';
 import { LoginService } from './components/login/login.service';
+import { EcommarceOrderListComponent } from './e-commerce/e-commarce-order/e-commarce-order-list/e-commarce-order-list.component';
+import { EcommarceOrderTablistComponent } from './e-commerce/e-commarce-order/e-commarce-order-tablist/e-commarce-order-tablist.component';
+import { SalesDetailsComponent } from './components/sales-details/sales-details.component';
+import { QuotationSalePrintPdfComponent } from './components/quotation-sale-print-pdf/quotation-sale-print-pdf.component';
+import { AddOrderConfirmationComponent } from './components/add-order-confirmation/add-order-confirmation.component';
+import { SalePrintPdfComponent } from './components/sale-print-pdf/sale-print-pdf.component';
 
 
 export function initializeApp(appConfigService: MyApiService) {
@@ -197,7 +203,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     RefundPolicyComponent,
     CustomerCareComponent,
     AddCurrencyComponent,
-    CompanyDetailComponent
+    CompanyDetailComponent,
+    EcommarceOrderListComponent,
+    EcommarceOrderTablistComponent,
+    SalesDetailsComponent,
+    QuotationSalePrintPdfComponent,
+    AddOrderConfirmationComponent,
+    SalePrintPdfComponent
   ],
 
   imports: [

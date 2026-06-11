@@ -1,0 +1,30 @@
+export class SaleQuotationModel {
+  id?:string;
+  branchId:string;
+  address?:string;
+  customerId:string;
+  tableId:string;
+  referenceNo:string;
+  saleDate:Date;
+  status?:string;
+  shippingDetails:string;
+  shipmentAddress:string;
+  deliveredTo:string;
+  shippingCharge:number;
+  note:string;
+  createdById?:string;
+  saleTaxAmount:string;
+  discountAmount:string;
+  saleDiscount:number;
+  taxAmount:number;
+  invoiceNo?:string;
+  totalAmount:number;
+  updatedById?:string;
+  
+  toWhom?:string;
+  subject?:string;
+  attention?:string;
+  deliveryTerm?:string;
+  validity?:string;
+  companyId:string;
+}

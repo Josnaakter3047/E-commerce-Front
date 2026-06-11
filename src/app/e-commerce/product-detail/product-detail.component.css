@@ -65,21 +65,21 @@
 /* safe payment */
 .box-content{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     text-align: center;
 }
 .box-content .box-info{
-    padding:100px 10px;
+    padding:10px;
 }
 .box-info h6{
     font-size: 1.1rem;
     color:#666666;
 }
 .box-content .box-img{
-  padding:100px 10px;
+  padding:10px;
 }
 
 .box-img img{
@@ -94,13 +94,21 @@
   border-radius: none;
   overflow: hidden;
   padding:0px 50px;
+  
 }
 .detail-image-wrapper img {
   max-height: 100%;
   max-width: 100%;
   object-fit: contain;
+  position: relative;
 }
-
+.product-discount {
+  background: green;
+  color: #fff;
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 3px;
+}
 /* you might like products */
 .product-container{
     padding:0px 100px;

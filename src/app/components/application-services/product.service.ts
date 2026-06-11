@@ -14,6 +14,7 @@ export class ProductService {
   modified = false;
   displayModal = false;
   subCategories:any;
+  productList:any;
   branches:any;
   searchResultProductList:any[] = [];
   selectedBranch:any[] = [];
@@ -26,7 +27,8 @@ export class ProductService {
   controller ="/api/Product/";
   getAllTopTenProductListUrl: string = '/api/Dashboard/getTopProductList';
   getAllProductForEcommerceUrl:string= this.controller + 'getAllProductForEcommerceByBranchId/';
-  getAllProductsForEcommerceByBranchAndCategoryUrl:string= this.controller + 'getAllProductsForEcommerceByBranchAndCategoryId/';
+  getAllByCompanyAndCategoryUrl:string= this.controller + 'getAllByCompanyIdAndCategoryId/';
+  getAllByCompanyAndBrandUrl:string= this.controller + 'getAllByCompanyIdAndBrandId/';
   getProductDetailsByIdForEcomerceUrl = this.controller + 'getProductDetailsByProductIdForEcommerce/';
   getAllProductsForSearch_SalesUrl:string = this.controller + 'getAllProductListForSales/';
 
@@ -48,8 +50,11 @@ export class ProductService {
   GetAllProductForSearch_Sales(companyId:any, branchId:any){
     return this.http.get<any>(`${this.baseUrl}`+ this.getAllProductsForSearch_SalesUrl + companyId + "/"+ branchId);
   }
-  GetAllProductByBranchIdAndCategory(branchId:any, categoryId:any){
-    return this.http.get<any>(`${this.baseUrl}`+ this.getAllProductsForEcommerceByBranchAndCategoryUrl + branchId + "/" + categoryId);
+  GetAllProductByBranchIdAndCategory(companyId:any, categoryId:any){
+    return this.http.get<any>(`${this.baseUrl}`+ this.getAllByCompanyAndCategoryUrl + companyId + "/" + categoryId);
+  }
+  GetAllProductByBranchIdAndBrandId(companyId:any, brandId:any){
+    return this.http.get<any>(`${this.baseUrl}`+ this.getAllByCompanyAndBrandUrl + companyId + "/" + brandId);
   }
   GetTopProductList(model:any) {
     return this.http.post<any>(`${this.baseUrl}`+this.getAllTopTenProductListUrl,model);

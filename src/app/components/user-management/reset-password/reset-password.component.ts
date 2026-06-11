@@ -8,10 +8,13 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reset-password',
-  templateUrl: 'reset-password.component.html'
+  templateUrl: 'reset-password.component.html',
+  styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
   inProgress: boolean = false;
+  passwordFieldType: string = 'password';
+  confirmPasswordFieldType: string = 'password';
   constructor(
     public _service: ResetPasswordService,
     private _sharedService: SharedService,
@@ -19,7 +22,12 @@ export class ResetPasswordComponent implements OnInit {
     public translate:TranslateService,
     private router: Router
   ) { }
-
+   togglePasswordVisibility(): void {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
+  toggleConfirmPasswordVisibility(){
+    this.confirmPasswordFieldType = this.confirmPasswordFieldType === 'password' ? 'text' : 'password';
+  }
   ngOnInit(): void {
 
   }

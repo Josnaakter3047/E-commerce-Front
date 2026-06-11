@@ -12,6 +12,7 @@ import { BranchService } from 'src/app/components/application-services/branch.se
 import { DatePipe } from '@angular/common';
 import { LoginService } from 'src/app/components/login/login.service';
 import { EcommarceSettingsService } from 'src/app/components/application-services/ecommarce-settings.service';
+import { BrandService } from 'src/app/components/application-services/item-brand.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ import { EcommarceSettingsService } from 'src/app/components/application-service
 })
 export class HomeBannerComponent implements OnInit {
   productCategories:any[] = [];
+  productBrands:any[] =[];
   sidebarVisible = false;
   cartitems:any;
   displaySearchBar = false;
@@ -56,6 +58,7 @@ export class HomeBannerComponent implements OnInit {
     private _route:ActivatedRoute,
     private loginService:LoginService,
     public _ecommarceService: EcommarceSettingsService,
+    public _brandService:BrandService
   ) {
     this.baseUrl = this.configService.apiBaseUrl;
     this.branchId = this.configService.apiBranchId;
@@ -63,17 +66,17 @@ export class HomeBannerComponent implements OnInit {
   }
   @HostListener('window:scroll', [])
  onWindowScroll(): void {
-  
   const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+ // console.log(scrollPosition);
   if(scrollPosition > 5){
     this.isSticky = true;
   }
- 
   else{
     this.isSticky = false;
   }
-
 }
+
+
   cartCount$ = this._shoppingCartService.cartCount$;
   cartCount: number = 0;
   onLogIn(){
@@ -88,6 +91,7 @@ export class HomeBannerComponent implements OnInit {
     this.getCartCount();
     this.GetAllProduct();   
     this.GetAllCategories();
+    this.GetAllBrand();
     this.GetAllTopProductList();
     this.GetEcommarceSettings();
     let token = JSON.parse(localStorage.getItem("Token"));
@@ -190,8 +194,54 @@ export class HomeBannerComponent implements OnInit {
  
   goProductCategory(row:any){
     if(row){
+      this.GetAllProductByCategoryId(row.id);
       this._router.navigate([`/products/${row.name}/${row.id}`]);
       this.sidebarVisible = false;
+    }
+  }
+  goProductBrand(row:any){
+    if(row){
+      this.GetAllProductByBrandId(row.id);
+      this._router.navigate([`/products/${row.name}/${row.id}`]);
+      this.sidebarVisible = false;
+    }
+  }
+   GetAllProductByCategoryId(cagoryId:any){
+    if(this.companyId){
+      this._productService.GetAllProductByBranchIdAndCategory(this.companyId, cagoryId).subscribe(response=>{
+      if(response.statusCode === 200){
+        this._productService.productList = [...response.value];
+        // this.allProducts = response.value || [];
+        // this.productList = [...this.allProducts];
+        //console.log(response.value);
+      }
+      else{
+        this.productList = [];
+      }
+    })
+    }
+    else{
+      this.productList = null;
+      console.log("Company not found");
+    }
+  }
+  GetAllProductByBrandId(brandId:any){
+    if(this.companyId){
+      this._productService.GetAllProductByBranchIdAndBrandId(this.companyId, brandId).subscribe(response=>{
+      if(response.statusCode === 200){
+        //this.allProducts = response.value || [];
+        this._productService.productList = [...response.value];
+       
+        //console.log(response.value);
+      }
+      else{
+        this.productList = [];
+      }
+    })
+    }
+    else{
+      this.productList = null;
+      console.log("Company not found");
     }
   }
   GetAllProduct(){
@@ -216,15 +266,37 @@ export class HomeBannerComponent implements OnInit {
       this._categoryService.GetAllByCompanyId(this.companyId).subscribe(response=>{
       if(response.statusCode === 200){
         this.productCategories = response.value;
-        this.productCategories.unshift({name:"Home", routerLink: '/home'});
+        this.productCategories.unshift({id:null,name:"ALL", routerLink: '/home'});
       }
       else{
-        this.productCategories = null;
+        this.productCategories = [];
       }
       })
     }
     else{
-      this.productList = null;
+      this.productCategories = [];
+      console.log("Company not found");
+    }
+  }
+  GetAllBrand(){
+     if(this.companyId){
+      this._brandService.GetAllByCompanyId(this.companyId).subscribe(response=>{
+      if(response.statusCode === 200){
+        this.productBrands = response.value;
+        //console.log(response.value);
+        this.productBrands.unshift({
+          id: null,
+          name: 'ALL',
+          routerLink: '/home'
+        });
+      }
+      else{
+        this.productBrands = [];
+      }
+      })
+    }
+    else{
+      this.productBrands = null;
       console.log("Company not found");
     }
   }
@@ -232,7 +304,10 @@ export class HomeBannerComponent implements OnInit {
     this.cartitems = JSON.parse(localStorage.getItem('cart'));
     this.cartCount = this.cartitems?.length;
   }
-
+  isDisplayCategoryList = false;
+  onShowCategoryList(){
+    this._shoppingCartService.showCart();
+  }
   onShowCartList(){
     this._shoppingCartService.showCart();
   }

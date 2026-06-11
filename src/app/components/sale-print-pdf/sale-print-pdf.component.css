@@ -1,0 +1,326 @@
+.header{
+  text-align: center;  
+   padding-bottom:0px;
+    margin-bottom: 0px;
+}
+.company-title{
+  padding-bottom:0px;
+  margin-bottom: 0px;
+}
+.title-from-company{
+  font-weight: 600;
+  font-size:25px;
+  color: #363131;
+}
+
+
+.branch-title{
+    padding-bottom:0px;
+    margin-bottom: 0px;
+}
+.invoice-body{
+  color:#363131;
+  border-top:1px solid #000;
+}
+
+.ql-align-center{
+    text-align: center;
+}
+.tbl-header{
+ color:#000;
+}
+table tr th{
+ padding:3px;
+ font-weight: 500;
+}
+table tr td{
+ padding:3px;
+}
+
+.table-body{
+  border-bottom:1px dotted #000;
+}
+.table-summery{
+  border-bottom:1px solid #000;
+}
+.table-footer{
+    border-bottom:1px solid #000;
+}
+.invoice-report-footer{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.invoice-table{
+ margin:0px;
+}
+.invoice-table tr td, 
+.invoice-table tr th{
+    border:none;
+    padding:0px;
+}
+.invoice-table tbody tr th{
+    font-weight: 700 !important;
+}
+
+/* paid status */
+
+.invoice-status {
+  position: absolute;
+  bottom: 50px;
+  left: 80px;
+  transform: translateX(-50%) rotate(-20deg);
+  font-size: 18px;
+  font-weight: 900;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 5;
+  border: 2px solid;
+  padding: 12px 15px;
+  border-radius:3px;
+  text-transform: uppercase;
+}
+
+.invoice-status.paid {
+  color: green;
+  border-color: green;
+}
+
+.invoice-status.unpaid {
+  color: red;
+  border-color: red;
+}
+
+.paid-status-wrapper {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.paid-badge {
+  display: inline-block;
+  padding: 6px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid;
+  transform: rotate(-10deg);
+}
+
+.paidStatus {
+  color: green;
+  border-color: green;
+}
+
+.unpaidStatus {
+  color: red;
+  border-color: red;
+}
+
+
+@media print {
+  html, body{
+    height: 100%;
+    margin: 0px;
+  }
+  .invoice-table-wrapper{
+    position: relative;
+  }
+ .tbl-header{
+  color:#000 !important;
+  -webkit-print-color-adjust: exact;
+ }
+ 
+ .invoice-detail-font{
+  font-size:14px !important;
+ -webkit-print-color-adjust: exact;
+}
+.invoice-table tr th{
+    font-weight: 600 !important;
+}
+
+.table-header{
+    border-bottom:1px dotted #000 !important;
+    border-top:1px dotted #000 !important;
+    -webkit-print-color-adjust: exact;
+}
+.table-body{
+  border-bottom:1px dotted #000 !important;
+  -webkit-print-color-adjust: exact;
+}
+
+.table-summery{
+  border-bottom:1px dotted #505050 !important;
+  -webkit-print-color-adjust: exact;
+}
+
+.paid-badge {
+    page-break-inside: avoid;
+  }
+
+  
+
+  .invoice-status.paid {
+  color: green !important;
+  border-color: green !important;
+  -webkit-print-color-adjust: exact;
+}
+
+.invoice-status.unpaid {
+  color: red !important;
+  border-color: red !important;
+  -webkit-print-color-adjust: exact;
+}
+
+ .invoice-status {
+    position: absolute;     /* stays on first page */
+    bottom: 50px;
+  }
+  .col img{
+    width:100px;
+    height:100px;
+  }
+   .signature{
+    width:100%;
+    position: absolute;     /* stays on first page */
+    bottom: 50px;
+    margin:0 auto;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .signture-title{
+    border-top:1px dotted #505050 !important;
+    -webkit-print-color-adjust: exact;
+    padding:10px;
+    margin:0px 30px;
+    font-size:18px;
+}
+
+ 
+  .print-page {
+    display: flex;
+    flex-direction: column;
+     min-height: 100vh;
+  }
+  .invoice-content {
+    flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  }
+  .invoice-container {
+  flex: 1 1 auto;
+}
+  .divfooter {
+   margin-top: auto;
+  page-break-inside: avoid;
+  padding-top: 50px;
+    -webkit-print-color-adjust: exact;
+  }
+  .divfooter .grid .col-5 .hrbottom {
+  border-top: 1px solid black;
+  -webkit-print-color-adjust: exact;
+}
+ 
+  .footer-fixed {
+    position: fixed; 
+    width: 100%;
+    margin-top: auto;    /* stays on first page */
+    bottom: 0px;
+    padding:0px;
+    margin:0px;
+    text-align: center;
+  }
+  .footer-fixed p{
+    font-size:11px;
+    padding:0px !important;
+    margin:5px 0px 0px 0px !important;
+  }
+  /* .divfooter {
+    width: 100%;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    align-self: end;
+    bottom: 0;
+    margin-top: auto;
+  } */
+  
+
+
+/* .divfooter .footer {
+  position: absolute;
+   bottom: 0;
+  right: 0;
+  left: 0;
+  margin-top: auto;
+    page-break-after: always;
+}  */
+}
+
+.invoice-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.invoice-content{
+  flex: 1 0 auto;
+}
+.invoice-signature-fromSettings {
+  margin-top: 50px;
+  margin-bottom:20px;
+}
+.invoice-signature {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom:20px;
+}
+.invoice-signature p{
+  font-size:14px !important;
+}
+.invoice-signature .col-5{
+  border-top:1px solid #000;
+}
+
+/* PRINT MODE */
+@media print {
+  body{
+     -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .invoice-page {
+     min-height: 100%;
+     page-break-after: auto;
+  }
+  .invoice-content{
+   flex: 1 0 auto;
+  }
+  .invoice-signature {
+    margin-top: 100px;
+    margin-bottom:20px; 
+    page-break-inside: avoid;
+  }
+  .invoice-signature-fromSettings {
+    
+    page-break-inside: avoid;
+  }
+}
+
+.custom-editor-output p:has(strong:contains("Received By")) {
+  float: left;
+}
+
+.custom-editor-output p:has(strong:contains("Authorized By")) {
+  float: right;
+}
+
+.custom-editor-output p:has(strong:contains("Note")) {
+  color: #a10000;
+  font-weight: bold;
+}
+
+.custom-editor-output::after {
+  content: "";
+  display: block;
+  clear: both;
+}

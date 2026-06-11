@@ -51,6 +51,7 @@ export class ApplicationUserService {
   activeUrl = this.controller + 'active-user/';
   inActiveUrl = this.controller + 'inactive-user/';
   updateLanguageUrl:string = this.controller + 'update-user-language/';
+  getAllUsersWithoutCustomerIdUrl:string = this.controller + 'getAllUsersWithoutCustomerId/';
 
   constructor(
     private _HttpClient: HttpClient,
@@ -64,7 +65,9 @@ export class ApplicationUserService {
     companyId:null,
     branchId:null,
   })
-
+   GetAllUsersWithoutCustomer(companyId:any){
+    return this._HttpClient.get<any>(`${this.baseUrl}`+this.getAllUsersWithoutCustomerIdUrl+ companyId);
+  }
   GetAllUserByCompanyId(companyId:any){
     return this._HttpClient.get<any>(`${this.baseUrl}`+this.getAllUserbyCompanyIdUrl+ companyId);
   }

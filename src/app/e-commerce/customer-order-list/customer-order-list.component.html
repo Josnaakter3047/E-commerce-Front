@@ -1,63 +1,118 @@
-<div class="grid grid-nogutter" style="width: 100%;background-color: #fff;">
-  <div class="p-fluid" style="width: 100%">
-    <!-- <div class="col-12">
-      <form [formGroup]="_service.filterForm">
-        <div class="grid">
-          <div class="col-4">
-            <span class="p-float-label" style="width: 100%;">
-              <p-dropdown inputId="branchId" [autoDisplayFirst]="false" [options]="companyByBranches"
-                formControlName="branchId" optionLabel="branch.name" [filter]="true" filterBy="branch.name" [showClear]="true"
+<div class="grid" style="width:100%;">
+  <div class="p-fluid" style="width:100%;background-color: #fff;">
+    <div class="card p-0" style="width:100%;">
+      <div class="header p-1">
+        <button (click)="toggleFilter()" pButton label="Filter" icon="pi pi-filter" style="width:fit-content;"
+          class="p-button-success filter-btn"></button>
+      </div>
+      <div class="body" *ngIf="showBody">
+        <form [formGroup]="this._service.filterForm">
+          <div class="grid formgrid" style="width:100%">
+            <div class="col-12 md:col-3 lg:col-3">
+              <label for="">{{'From Date' | translate}}: <span class="text-danger">*</span></label>
+              <p-calendar (onSelect)="startDateCheck()" [ngClass]="this._service.filterForm.get('startDate').hasError('required')
+                    && (this._service.filterForm.get('startDate').touched)? 'ng-invalid ng-dirty': ''"
+                [showButtonBar]="true" dateFormat="dd/mm/yy" formControlName="startDate" [yearNavigator]="true"
+                [style]="{'width':'100%','height':'35px'}" [inputStyle]="{'width':'100%'}" [monthNavigator]="true"
+                yearRange="1900:2200" [showIcon]="true">
+              </p-calendar>
+            </div>
+            <div class="col-12 md:col-3 lg:col-3">
+              <label for="">{{'To Date' | translate}}: <span class="text-danger">*</span></label>
+              <p-calendar (onSelect)="endDateCheck()" [ngClass]="this._service.filterForm.get('endDate').hasError('required') &&
+              (this._service.filterForm.get('endDate').touched)? 'ng-invalid ng-dirty': ''" [showButtonBar]="true"
+                dateFormat="dd/mm/yy" formControlName="endDate" [yearNavigator]="true"
+                [style]="{'width':'100%','height':'35px'}" [inputStyle]="{'width':'100%'}" [monthNavigator]="true"
+                yearRange="1900:2200" [showIcon]="true">
+              </p-calendar>
+            </div>
+            <!-- <div class="col-12 md:col-3 lg:col-3">
+              <label for="">{{'Customers' | translate}}:</label>
+              <p-dropdown formControlName="customerId" inputId="customerId" [options]="customers" filterBy="name"
+                [showClear]="true" [autoDisplayFirst]="false" optionLabel="name" [filter]="true" optionValue="id"
+                [style]="{'width':'100%'}">
+              </p-dropdown>
+            </div>
+            <div class="col-12 md:col-3 lg:col-3">
+              <label>{{ 'Thana' | translate }}:</label>
+              <p-dropdown inputId="thanaId" [autoDisplayFirst]="false" [options]="thanas" formControlName="thanaId"
+                optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" optionValue="id"
+                [style]="{'width':'100%'}">
+              </p-dropdown>
+            </div>
+            <div class="col-12 md:col-2 lg:col-2">
+              <label>{{'Select a Querier' | translate}}:</label>
+              <p-dropdown [options]="querierServices"
+                filterBy="name" [showClear]="true" [autoDisplayFirst]="false" optionLabel="name" [filter]="true"
+                optionValue="id" formControlName="querierServiceId" [style]="{'width':'100%'}">
+              </p-dropdown>
+            </div>
+            <div class="col-12 md:col-2 lg:col-2 mt-1">
+              <label for="">{{'Delivery Man' | translate}}:</label>
+              <p-dropdown formControlName="deliveryManId" inputId="customerId" [options]="deliveryManUsers"
+                filterBy="fullName" [showClear]="true" [autoDisplayFirst]="false" optionLabel="fullName" [filter]="true"
                 optionValue="id" [style]="{'width':'100%'}">
               </p-dropdown>
-              <label for="branchId">{{ 'Branch' | translate }}</label>
-            </span>
-          </div>
-          <div class="col-4">
-            <button (click)="GetAll()" style="width: fit-content;" pButton pRipple [disabled]="loading" label="{{loading? this.translate.instant('Please Wait') :this.translate.instant('Load') }}"></button>
-          </div>
-        </div>
-      </form>
-    </div> -->
-    <p-table #dt1 showGridlines
-    stripedRows [value]="list" dataKey="id"
-    [paginator]="true" [rows]="50"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
-    [tableStyle]="{ 'width': 'auto' }"
-    styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [globalFilterFields]="['sales.invoiceNo','name','phoneNumber', 'customer.name','thana.name','qurierService.name','sales.shipmentStatus.name']">
+            </div>
+            <div class="col-12 md:col-2 lg:col-2 mt-1">
+              <label for="name">{{ 'Status' | translate }} <span class="text-danger">*</span></label>
+              <p-dropdown [autoDisplayFirst]="false" [options]="shippingStatusList" formControlName="shipmentStatusId"
+                optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" optionValue="id"
+                [style]="{'width':'100%'}">
+              </p-dropdown>
 
-    <ng-template pTemplate="caption">
-        <div class="table-header">
-          <p-toolbar >
-            <ng-template pTemplate="left">
-              <h3 class="table-title">
-                {{ 'Order List' | translate }}
-              </h3>
-             
-            </ng-template>
+            </div> -->
+            <div class="col-12 md:col-3 lg:col-3 mt-4">
+              <button [disabled]="loading" (click)="GetAll()" pButton pRipple 
+                class="p-button-primary pt-1 pb-1" style="width:fit-content;" icon="pi pi-check"
+                label="{{ loading? this.translate.instant('Please Wait'):this.translate.instant('Load') }}"></button>
+              <!-- <button (click)="onAssignQurier()" pButton pRipple class="p-button-warning pt-1 pb-1 ml-2"
+                style="width:fit-content;" label="{{this.translate.instant('Assign Querier')}}">
+              </button>
+              <button (click)="onAssignDeliveryMan()" pButton pRipple class="p-button-danger pt-1 pb-1 ml-2"
+                style="width:fit-content;" label="{{this.translate.instant('Assign Delivery Man')}}">
+              </button>
+               <button (click)="onDisplayUpdateStatus()" pButton pRipple 
+                class="p-button-info pt-1 pb-1 ml-2" style="width:fit-content;" 
+                label="{{this.translate.instant('Update All Status')}}">
+              </button> -->
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-12 p-0" style="width:100%;">
+     <p-table #dt1 [value]="this._service.ecommarceOrderConfirmList" [columns]="selectedColumns" 
+       dataKey="id" [paginator]="true" [rows]="50"
+      [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+      styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [globalFilterFields]="['sales.invoiceNo','sales.shipmentStatus.name','name','phoneNumber','customer.name','saleStatus.name','createdBy.fullName']">
 
-            <ng-template pTemplate="right">
-              <span class="p-input-icon-left p-ml-auto">
+      <ng-template pTemplate="caption">
+        <div class="grid p-0 m-0">
+          <div class="col-12 md:col-8 p-0 m-0 flex flex-column md:flex-row align-items-start md:align-items-start mb-3 md:mb-2">
+            <h4 class="table-title mr-3 mb-0 md:mb-0">{{'Order Confirmation List' | translate}}</h4>
+          </div>
+          <div class="col-12 md:col-4 p-0 m-0 flex flex-column md:flex-row align-items-start md:align-items-center">
+            <div class="keyword-search-input w-full">
+              <span class="p-input-icon-left w-full">
                 <i class="pi pi-search"></i>
                 <input pInputText type="text" (input)="dt1.filterGlobal(getVal($event), 'contains')"
-                  placeholder="{{'Search keyword' | translate}}" style="height: 38px;" />
+                  placeholder="{{'Search keyword' | translate}}" class="w-full" style="height: 30px;" />
               </span>
-            </ng-template>
-          </p-toolbar>
-
+            </div>
+          </div>
         </div>
-    </ng-template>
-
-      <ng-template pTemplate="header">
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
         <tr>
           <th>#</th>
           <th pSortableColumn="sales.invoiceNo">{{ 'Invoice No' | translate }}
             <p-sortIcon field="sales.invoiceNo"></p-sortIcon>
           </th>
-          <th pSortableColumn="name">{{ 'Name' | translate }}
-            <p-sortIcon field="name"></p-sortIcon>
+          <th pSortableColumn="customer.name">{{ 'Customer Name' | translate }}
+            <p-sortIcon field="customer.name"></p-sortIcon>
           </th>
           <th pSortableColumn="phoneNumber">{{ 'Phone Number' | translate }}
             <p-sortIcon field="phoneNumber"></p-sortIcon>
@@ -65,60 +120,85 @@
           <th pSortableColumn="address">{{ 'Address' | translate }}
             <p-sortIcon field="address"></p-sortIcon>
           </th>
-          <th pSortableColumn="customer.name">{{ 'Customer Name' | translate }}
-            <p-sortIcon field="customer.name"></p-sortIcon>
-          </th>
-         <th pSortableColumn="thana.name">{{ 'Thana/Area' | translate }}
+
+
+          <th pSortableColumn="thana.name">{{ 'Thana/Area' | translate }}
             <p-sortIcon field="thana.name"></p-sortIcon>
           </th>
+
           <th pSortableColumn="vouchar.voucharNo">{{'Vouchar No' | translate}}
             <p-sortIcon field="vouchar.voucharNo"></p-sortIcon>
           </th>
-           <th pSortableColumn="vouchar.voucharDiscount">{{'Discount' | translate}}
-            <p-sortIcon field="vouchar.voucharDiscount"></p-sortIcon>
+          <th pSortableColumn="vouchar.voucharDiscount">{{'Discount' | translate}}
+            <p-sortIcon field="vouchar.voucharValue"></p-sortIcon>
+          </th>
+          <th pSortableColumn="sales.shipmentStatus.name">{{'Status' | translate}}
+            <p-sortIcon field="sales.shipmentStatus.name"></p-sortIcon>
           </th>
           <th pSortableColumn="qurierService.name">{{'Querier' | translate}}
             <p-sortIcon field="qurierService.name"></p-sortIcon>
           </th>
-          <th pSortableColumn="sales.shipmentStatus.name" style="text-align: center;">{{'Status' | translate}}
-            <p-sortIcon field="sales.shipmentStatus.name"></p-sortIcon>
+          <th pSortableColumn="deliveryMan.fullName">{{'Delivery Man' | translate}}
+            <p-sortIcon field="deliveryMan.fullName"></p-sortIcon>
           </th>
           <th pSortableColumn="deliveryDate">{{ 'Delivery Date' | translate }}
             <p-sortIcon field="deliveryDate"></p-sortIcon>
           </th>
-          <th pSortableColumn="sales.totalAmount">{{ 'Total Bill' | translate }}
+          <th style="text-align: right;" pSortableColumn="sales.totalAmount">{{ 'Amount' | translate }}
             <p-sortIcon field="sales.totalAmount"></p-sortIcon>
           </th>
-        </tr>
-      </ng-template>
+           <th style="text-align: right;" pSortableColumn="sales.totalPayment">{{ 'Paid' | translate }}
+            <p-sortIcon field="sales.totalPayment"></p-sortIcon>
+          </th>
+          <!-- <th pSortableColumn="createdDate">{{ 'Created By' | translate }}
+            <p-sortIcon field="createdDate"></p-sortIcon>
+          </th>
 
-      <ng-template pTemplate="body" let-i="rowIndex" let-x>
-        <!-- [ngStyle]="{'background': x.status?'':'rgba(255, 0, 0, 0.1)'}" -->
+          <th pSortableColumn="updatedDate">{{ 'Updated By' | translate }}
+            <p-sortIcon field="updatedDate"></p-sortIcon>
+          </th> -->
+
+          <th style="text-align: center;">{{'Option' | translate}}</th>
+        </tr>
+
+      </ng-template>
+      <ng-template pTemplate="body" let-i="rowIndex" let-x let-columns="columns">
         <tr>
-          <td>{{i + 1}}</td>
+          <td>{{i+1}}</td>
           <td>{{x.sales?.invoiceNo?? ''}}</td>
-          <td>{{x.name?? ''}}</td>
+          <td>{{x.name?x.name:(x.customer?.name?? '')}}</td>
           <td>{{x.phoneNumber??''}}</td>
-          <td>{{x.address?? ''}}</td>
-          <td>{{x.customer?.name?? ''}}</td>
+          <td>{{x.address?? '-'}}</td>
           <td>{{x.thana?.name?? ''}}</td>
           <td>{{x.vouchar?.voucharNo?? ''}}</td>
           <td>{{x.vouchar?.voucharValue?? ''}}</td>
-          <td>{{x.qurierService?.name?? ''}}</td>
-          <td style="text-align: center;">
-            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Ordered')" value="{{x.sales?.shipmentStatus?.name}}" severity="warning"></p-badge>
-            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Packed')" value="{{x.sales?.shipmentStatus?.name}}" severity="info"></p-badge>
-            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Shipped')" value="{{x.sales?.shipmentStatus?.name}}" severity="info"></p-badge>
-            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Delivered')" value="{{x.sales?.shipmentStatus?.name}}" severity="success"></p-badge>
-            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Canceled')" value="{{x.sales?.shipmentStatus?.name}}" severity="danger"></p-badge>
+          <td>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Ordered')" value="{{x.sales?.shipmentStatus?.name}}"
+              severity="warning"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Packed')" value="{{x.sales?.shipmentStatus?.name}}"
+              severity="info"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Shipped')" value="{{x.sales?.shipmentStatus?.name}}"
+              severity="info"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Delivered')" value="{{x.sales?.shipmentStatus?.name}}"
+              severity="success"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Canceled')" value="{{x.sales?.shipmentStatus?.name}}"
+              severity="danger"></p-badge>
           </td>
+          <td>{{x.qurierService?.name?? '-'}}</td>
+          <td>{{x.deliveryMan?.fullName?? '-'}}</td>
           <td>{{x.deliveryDate? (x.deliveryDate | date:"dd MMM, yyyy") : ''}}</td>
           <td style="text-align: right;">{{x.sales?.totalAmount | number:"1.2-2"}}</td>
+          <td style="text-align: right;">{{x.sales?.totalPayment | number:"1.2-2"}}</td>
+          
+
+          <td style="text-align: center;">
+            <p-menu #menu [popup]="true" appendTo="body" [model]=GetActions(x)></p-menu>
+            <button pButton pRipple icon="pi pi-chevron-down" label="{{ 'Options' | translate }}"
+              class="p-button-primary" (click)="menu.toggle($event)" style="width:fit-content;">
+            </button>
+          </td>
         </tr>
       </ng-template>
-
-     
-      
       <ng-template pTemplate="emptymessage">
         <tr>
           <td colspan="20">
@@ -126,16 +206,353 @@
           </td>
         </tr>
       </ng-template>
-       <ng-template pTemplate="footer">
-        <tr class="footer-tr">
+      <ng-template pTemplate="footer">
+        <tr class="footer-tr" *ngIf="this._service.ecommarceOrderConfirmList?.length>0">
           <td colspan="12">{{'Total' | translate}}</td>
-          <td>{{this.GetTotalBillAmount() | number:"1.2-2"}}</td>
+          <td>{{this.GetTotalAmount() | number:"1.2-2"}}</td>
+          <td>{{this.GetTotalPayment() | number:"1.2-2"}}</td>
+          <td></td>
         </tr>
       </ng-template>
-    </p-table>
+
+     </p-table>
+    </div>
+    
   </div>
 </div>
 
 
+<p-dialog [(visible)]="this.dispalyAssignQurier" [modal]="true" [resizable]="false"
+  header="{{this.translate.instant('Assign Qurier')}}" [style]="{'width':'60vw'}" (onHide)="onHideAssignQurier()"
+  [closable]="true">
+  <div class="grid grid-nogutter" style="width: 100%;">
+    <div class="p-fluid p-3" style="width: 100%;">
+      <form [formGroup]="this._service.assignQurierForm">
+        <div class="grid" style="width: 100%;">
+          <div class="col-12 md:col-3 lg:col-3">
+            <label>{{'Select a Querier' | translate}}:</label>
+            <p-dropdown formControlName="qurierServiceId" inputId="qurierServiceId" [options]="querierServices"
+              filterBy="name" [showClear]="true" [autoDisplayFirst]="false" optionLabel="name" [filter]="true"
+              optionValue="id" [style]="{'width':'100%'}" [ngClass]="this._service.assignQurierForm.get('qurierServiceId').hasError('required')
+                    && (this._service.assignQurierForm.get('qurierServiceId').touched)? 'ng-invalid ng-dirty': ''">
+            </p-dropdown>
+          </div>
+          <div class="col-12 md:col-3 lg:col-3">
+            <label for="">{{'Delivery Date' | translate}}: <span class="text-danger">*</span></label>
+            <p-calendar appendTo="body" [ngClass]="this._service.assignQurierForm.get('deliveryDate').hasError('required')
+                    && (this._service.assignQurierForm.get('deliveryDate').touched)? 'ng-invalid ng-dirty': ''"
+              [showButtonBar]="true" dateFormat="dd/mm/yy" formControlName="deliveryDate" [yearNavigator]="true"
+              [style]="{'width':'100%','height':'35px'}" [inputStyle]="{'width':'100%'}" [monthNavigator]="true"
+              yearRange="1900:2200" [showIcon]="true">
+            </p-calendar>
+          </div>
+          <div class="col-12 md:col-3 lg:col-3 mt-4">
+            <button [disabled]="processing" (click)="onUpdateAssignQuerier()" pButton pRipple
+              class="p-button-info pt-1 pb-1" icon="pi pi-check" style="width:fit-content;"
+              label="{{ processing? this.translate.instant('Please Wait'):this.translate.instant('Assign Querier') }}">
+            </button>
+          </div>
+
+        </div>
+      </form>
+      <div class="col-12 mt-2">
+        <p-table #dt2 [value]="this._service.ecommarceOrderConfirmList" [(selection)]="selectedItems" [columns]="selectedColumns" dataKey="id"
+          [paginator]="true" [rows]="50" [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+          styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['sales.invoiceNo','name','phoneNumber','customer.name','saleStatus.name','createdBy.fullName']">
+          <ng-template pTemplate="caption">
+            <div class="table-header">
+              <div class="grid p-0 m-0" style="width: 100%;">
+                <div class="col-8 p-0 m-0 flex flex-row flex-wrap gap-3">
+                  <h4>{{'Select Order Items' | translate}}</h4>
+                </div>
+                <div class="col-4 p-0 m-0">
+                  <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt2.filterGlobal(getVal($event), 'contains')"
+                      placeholder="{{'Search keyword' | translate}}" style="height: 30px;" />
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 4rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th pSortableColumn="sales.invoiceNo">{{ 'Invoice No' | translate }}
+                <p-sortIcon field="sales.invoiceNo"></p-sortIcon>
+              </th>
+              <th pSortableColumn="name">{{ 'Name' | translate }}
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber">{{ 'Phone Number' | translate }}
+                <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+              <th pSortableColumn="address">{{ 'Address' | translate }}
+                <p-sortIcon field="address"></p-sortIcon>
+              </th>
+    
+              <th pSortableColumn="qurierService.name">{{'Querier' | translate}}
+                <p-sortIcon field="qurierService.name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="deliveryDate">{{ 'Delivery Date' | translate }}
+                <p-sortIcon field="deliveryDate"></p-sortIcon>
+              </th>
+              <!-- <th style="text-align: right;">{{'Shipping Charge' | translate}}</th>
+                                                  <th style="text-align: right;">{{'Total Payable' | translate}}</th> -->
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <p-tableCheckbox [value]="item"></p-tableCheckbox>
+              </td>
+              <td>{{item.sales?.invoiceNo?? ''}}</td>
+              <td>{{item.name?item.name:(item.customer?.name?? '')}}</td>
+              <td>{{item.phoneNumber??''}}</td>
+              <td>{{item.address?? ''}}</td>
+              <td>{{item.qurierService?.name?? ''}}</td>
+              <td>{{item.deliveryDate? (item.deliveryDate | date:"dd MMM, yyyy") : ''}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+<p-dialog [(visible)]="this.dispalyAssignDeliveryMan" [modal]="true" [resizable]="false"
+  header="{{this.translate.instant('Assign Delivery Man')}}" [style]="{'width':'60vw'}" (onHide)="onHideDeliveryman()"
+  [closable]="true">
+  <div class="grid grid-nogutter" style="width: 100%;">
+    <div class="p-fluid p-3" style="width: 100%;">
+      <form [formGroup]="this._service.assignDeliveryManForm">
+        <div class="grid" style="width: 100%;">
+          <div class="col-12 md:col-4 lg:col-4">
+            <label>{{'Select a Delivery Man' | translate}}:</label>
+            <p-dropdown formControlName="deliveryManId" inputId="deliveryManId" [options]="deliveryManUsers"
+              filterBy="fullName" [showClear]="true" [autoDisplayFirst]="false" optionLabel="fullName" [filter]="true"
+              optionValue="id" [style]="{'width':'100%'}" [ngClass]="this._service.assignDeliveryManForm.get('deliveryManId').hasError('required')
+                    && (this._service.assignDeliveryManForm.get('deliveryManId').touched)? 'ng-invalid ng-dirty': ''">
+            </p-dropdown>
+          </div>
+          <div class="col-12 md:col-4 lg:col-4">
+            <label for="">{{'Delivery Date' | translate}}: <span class="text-danger">*</span></label>
+            <p-calendar appendTo="body" [ngClass]="this._service.assignDeliveryManForm.get('deliveryDate').hasError('required')
+                    && (this._service.assignDeliveryManForm.get('deliveryDate').touched)? 'ng-invalid ng-dirty': ''"
+              [showButtonBar]="true" dateFormat="dd/mm/yy" formControlName="deliveryDate" [yearNavigator]="true"
+              [style]="{'width':'100%','height':'35px'}" [inputStyle]="{'width':'100%'}" [monthNavigator]="true"
+              yearRange="1900:2200" [showIcon]="true">
+            </p-calendar>
+          </div>
+          <div class="col-12 md:col-4 lg:col-4 mt-4">
+            <button [disabled]="processing" (click)="onUpdateDeliveryMan()" pButton pRipple
+              class="p-button-info pt-1 pb-1" icon="pi pi-check" style="width:fit-content;"
+              label="{{ processing? this.translate.instant('Please Wait'):this.translate.instant('Assign Delivery Man') }}">
+            </button>
+          </div>
+
+        </div>
+      </form>
+      <div class="col-12 mt-2">
+        <p-table #dt3 [value]="this._service.ecommarceOrderConfirmList" [(selection)]="selectedItems" [columns]="selectedColumns" dataKey="id"
+          [paginator]="true" [rows]="50" [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+          styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['sales.invoiceNo','name','phoneNumber','customer.name','saleStatus.name','createdBy.fullName']">
+          <ng-template pTemplate="caption">
+            <div class="table-header">
+              <div class="grid p-0 m-0" style="width: 100%;">
+                <div class="col-8 p-0 m-0 flex flex-row flex-wrap gap-3">
+                  <h4>{{'Select Order Items' | translate}}</h4>
+                </div>
+                <div class="col-4 p-0 m-0">
+                  <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt3.filterGlobal(getVal($event), 'contains')"
+                      placeholder="{{'Search keyword' | translate}}" style="height: 30px;" />
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 4rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th pSortableColumn="sales.invoiceNo">{{ 'Invoice No' | translate }}
+                <p-sortIcon field="sales.invoiceNo"></p-sortIcon>
+              </th>
+              <th pSortableColumn="name">{{ 'Name' | translate }}
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber">{{ 'Phone Number' | translate }}
+                <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+              <th pSortableColumn="address">{{ 'Address' | translate }}
+                <p-sortIcon field="address"></p-sortIcon>
+              </th>
 
 
+
+              <th pSortableColumn="qurierService.name">{{'Querier' | translate}}
+                <p-sortIcon field="qurierService.name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="deliveryMan.fullName">{{'Delivery Man' | translate}}
+                <p-sortIcon field="deliveryMan.fullName"></p-sortIcon>
+              </th>
+              <th pSortableColumn="deliveryDate">{{ 'Delivery Date' | translate }}
+                <p-sortIcon field="deliveryDate"></p-sortIcon>
+              </th>
+              <!-- <th style="text-align: right;">{{'Shipping Charge' | translate}}</th>
+                                                            <th style="text-align: right;">{{'Total Payable' | translate}}</th> -->
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <p-tableCheckbox [value]="item"></p-tableCheckbox>
+              </td>
+              <td>{{item.sales?.invoiceNo?? ''}}</td>
+              <td>{{item.name?item.name:(item.customer?.name?? '')}}</td>
+              <td>{{item.phoneNumber??''}}</td>
+              <td>{{item.address?? ''}}</td>
+
+              <td>{{item.qurierService?.name?? ''}}</td>
+              <td>{{item.deliveryMan?.fullName?? ''}}</td>
+              <td>{{item.deliveryDate? (item.deliveryDate | date:"dd MMM, yyyy") : ''}}</td>
+              <!-- <td style="text-align: right;">{{item.shippingCharge | number:"1.2-2"}}</td>
+                      <td style="text-align: right;">{{item.totalAmount | number:"1.2-2"}}</td> -->
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+<p-dialog [(visible)]="this.displayUpdateStatus" [modal]="true" [resizable]="false"
+  header="{{this.translate.instant('Update Order Status')}}" [style]="{'width':'60vw'}" (onHide)="onHideDeliveryman()"
+  [closable]="true">
+  <div class="grid grid-nogutter" style="width: 100%;">
+    <div class="p-fluid p-3" style="width: 100%;">
+      <form [formGroup]="this._service.updateStatusForm">
+        <div class="grid" style="width: 100%;">
+          <div class="col-12 md:col-4 lg:col-4">
+            <label for="name">{{ 'Status' | translate }} <span class="text-danger">*</span></label>
+              <p-dropdown [autoDisplayFirst]="false" [options]="shippingStatusList" formControlName="shipmentStatusId"
+                optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" optionValue="id"
+                [style]="{'width':'100%'}">
+              </p-dropdown>
+          </div>
+         
+          <div class="col-12 md:col-4 lg:col-4 mt-4">
+            <button [disabled]="processing" (click)="onUpdateShippingStatus()" pButton pRipple
+              class="p-button-info pt-1 pb-1" icon="pi pi-check" style="width:fit-content;"
+              label="{{ processing? this.translate.instant('Please Wait'):this.translate.instant('Update All') }}">
+            </button>
+          </div>
+
+        </div>
+      </form>
+      <div class="col-12 mt-2">
+        <p-table #dt3 [value]="this._service.ecommarceOrderConfirmList" [(selection)]="selectedItems" [columns]="selectedColumns" dataKey="id"
+          [paginator]="true" [rows]="50" [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 20, 50, 100, 300, 500]"
+          styleClass="p-datatable-gridlines p-datatable-striped custom-sort"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['sales.invoiceNo','sales.shipmentStatus.name','name','phoneNumber','customer.name','saleStatus.name','createdBy.fullName']">
+          <ng-template pTemplate="caption">
+            <div class="table-header">
+              <div class="grid p-0 m-0" style="width: 100%;">
+                <div class="col-8 p-0 m-0 flex flex-row flex-wrap gap-3">
+                  <h4>{{'Select Order Items' | translate}}</h4>
+                </div>
+                <div class="col-4 p-0 m-0">
+                  <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt3.filterGlobal(getVal($event), 'contains')"
+                      placeholder="{{'Search keyword' | translate}}" style="height: 30px;" />
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 4rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th pSortableColumn="sales.invoiceNo">{{ 'Invoice No' | translate }}
+                <p-sortIcon field="sales.invoiceNo"></p-sortIcon>
+              </th>
+              <th pSortableColumn="name">{{ 'Name' | translate }}
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber">{{ 'Phone Number' | translate }}
+                <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+              <th pSortableColumn="address">{{ 'Address' | translate }}
+                <p-sortIcon field="address"></p-sortIcon>
+              </th>
+              <th pSortableColumn="sales.shipmentStatus.name">{{'Status' | translate}}
+                <p-sortIcon field="sales.shipmentStatus.name"></p-sortIcon>
+              </th>
+             
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-x>
+            <tr>
+              <td>
+                <p-tableCheckbox [value]="x"></p-tableCheckbox>
+              </td>
+              <td>{{x.sales?.invoiceNo?? ''}}</td>
+              <td>{{x.name?x.name:(x.customer?.name?? '')}}</td>
+              <td>{{x.phoneNumber??''}}</td>
+              <td>{{x.address?? ''}}</td>
+              <td>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Ordered')" value="{{x.sales?.shipmentStatus?.name}}"
+              severity="warning"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Packed')" value="{{x.sales?.shipmentStatus?.name}}"
+              severity="info"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Shipped')" value="{{x.sales?.shipmentStatus?.name}}"
+              severity="info"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Delivered')" value="{{x.sales?.shipmentStatus?.name}}"
+              severity="success"></p-badge>
+            <p-badge *ngIf="(x.sales?.shipmentStatus?.name == 'Canceled')" value="{{x.sales?.shipmentStatus?.name}}"
+              severity="danger"></p-badge>
+          </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="this._service.displayModal" [modal]="true" [resizable]="false"
+  header="{{this.translate.instant('Update Status')}}" [style]="{'width':'45vw'}" (onHide)="GetAll()" [closable]="true">
+  <app-add-order-confirmation></app-add-order-confirmation>
+</p-dialog>
+
+<!-- sales details -->
+<p-dialog [(visible)]="isDispalySalesDetail" [modal]="true" [resizable]="false" header="Sales Details"
+  [draggable]="false" [closable]="true" [style]="{'width':'70vw'}" (onHide)="onHideSalesDetails()">
+  <div class="p-3">
+    <app-sales-details></app-sales-details>
+  </div>
+</p-dialog>
+
+
+<iframe id="confirmation-frame" style="display:none;"></iframe>
+<!--for sales print class="showprint"-->
+<div id="confirmation-report-pdf" class="showprint">
+  <app-sale-print-pdf></app-sale-print-pdf>
+</div>

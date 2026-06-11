@@ -1,0 +1,186 @@
+<div class="layout-invoice-page" id="sale-report-print" style="width: 100%;">
+  <div class="layout-invoice-content invoice-page p-3" style="width: 100%;">
+    <div class="invoice-content" style="width: 100%;">
+      <div class="col-12 mb-0 pb-0" style="width: 100%;">
+        <div class="grid m-0 p-0" style="width:100%;">
+          <div class="col p-0 m-0">
+            <img *ngIf="this._companyService.company?.logoUrl" src="{{baseUrl}}/{{this._companyService.company?.logoUrl}}"
+              height="60px" width="60px" alt="">
+            <img *ngIf="!this._companyService.company?.logoUrl" src='assets/images/default-img.png' height="60px"
+              width="60px" alt="">
+          </div>
+          <div class="col-fixed p-0 m-0 header">
+            <h4 class="text-uppercase company-title">{{this._companyService.company?.name}}</h4>
+            <div class="branch-title" [innerHTML]="this._branchService.branch?.headerTitle">
+            </div>
+            <!-- {{ company?.headerTitle }} -->
+          </div>
+          <div class="col p-0 m-0 "></div>
+        </div>
+      </div>
+      <div class="col-12 p-0">
+        <h5 class="invoice-title text-center"><b>Order Invoice</b></h5>
+      </div>
+      <div class="col-12 p-0 mb-2" style="width:100%;">
+        <table class="invoice-table" style="width:100%;font-size:14px;">
+          <thead></thead>
+          <tbody>
+            <tr>
+              <th class="col-6">Order No.</th>
+              <td class="col-6 text-end">{{this._service.sale?.invoiceNo?? ''}}</td>
+            </tr>
+    
+            <tr>
+              <th class="col-6">{{'Date' | translate}}</th>
+              <td class="col-6 text-end">{{this._service.sale?.saleDate | date:"dd MMM, yyyy"}}</td>
+            </tr>
+            <tr>
+              <th class="col-6">
+                Customer
+              </th>
+              <td class="col-6 text-end"></td>
+            </tr>
+            <tr>
+              <td class="col-6">
+                <span>{{this._service.sale?.customer?.name?? ''}}</span>
+                <br>
+                <span *ngIf="this._service.sale?.customer?.address">{{this._service.sale?.customer?.address?? ''}}
+                  <br></span>
+                <span *ngIf="this._service.sale?.shipmentAddress">{{this._service.sale?.shipmentAddress?? ''}}
+                  <br></span>
+                <span><b>{{this._service.sale?.customer?.phoneNumber?? ''}}</b></span>
+              </td>
+              <!-- <td class="col-6 ml-auto text-right">
+                <img src="{{generateBarcode(this._service.sale?.invoiceNo)}}" alt="" height="50">
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="invoice-table-wrapper" style="width:100%;">
+        <table class="report-table" style="width:100%; font-size:13px;">
+          <thead class="table-header">
+            <tr>
+              <th class="tbl-th" style="text-align: left;width:100px;">#</th>
+              <th class="tbl-th" style="text-align: left;width:350px;">
+                {{this.salesReport?.productName?? 'Product Name'}}
+              </th>
+              
+          
+              <th class="tbl-th" style="text-align: center;width:100px;">
+                {{this.salesReport?.unitName?? 'Unit'}}
+              </th>
+              <th class="tbl-th" style="text-align: right;width:150px;">
+                {{this.salesReport?.quantity?? 'Quantity'}}
+              </th>
+              <th class="tbl-th" style="text-align: right;width:150px;">
+                {{this.salesReport?.priceName?? 'Price'}}
+              </th>
+    
+              <th class="tbl-th" style="text-align: right;width:150px;">
+                {{this.salesReport?.lineTotal?? 'Total'}}
+              </th>
+            </tr>
+    
+          </thead>
+    
+          <tbody class="table-body">
+            <tr *ngFor="let x of this._saleItemService.saleItemList; let i=index">
+              <td style="text-align: left">{{i + 1}}</td>
+              <td style="text-align: left;">
+                <span>{{x.name ?? ''}},</span>
+                <span> {{x.productCode ?? ''}},</span>
+                <span>{{x.description ?? ''}}</span><br>
+              </td>
+              
+              <td style="text-align: center;">
+                {{x.unitName?? ''}}
+              </td>
+
+              <td style="text-align: right;">
+                <span>{{x.quantity | number:"1.2-2"}} </span>
+              </td>
+
+              <td style="text-align: right;">
+                {{x.sellingPrice | number:"1.2-2"}}
+              </td>
+
+              <td style="text-align: right;">
+                {{x.totalAmount | number:"1.2-2"}}
+              </td>
+    
+            </tr>
+          </tbody>
+          <ng-container>
+            <tr class="footer">
+              <td style="text-align: right;font-weight: bold;" colspan="5">Sub Total</td>
+              <td style="text-align: right;">
+               {{this._saleItemService.getTotalAmount() | number:"1.2-2"}}
+              </td>
+            </tr>
+            <tr class="footer">
+             <td style="text-align: right" colspan="5">Shipping Charge</td>
+              <td style="text-align: right;">
+                {{this._service.sale?.shippingCharge? (this._service.sale?.shippingCharge | number:"1.2-2"):'0.00'}}
+              </td>
+            </tr>
+            <tr class="footer">
+              <td style="text-align: right" colspan="5">
+                Discount
+                <span *ngIf="this._service.isDiscountPercent">
+                  ({{this._service.sale?.discountAmount?? ''}})
+                </span>
+              </td>              
+    
+              <td style="text-align: right;">
+                <span>(-)</span> 
+                {{this._service.sale?.saleDiscount?? 0 | number:"1.2-2"}}
+                </td>
+            </tr>
+             <tr class="footer">
+              <td style="text-align: right" colspan="5">Tax
+                <span *ngIf="this._service.isTaxPercent">
+                  ({{this._service.sale?.saleTaxAmount?? ''}})
+                </span>
+              </td>    
+              <td *ngIf="this.salesReport?.isLineTotal" style="text-align: right;">
+                (+) {{this._service.sale?.taxAmount?? 0 | number:"1.2-2"}}
+              </td>
+            </tr>
+            <tr class="footer">
+              <td colspan="5">Net Amount</td>
+              <td style="text-align: right;">
+                {{this._service.sale?.totalAmount | number:"1.2-2"}}
+              </td>
+            </tr>
+            <tr class="table-summery">
+              <td colspan="10" style="text-align: center;font-weight: 700;font-size:15px;">
+                {{this.netAmountTransform(this._service.sale?.totalAmount?? 0)}}
+              </td>
+    
+            </tr>
+          </ng-container>
+        </table>
+       
+      </div>
+    </div>
+    
+    
+    <div class="invoice-signature" style="width: 100%;" *ngIf="this.salesReport?.isShowingSignature">
+      <div class="grid justify-content-between align-items-center">
+          <div class="col-5">
+            <h5>Approved By</h5>
+          </div>
+
+          <div class="col-5">
+            <h5>Authorized By</h5>
+          </div>
+         
+        </div>
+    </div>
+    <div class="footer-fixed">
+        <p>
+            Software Development By: <b>MySolution Bangladesh</b>
+          </p>
+    </div>
+</div>

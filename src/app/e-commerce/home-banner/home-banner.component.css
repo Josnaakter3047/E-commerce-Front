@@ -5,12 +5,16 @@
   transform: translateY(0);
   background-color: #fff;
 }
+.side-menu-item h6{
+ padding-top: 10px;
+}
 .companyTitle{
   font-size: 25px;
   line-height: 3rem;
-  color:#2182a5;
+  color:#34a520;
 }
 .banner-logo{
+  padding:0px;
   box-sizing: border-box;
 }
 /* sticky header */
@@ -29,7 +33,7 @@ img{
   vertical-align: middle;
 }
 .user-optionBtn{
-  color:#2182a5;
+  color:#34a520;
   font-size: 15px !important;
   font-weight: 600;
 }
@@ -56,7 +60,7 @@ img{
 .active-link {
   font-weight: bold;
   color: #fff;
-  border-bottom: 2px solid #2182a5;
+  border-bottom: 2px solid #34a520;
 }
 
 
@@ -85,14 +89,14 @@ img{
 
 .search-link:hover{
   cursor: pointer;
-  color:#2182a5;
+  color:#34a520;
 }
 .more-btn{
   padding:10px 15px !important;
   font-size: 16px !important;
   font-weight: 500;
   border-radius: 3px !important;
-  background-color: #2182a5;
+  background-color: #34a520;
   color: #fff;
   transition: all .32s;
 }
@@ -193,15 +197,15 @@ img{
   padding: 12px 18px;
   color: #444;
   text-decoration: none;
-  border-bottom: 1px solid #e8f1ff;
-  transition: all 0.3s;
+  border-bottom: 1px solid #cccccc;
+  transition: all 0.4ms;
   margin:0px;
 }
 
 .side-menu-item a:hover {
-  background: #f7f9fc;
-  color: #007bff;
-  border-left: 3px solid #007bff;
+  background: #c5efb6;
+  color: #000;
+  border-left: 3px solid green;
 }
 
 .side-active-link {

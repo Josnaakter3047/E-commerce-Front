@@ -20,7 +20,7 @@ export class CustomerOrderService {
   controller: string = '/api/OrderConfirmation/';
   getAllOrderByCustomerIdUrl: string = this.controller + 'getAllOrderByCustomerId/';
   getAllShippingMethodsByBranchIdUrl: string = '/api/ShippingMethod/getallByBranchId/';
-  addEcommarceSalesRangeUrl: string = '/api/SalesProduct/addSalesFrom-ecommerce';
+  addEcommarceSalesRangeUrl: string = '/api/EcommarceOrder/addHoldSale';
   getVoucharByBranchAndVoucharNoUrl: string = '/api/Vouchar/getByBranchAndVoucharNo/';
   
   private shippingMethodItemsSubject = new BehaviorSubject<any[]>([]);

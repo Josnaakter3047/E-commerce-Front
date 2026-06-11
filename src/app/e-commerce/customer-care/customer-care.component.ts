@@ -47,7 +47,7 @@ export class CustomerCareComponent implements OnInit {
       this._ecommarceService.GetAllShippingMethodsByBranchId(this.branchId).subscribe((response)=>{
         if(response.statusCode === 200 && response.value){
           this.shippingMethods = response.value;
-          console.log(this.shippingMethods);
+          //console.log(this.shippingMethods);
         }
         else{
           this.shippingMethods = [];

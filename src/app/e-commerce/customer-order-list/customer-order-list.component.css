@@ -1,6 +1,76 @@
-.footer-tr td{
-    font-weight: 600;
-    font-size: 14px;
-    padding-right: 5px;
-    text-align: right;
+
+.badge-btn{
+  width:50px;
+  border-radius: 50%;
 }
+
+.header{
+ padding:10px;
+ background:#fbfbfb;
+ border-bottom:1px solid #ddd;
+ margin:0px !important;
+}
+.body{
+ padding:10px; 
+}
+.filter-btn{
+ padding:1px 5px !important;
+ font-size:15px !important;
+ margin:0px;
+}
+
+.showprint{
+    display: none;
+  }
+.footer-tr td{
+  text-align: right;
+  font-weight: 600;
+  font-size: 14px;
+  padding-right: 5px;
+}
+@media print{
+  .showprint{
+    display: block;
+  }
+}
+
+
+/* 
+.p-multiselect {
+  border-radius: 0;
+}
+.p-multiselect.p-multiselect-chip .p-multiselect-token {
+  padding: 0.2rem 0.75rem;
+}
+::ng-deep .p-multiselect {
+  border-radius: 0; 
+  height: auto !important;
+  overflow-y: auto;
+}
+
+
+::ng-deep .p-multiselect .p-multiselect-label {
+  white-space: normal !important;
+  height: auto !important;
+  line-height: 1.2;
+} */
+
+
+/* ::ng-deep .p-multiselect .p-multiselect-label {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: initial !important;
+  height: auto !important;
+} */
+/* :host ::ng-deep .p-multiselect .p-multiselect-label {
+  white-space: normal;
+  height: auto;
+}
+.p-multiselect .p-multiselect-label {
+  white-space: normal !important;
+  height: auto !important;
+}
+::ng-deep .p-multiselect-token {
+  white-space: normal;
+  margin-bottom: 4px;
+} */

@@ -1,5 +1,5 @@
 .product-title{
-    background-color: #CCF3F4;
+    background-color: #90f890;
    padding:50px 0px;
    margin: 0px;
 }
@@ -100,11 +100,13 @@
   color:#fff;
 }
 .confirmation-btn{
-  background-color: #ccf3f4;
-  color:#000;
+  background-color: #349334;
+  color:#fff;
+  font-size: 18px !important;
 }
+
 .confirmation-btn:hover{
-  background-color: #85c4c6;
+  background-color: #146718;
   color: #fff;
 }
 /* On very small screens, keep inline */

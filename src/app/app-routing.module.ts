@@ -32,6 +32,7 @@ import { AboutUsComponent } from './e-commerce/about-us/about-us.component';
 import { ReturnPolicyComponent } from './e-commerce/return-policy/return-policy.component';
 import { RefundPolicyComponent } from './e-commerce/refund-policy/refund-policy.component';
 import { CustomerCareComponent } from './e-commerce/customer-care/customer-care.component';
+import { EcommarceOrderTablistComponent } from './e-commerce/e-commarce-order/e-commarce-order-tablist/e-commarce-order-tablist.component';
 
 const routes: Routes = [
   { path: '', component: AllHomeSectionComponent },
@@ -41,7 +42,7 @@ const routes: Routes = [
   { path: 'cart', component: ShoppingCartListComponent },
   { path: 'product-detail/:id', component: ProductDetailComponent },
   { path: 'more-product', component: MoreSearchResultComponent },
-  { path: 'products/:categoryName/:categoryId', component: AllProductBycategoryComponent },
+  { path: 'products/:name/:id', component: AllProductBycategoryComponent },
   { path: 'registration', component: UserRegistrationComponent },
   { path: 'order-confirmation/:userId', component: OrderConfirmationComponent },
   { path: 'contact-us', component: ContactUsComponent },
@@ -57,7 +58,8 @@ const routes: Routes = [
       { path: 'dashboard/:id', component: AdminDashboardComponent, canActivate: [AuthGuard]},
       
       //for customer dashboard
-      { path: 'order-list/:id', component: CustomerOrderListComponent, canActivate: [AuthGuard] },
+      
+      { path: 'ecommarce-order-list/:id', component: EcommarceOrderTablistComponent, canActivate: [AuthGuard] },
       { path: 'customer-profile/:customerId', component: CustomerProfileComponent, canActivate: [AuthGuard] },
 
       //Users

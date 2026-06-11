@@ -79,31 +79,31 @@
                     
                     <li class="layout-topbar-action-item" (click)="onChangeProfile()">
                       <a class="flex flex-row align-items-center" pRipple>
-                        <i class="pi pi-users" [ngClass]="{'mr-2': !app.isRTL, 'ml-2': app.isRTL}"></i>
+                        <i class="pi pi-users text-primary" [ngClass]="{'mr-2': !app.isRTL, 'ml-2': app.isRTL}"></i>
                         <span>{{userName}}</span>
                       </a>
                     </li>
-                    
+                      <li class="layout-topbar-action-item" (click)="onDisplayResetPassward()">
+                        <a class="flex flex-row align-items-center" pRipple>
+                            <i class="pi pi-key text-warning" [ngClass]="{'mr-2': !app.isRTL, 'ml-2': app.isRTL}"></i>
+                            <span>{{'Reset Password' | translate}}</span>
+                        </a>
+                    </li>
                     <li class="layout-topbar-action-item" (click)="onChangeLangulage()">
                       <a class="flex flex-row align-items-center" pRipple>
-                          <i class="pi pi-tags" [ngClass]="{'mr-2': !app.isRTL, 'ml-2': app.isRTL}"></i>
+                          <i class="pi pi-tags text-info" [ngClass]="{'mr-2': !app.isRTL, 'ml-2': app.isRTL}"></i>
                           <span>{{ 'Change Language' | translate }}</span>
                       </a>
                     </li>
                    
                     <li class="layout-topbar-action-item">
                          <a routerLink="/home" class="flex flex-row align-items-center" pRipple>
-                          <i class="pi pi-shopping-cart" [ngClass]="{'mr-2': !app.isRTL, 'ml-2': app.isRTL}"></i>
-                          <span>{{ 'Load Shopping' | translate }}</span>
+                          <i class="pi pi-shopping-cart text-success" [ngClass]="{'mr-2': !app.isRTL, 'ml-2': app.isRTL}"></i>
+                          <span>{{ 'Shopping' | translate }}</span>
                         </a>                       
                     </li>
                    
-                    <li class="layout-topbar-action-item">
-                        <a class="flex flex-row align-items-center" pRipple>
-                            <i class="pi pi-money-bill" [ngClass]="{'mr-2': !app.isRTL, 'ml-2': app.isRTL}"></i>
-                            <span>{{'Return Order' | translate}}</span>
-                        </a>
-                    </li>
+                  
                     <li (click)="logout()" class="layout-topbar-action-item">
                         <a class="flex flex-row align-items-center" pRipple>
                             <i class="pi pi-sign-out text-danger" [ngClass]="{'mr-2': !app.isRTL, 'ml-2': app.isRTL}"></i>
@@ -140,3 +140,9 @@
         </div>
     </div>
   </p-dialog>
+
+<p-dialog [(visible)]="this._resetService.displayModal" [modal]="true" [resizable]="false" [draggable]="false"
+  [closable]="true" header="{{ 'Reset Password for' | translate}} {{ this.userName }}"
+  [style]="{'width':'50vw'}">
+  <app-reset-password></app-reset-password>
+</p-dialog>

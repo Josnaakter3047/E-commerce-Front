@@ -5,6 +5,7 @@ import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { CategoryService } from 'src/app/components/application-services/item-category.service';
+import { BrandService } from 'src/app/components/application-services/item-brand.service';
 
 @Component({
   selector: 'app-all-product-bycategory',
@@ -13,20 +14,21 @@ import { CategoryService } from 'src/app/components/application-services/item-ca
 })
 export class AllProductBycategoryComponent implements OnInit {
   productList: any[] = [];
-allProducts: any[] = [];
+  allProducts: any[] = [];
   baseUrl: string = '';
   visibleCart = false;
   branchId:any;
   companyId:any;
   discountedPrice:number = 0;
   discountAmount:number = 0;
-  categoryId:any;
-  categoryName:any;
+  typeId:any;
+  typeName:any;
   categories:any;
-  
+  brands:any;
   constructor(
     public _productService:ProductService,
     public _categoryService:CategoryService,
+    public _brandService:BrandService,
     private configService: MyApiService,
     public _shoppingCartService:ShoppingCartService,
     private _route:ActivatedRoute
@@ -38,34 +40,57 @@ allProducts: any[] = [];
 
   ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
-      this.categoryId = params.get('categoryId')!;
-      this.categoryName = params.get('categoryName')!;
-
-      if (this.categoryId) {
-        this.GetAllProduct(this.categoryId);
-        //this.filterProductsByPrice();
-      }
+      const type = params.get('type');
+      this.typeId = params.get('id')!;
+      this.typeName = params.get('name')!;
+      // if (type === 'category') {
+      //   this.GetAllProductByCategoryId(id);
+      // }
+      // if (type === 'brand') {
+      //   this.GetAllProductByBrandId(id);
+        
+      // }
     });
     this.GetFeaturedOptions();
     this.GetAllCategories();
+    this.GetAllBrands();
   }
 
-  GetAllProduct(cagoryId:any){
-    if(this.branchId){
-      this._productService.GetAllProductByBranchIdAndCategory(this.branchId, cagoryId).subscribe(response=>{
+  GetAllProductByCategoryId(cagoryId:any){
+    if(this.companyId){
+      this._productService.GetAllProductByBranchIdAndCategory(this.companyId, cagoryId).subscribe(response=>{
       if(response.statusCode === 200){
         this.allProducts = response.value || [];
-        this.productList = [...this.allProducts];
+        this._productService.productList = [...this.allProducts];
        
         //console.log(response.value);
       }
       else{
-        this.productList = [];
+        this._productService.productList = [];
       }
     })
     }
     else{
-      this.productList = null;
+      this._productService.productList= null;
+      console.log("Company not found");
+    }
+  }
+  GetAllProductByBrandId(brandId:any){
+    if(this.companyId){
+      this._productService.GetAllProductByBranchIdAndBrandId(this.companyId, brandId).subscribe(response=>{
+      if(response.statusCode === 200){
+        this.allProducts = response.value || [];
+        this._productService.productList = [...this.allProducts];
+       
+        //console.log(response.value);
+      }
+      else{
+        this._productService.productList = [];
+      }
+    })
+    }
+    else{
+      this._productService.productList = null;
       console.log("Company not found");
     }
   }
@@ -84,6 +109,24 @@ allProducts: any[] = [];
     }
     else{
       this.categories = null;
+      console.log("Company not found");
+    }
+  }
+  GetAllBrands(){
+    if(this.companyId){
+      this._brandService.GetAllByCompanyId(this.companyId).subscribe(response=>{
+      if(response.statusCode === 200){
+        this.brands = response.value;
+       
+        //console.log(response.value);
+      }
+      else{
+        this.brands = null;
+      }
+    })
+    }
+    else{
+      this.brands = null;
       console.log("Company not found");
     }
   }
@@ -198,30 +241,45 @@ onRemoveItem(productDetailId: any) {
  minInput: number = 0;
  maxInput: number = 5000;
  inStockOnly: boolean = false;
-// filterProductsByPrice() {
-//   const [min, max] = this.priceRange;
 
-//   // ✅ always filter from the full list, not the current one
-//   this.productList = this.allProducts.filter(p => {
-//     const price = this.onCalculateDiscountedPrice(p.sellingPrice, p.discount);
-//     return price >= min && price <= max;
-//   });
-// }
 // When min input changes
 private filterTimeout: any;
 
 // filter with in stock
 filterProductsByPriceAndStock() {
   const [min, max] = this.priceRange;
-
-  this.productList = this.allProducts.filter(p => {
+  let isStockAvailable = this.inStockOnly;
+  if(isStockAvailable){
+    this.allProducts = this._productService.productList;
+  this._productService.productList = this.allProducts.filter(p => {
     const price = this.onCalculateDiscountedPrice(p.sellingPrice, p.discount);
-
     const withinPrice = price >= min && price <= max;
-    const inStock = !this.inStockOnly || p.isStockAvailable === true;
-
+    if(p.stockQty > 0){
+      isStockAvailable = true;
+    }
+    else{
+      isStockAvailable = false;
+    }
+    const inStock = !this.inStockOnly || isStockAvailable === true;
     return withinPrice && inStock;
   });
+  }
+  else{
+     this.allProducts = this._productService.productList;
+  this._productService.productList = this.allProducts.filter(p => {
+    const price = this.onCalculateDiscountedPrice(p.sellingPrice, p.discount);
+    const withinPrice = price >= min && price <= max;
+    if(p.stockQty > 0){
+      isStockAvailable = true;
+    }
+    else{
+      isStockAvailable = false;
+    }
+    
+    return withinPrice && this.inStockOnly;
+  });
+  }
+ 
 }
 
 

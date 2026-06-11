@@ -1,29 +1,69 @@
 <div class="company-log p-0 m-0" [ngClass]="{'sticky-header': isSticky}">
-    <section class="banner-logo p-0 m-0">
+    <section class="banner-logo" style="width:100%;">
         <!-- desktop view -->
         <div class="grid p-0 m-0 text-center align-items-center justify-content-center header"
             style="width:100%;">
-            <div class="col-3">
-                <span (click)="onDisplaySearchBar()" pTooltip="Search" tooltipPosition="bottom"
-                    style="cursor: pointer;color:#2182a5;">
-                    <i class="pi pi-search" style="font-size: 20px;"></i>
-                </span>
-            </div>
-            <div class="col-6 align-items-center justify-content-center m-0 p-2">
-                <a href="/home">
-                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{settings?.title?? ''}}" height="60px">
-                    <span class="companyTitle" *ngIf="!company?.logoUrl">{{settings?.title?? ''}}</span>
+            <div class="col-3 p-2">
+                 <a href="/home">
+                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{company?.name?? ''}}" height="60px">
+                    <span class="companyTitle" *ngIf="!company?.logoUrl">{{company?.name?? ''}}</span>
                 </a>
             </div>
-            <div class="col-3">
-                <span (click)="onShowCartList()" style="cursor: pointer;color:#2182a5;">
+            <div class="col-6 align-items-center justify-content-center m-0 p-2">
+                <!--  menu section for desktop-->
+                <div class="menu-container p-0 m-0 menu-desktop">
+                    <div class="menubar-bg">
+                        <div class="flex justify-content-center align-items-center">
+                            <ul class="nav flex flex-wrap text-base whitespace-nowrap">
+                                  <!-- <li class="menu-item list-none" *ngFor="let x of productCategories">
+                                    <a *ngIf="x.id" routerLink="/products/{{x.name}}/{{x.id}}" routerLinkActive="active-link"
+                                        class="block flex items-center menu-link">
+                                        {{x.name?? ''}}
+                                    </a>
+                                    <a *ngIf="!x.id" routerLink="{{x.routerLink}}" routerLinkActive="active-link"
+                                        class="block flex items-center menu-link">
+                                        {{x.name?? ''}}
+                                    </a>
+                                </li> -->
+                                <li class="menu-item list-none">
+                                    <button (click)="sidebarVisible = true"  pButton pRipple icon="pi pi-arrow-down" label="Shop Now"
+                                    class="p-button-success" style="width:fit-content;"></button>
+                                </li>
+                                
+                                <li class="menu-item list-none">
+                                    <a routerLink="/home" routerLinkActive="active-link" class="block flex items-center menu-link">
+                                        Home
+                                    </a>
+                                </li>
+                                <li class="menu-item list-none">
+                                    <a routerLink="/about-us" routerLinkActive="active-link" class="block flex items-center menu-link">
+                                        About Us
+                                    </a>
+                                </li>
+                                 <li class="menu-item list-none">
+                                    <a routerLink="/contact-us" routerLinkActive="active-link" class="block flex items-center menu-link">
+                                        Contact Us
+                                    </a>
+                                </li>
+                              
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 p-2">
+                <span (click)="onDisplaySearchBar()" pTooltip="Search" tooltipPosition="bottom"
+                    style="cursor: pointer;color:#34a520;">
+                    <i class="pi pi-search" style="font-size: 20px;"></i>
+                </span>
+                <span (click)="onShowCartList()" style="cursor: pointer;color:#34a520;margin-left:30px;">
                     <i class="pi pi-shopping-cart p-text-primary" severity="danger" pBadge style="font-size: 20px"
                         value="{{cartCount?? 0}}"></i>
                 </span>
-                <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#2182a5;margin-left:30px;">
+                <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#34a520;margin-left:30px;">
                     <i class="pi pi-user" style="font-size: 20px;"></i>
                 </span>
-                <span *ngIf="userName" style="cursor: pointer;color:#2182a5; margin-left:15px; font-size:20px;">
+                <span *ngIf="userName" style="cursor: pointer;color:#34a520; margin-left:15px; font-size:20px;">
                     <p-menu #userOption [popup]="true" appendTo="body" [model]=GetUserOptions()></p-menu>
                     <button pButton pRipple icon="pi pi-chevron-down" label="{{ userName }}"
                         class="p-button-text user-optionBtn" (click)="userOption.toggle($event)"
@@ -36,7 +76,7 @@
         <!-- mobile view -->
         <div class="header-mobile px-3 py-2" style="width:100%;">
             <div class="flex align-items-center justify-content-center">
-                <span (click)="sidebarVisible = true" style="cursor: pointer;color:#2182a5;">
+                <span (click)="sidebarVisible = true" style="cursor: pointer;color:#34a520;">
                     <i class="{{sidebarVisible? 'pi pi-times':'pi pi-list'}}" style="font-size: 20px;"></i>
                 </span>
             </div>
@@ -48,17 +88,17 @@
             </div>
 
             <div class="flex align-items-center justify-content-between gap-3">
-                <span (click)="onDisplaySearchBar()" style="cursor: pointer;color:#2182a5;">
+                <span (click)="onDisplaySearchBar()" style="cursor: pointer;color:#34a520;">
                     <i class="pi pi-search" style="font-size: 20px;"></i>
                 </span>
-                <span (click)="onShowCartList()" style="cursor: pointer;color:#2182a5;">
+                <span (click)="onShowCartList()" style="cursor: pointer;color:#34a520;">
                     <i class="pi pi-shopping-cart p-text-secondary" severity="danger" pBadge style="font-size: 20px"
                         value="{{cartCount?? 0}}"></i>
                 </span>
-                 <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#2182a5;margin-left:30px;">
+                 <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#34a520;margin-left:30px;">
                     <i class="pi pi-user" style="font-size: 20px;"></i>
                 </span>
-                <span *ngIf="userName" style="cursor: pointer;color:#2182a5; margin-left:15px; font-size:20px;">
+                <span *ngIf="userName" style="cursor: pointer;color:#34a520; margin-left:15px; font-size:20px;">
                     <p-menu #userOption [popup]="true" appendTo="body" [model]=GetUserOptions()></p-menu>
                     <button pButton pRipple icon="pi pi-chevron-down" label="{{ userName }}"
                         class="p-button-text user-optionBtn" (click)="userOption.toggle($event)"
@@ -68,45 +108,38 @@
             </div>
         </div>
     </section>
-    <!--  menu section for desktop-->
-    <section class="menu-container p-0 m-0 menu-desktop">
-        <div class="menubar-bg">
-            <div class="flex justify-content-center align-items-center">
-                <ul class="nav flex flex-wrap text-base whitespace-nowrap">
-                    <li class="menu-item list-none" *ngFor="let x of productCategories">
-                        <a *ngIf="x.id" routerLink="/products/{{x.name}}/{{x.id}}" routerLinkActive="active-link"
-                            class="block flex items-center menu-link">
-                            {{x.name?? ''}}
-                        </a>
-                        <a *ngIf="!x.id" routerLink="{{x.routerLink}}" routerLinkActive="active-link"
-                            class="block flex items-center menu-link">
-                            {{x.name?? ''}}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
 </div>
-
-
 <!-- menu sidebar -->
 <p-sidebar [(visible)]="sidebarVisible" position="left" styleClass="custom-sidebar" [showCloseIcon]="false">
     <ng-template pTemplate="headless">
         <div class="flex flex-column h-full" style="background-color: #fff;">
             <!-- Header -->
             <div class="flex align-items-center justify-content-between px-3 py-2 flex-shrink-0 border-bottom-1 border-gray-300">
-                <span class="font-semibold">Items</span>
+                <span class="font-semibold">Product Items</span>
                 <button pButton (click)="sidebarVisible = false" icon="pi pi-times" class="p-button-danger p-button-text"
                     style="width: fit-content;">
                 </button>
             </div>
             <div class="overflow-y-auto px-3 py-2">
             <ul class="list-none p-0 m-0">
-                <li class="side-menu-item" *ngFor="let x of productCategories">
-                    <a *ngIf="x.id" (click)="goProductCategory(x)" routerLinkActive="side-active-link" class="block w-full">
-                        <i class="pi pi-directions mr-2"></i> {{x.name ?? ''}}
-                    </a>
+                <li class="side-menu-item">
+                     <h6 class="font-semibold">Category</h6>
+                     <div *ngFor="let x of productCategories">
+                        <a (click)="goProductCategory(x)" routerLinkActive="side-active-link" class="block w-full">
+                            <i class="pi pi-directions mr-2"></i> {{x.name ?? ''}}
+                        </a>
+                     </div>
+                    
+                </li>
+                <li class="side-menu-item">
+                     <h6 class="font-semibold">Brand</h6>
+                     <div *ngFor="let x of productBrands">
+                        <a (click)="goProductBrand(x)" 
+                        routerLinkActive="side-active-link" class="block w-full">
+                            <i class="pi pi-directions mr-2"></i> {{x.name ?? ''}}
+                        </a>
+                     </div>
+                    
                 </li>
             </ul>
         </div>
@@ -150,7 +183,8 @@
                 <i class="pi pi-user" style="font-size: 20px;"></i>
             </span>
             <span (click)="onShowCartList()" style="cursor: pointer;color: green;margin-right:20px;">
-                <i class="pi pi-shopping-cart p-text-secondary" severity="danger" pBadge style="font-size: 20px"
+                <i class="pi pi-shopping-cart p-text-secondary" severity="danger" 
+                pBadge style="font-size: 20px"
                     value="{{this.cartitems?.length?? 0}}"></i>
             </span>
             <span (click)="onClose($event)" style="cursor: pointer;color: rgb(228, 1, 1);">

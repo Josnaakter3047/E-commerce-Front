@@ -34,15 +34,25 @@ export class CustomerService {
   fileDownloadUrl: string = this.controller + 'getfile/';
   getAllThanaUrl: string =  "/api/Thana/getall";
   getCustomerOrderAddressByCustomerIdUrl: string =  "/api/OrderConfirmation/getAllCustomersOrderAddressCustomerId/";
+  getAllAcendingByCompanyIdUrl: string =  this.controller + 'getallAccendingBycompanyId/';
+  getAllByCompanyIdUrl: string =  this.controller + 'getallbycompanyId/';
+  
   
   GetCustomerOrderAddressByCustomerId(customerId:any){
     return this.http.get<any>(`${this.baseUrl}`+ this.getCustomerOrderAddressByCustomerIdUrl + customerId);
   }
-
+   GetAllAccendingByCompanyId(companyId:any) {
+    return this.http.get<any>(`${this.baseUrl}`+this.getAllAcendingByCompanyIdUrl + companyId);
+  }
+  GetById(customerId:any){
+    return this.http.get<any>(`${this.baseUrl}`+ this.getByIdUrl + customerId);
+  }
+  GetAllByCompanyId(companyId:any) {
+    return this.http.get<any>(`${this.baseUrl}`+this.getAllByCompanyIdUrl + companyId);
+  }
   GetCustomerProfileById(customerId:any){
     return this.http.get<any>(`${this.baseUrl}`+ this.getByIdUrl + customerId);
   }
- 
   GetAllThanaList() {
     return this.http.get<any>(`${this.baseUrl}`+this.getAllThanaUrl);
   }

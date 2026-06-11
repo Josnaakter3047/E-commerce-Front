@@ -24,13 +24,13 @@
             <h5>Company</h5>
             <ul>
                 <li>
-                    <a routerLink="about-us">About us</a>
+                    <a routerLink="/about-us">About us</a>
                 </li>
                  <li>
-                    <a routerLink="contact-us">Contact us</a>
+                    <a routerLink="/contact-us">Contact us</a>
                 </li>
                 <li>
-                    <a routerLink="customer-care">গ্রাহক সেবা</a>
+                    <a routerLink="/customer-care">গ্রাহক সেবা</a>
                 </li>
             </ul>
         </div>
@@ -49,18 +49,20 @@
             <h5>Contact Us</h5>
             <ul>
                 <li>
-                    <i class="pi pi-map-marker"></i>
-                    <span class="pl-2">Head Office: {{settings?.headOfficeAddress?? ''}}</span>
+                    <!-- <i class="pi pi-map-marker"></i> -->
+                    <span>Head Office: {{company?.address?? ''}}</span>
                 </li>
                 <li>
                     <i class="pi pi-phone"></i>
-                    <span class="pl-2">Phone: {{settings?.contactNumber?? ''}}</span>
+                    <i class="pi pi-youtube ml-3"></i>
+                    <i class="pi pi-facebook ml-3"></i>
+                    <!-- <span class="pl-2">Phone: {{settings?.contactNumber?? ''}}</span> -->
                 </li>
-                <li>
-                    <i class="pi pi-envelope"></i>
+                <!-- <li>
+                    
                     <span class="pl-2">Email: {{settings?.email?? ''}}</span>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                     <i class="pi pi-facebook"></i>
                     <span class="pl-2">
                         Facebook:
@@ -70,19 +72,19 @@
                 <li>
                     <i class="pi pi-youtube"></i>
                     <span class="pl-2">Youtube: <a href="">{{settings?.youtubeLink?? ''}}</a></span>
-                </li>
+                </li> -->
             </ul>
         </div>
         
     </div>
     <div class="col-12 footer-nav">
-        <p>@ 2025. All rights reserved and developed by <a href="#">My Solution Bangladesh</a></p>
+        <p>@All rights reserved and developed by <a href="#">MySolution Bangladesh</a></p>
     </div>
+
     <button *ngIf="showScrollTopButton"
-          pButton 
-          type="button" 
+          pButton type="button" 
           icon="pi pi-arrow-up" 
-          class="p-button-rounded p-button-sm p-button-primary scroll-top-btn"
+          class="p-button-rounded p-button-sm p-button-success scroll-top-btn"
           (click)="scrollToTop()">
     </button>
 </section>

@@ -1,0 +1,294 @@
+<div class="layout-invoice-page" id="sale-report-print" style="width: 100%;">
+  <div class="layout-invoice-content invoice-page p-2" style="width: 100%;">
+    <div class="invoice-content" style="width: 100%;">
+      <div class="col-12 mb-0 pb-0" style="width: 100%;">
+        <div class="grid m-0 p-0" style="width:100%;">
+          <div class="col p-0 m-0">
+            <img *ngIf="this._companyService.company?.logoUrl" src="{{baseUrl}}/{{this._companyService.company?.logoUrl}}" alt="">
+            <img *ngIf="!this._companyService.company?.logoUrl" src='assets/images/default-img.png' alt="">
+          </div>
+          <div class="col-fixed p-0 m-0 header">
+            <div *ngIf="this._companyService.company?.headerTitle" class="company-title" 
+            [innerHTML]="transformHtml(this._companyService.company?.headerTitle)">
+          </div>
+            <h4 class="text-uppercase title-from-company" *ngIf="this._companyService.company?.headerTitle === null">
+              {{this._companyService.company?.name }}
+            </h4>
+            <div class="branch-title" [innerHTML]="this._branchService.branch?.headerTitle">
+            </div>
+            <!-- {{ company?.headerTitle }} -->
+          </div>
+          <div class="col p-0 m-0 "></div>
+        </div>
+      </div>
+      <div class="col-12 p-0">
+        <h5 class="invoice-title text-center"><b>Sales Invoice</b></h5>
+      </div>
+      <div class="col-12 p-0 mb-2 invoice-font-body" style="width:100%;">
+        <table class="invoice-table" style="width:100%;">
+          <thead></thead>
+          <tbody>
+            <tr>
+              <th class="col-6 invoice-detail-font">Invoice No.</th>
+              <td class="col-6 text-end invoice-detail-font">{{this._service.sale?.invoiceNo?? ''}}</td>
+            </tr>
+    
+            <tr>
+              <th class="col-6 invoice-detail-font">{{'Date' | translate}}</th>
+              <td class="col-6 text-end invoice-detail-font">{{this._service.sale?.saleDate | date:"dd MMM, yyyy"}} {{this._service.sale?.createdDate | date:"hh:mm aa"}}</td>
+            </tr>
+            <tr>
+              <th class="col-6 invoice-detail-font">
+                Customer
+              </th>
+              <td class="col-6 text-end invoice-detail-font"></td>
+            </tr>
+            <tr>
+              <td class="col-6 invoice-detail-font">
+                <span>{{this._service.sale?.customer?.name?? ''}}</span>
+                <br>
+                <span *ngIf="this._service.sale?.customer?.address">{{this._service.sale?.customer?.address?? ''}}
+                  <br></span>
+                <span *ngIf="this._service.sale?.shipmentAddress">{{this._service.sale?.shipmentAddress?? ''}}
+                  <br></span>
+                <span><b>{{this._service.sale?.customer?.phoneNumber?? ''}}</b></span>
+              </td>
+              <!-- <td class="col-6 ml-auto text-right">
+                <img src="{{generateBarcode(this._service.sale?.invoiceNo)}}" alt="" height="50">
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="invoice-table-wrapper invoice-body" style="width:100%;">
+        <table class="report-table" style="width:100%; font-size:13px;">
+          <thead class="table-header">
+            <tr>
+              <th class="tbl-th" style="text-align: left;width:100px;">#</th>
+              <th *ngIf="this.salesReport?.isProductName" class="tbl-th" style="text-align: left;width:350px;">
+                {{this.salesReport?.productName?? 'Product Name'}}
+              </th>
+              <th *ngIf="this.salesReport?.imeiByColumn" class="tbl-th" style="text-align: left;width:100px;">
+                IEMI
+              </th>
+              <th *ngIf="this.salesReport?.imeiByColumn" class="tbl-th" style="text-align: left;width:100px;">
+                Warranty
+              </th>
+              <th *ngIf="this.salesReport?.isUnit" class="tbl-th" style="text-align: center;width:100px;">
+                {{this.salesReport?.unitName?? 'Unit'}}
+              </th>
+             
+              <th *ngIf="this.salesReport?.isQuantity" class="tbl-th" style="text-align: right;width:150px;">
+                {{this.salesReport?.quantity?? 'Quantity'}}
+              </th>
+               <th *ngIf="this.salesReport?.isPrice" class="tbl-th" style="text-align: right;width:150px;">
+                {{this.salesReport?.priceName?? 'Price'}}
+              </th>
+              <th *ngIf="this.salesReport?.isDiscountRate" class="tbl-th" style="text-align: center;width:150px;">
+                {{this.salesReport?.discountRate?? 'Discount Rate'}}
+              </th>
+              <th *ngIf="this.salesReport?.isTaxRate" class="tbl-th" style="text-align: center;width:150px;">
+                {{this.salesReport?.taxRate?? (this._companyService.company?.vatLabel?? 'Vat Rate')}}
+              </th>
+              <th *ngIf="this.salesReport?.isDiscountAmount" class="tbl-th" style="text-align: right;width:150px;">
+                {{this.salesReport?.discountAmount?? 'Dis. Amt'}}
+              </th>
+            
+              <th *ngIf="this.salesReport?.isTaxAmount" class="tbl-th" style="text-align: right;width:150px;">
+                {{this.salesReport?.taxAmount?? 'Vat Amt'}}
+              </th>
+            
+              <th class="tbl-th" style="text-align: right;width:150px;">
+                {{this.salesReport?.lineTotal?? 'Total'}}
+              </th>
+            </tr>
+          </thead>
+    
+          <tbody class="table-body">
+            <tr *ngFor="let x of this._saleItemService.saleItemList; let i=index">
+              <td style="text-align: left">{{i + 1}}</td>
+              <td *ngIf="this.salesReport?.isProductName" style="text-align: left;">
+                <span>{{x.name ?? ''}},</span>
+                <span> {{x.productCode ?? ''}},</span>
+                <span>{{x.description ?? ''}}</span><br>
+                <span *ngIf="this.salesReport?.imeiInsideProduct">
+                  IMEI: {{x.imei?? ''}} Warranty: {{x.warrantyDate |date:"dd/MM/yyyy"}}
+                </span>
+              </td>
+              <td *ngIf="this.salesReport?.imeiByColumn">
+                {{x.imei?? ''}}
+              </td>
+              <td *ngIf="this.salesReport?.imeiByColumn">
+                {{x.warrantyDate |date:"dd/MM/yyyy"}}
+              </td>
+              <td *ngIf="this.salesReport?.isUnit" style="text-align: center;">
+                {{x.unitName?? ''}}
+              </td>
+          
+              <td *ngIf="this.salesReport?.isQuantity" style="text-align: right;">
+                <span>{{x.quantity | number:"1.2-2"}} </span>
+              </td>
+              <td *ngIf="this.salesReport?.isPrice" style="text-align: right;">
+                {{x.sellingPrice | number:"1.2-2"}}
+              </td>
+              <td *ngIf="this.salesReport?.isDiscountRate" style="text-align: center;">
+                {{x.discountRate?? ''}}
+              </td>
+              <td *ngIf="this.salesReport?.isTaxRate" style="text-align: center;">
+                {{x.productTax?? ''}}
+              </td>
+              <td *ngIf="this.salesReport?.isDiscountAmount" style="text-align: right;">
+                {{x.discountAmount | number:"1.2-2"}}
+              </td>
+          
+              <td *ngIf="this.salesReport?.isTaxAmount" style="text-align: right;">
+                {{x.taxAmount | number:"1.2-2"}}
+              </td>
+          
+              <td style="text-align: right;">
+                {{x.totalAmount | number:"1.2-2"}}
+              </td>
+          
+            </tr>
+          </tbody>
+          <ng-container>
+            <tr *ngIf="salesReport?.isSubTotal">
+              <!-- Big space for label -->
+              <td [attr.colspan]="totalVisibleColumns - 1" style="text-align: right; font-weight: 700; font-size: 13px;">
+                {{ salesReport?.subTotal ?? 'Sub Total' }}
+              </td>
+            
+              <!-- Last column (amount) -->
+              <td style="text-align: right;">
+                {{ _saleItemService.getTotalAmount() | number:'1.2-2' }}
+              </td>
+            </tr>
+            <tr *ngIf="salesReport?.isSubTotal">
+              <!-- Big space for label -->
+              <td [attr.colspan]="totalVisibleColumns - 1" style="text-align: right; font-weight: 700; font-size: 13px;">
+                Round
+              </td>
+            
+              <!-- Last column (amount) -->
+              <td style="text-align: right;">
+                {{ this._service.sale?.roundingAmount | number:'1.2-2' }}
+              </td>
+            </tr>
+            <tr *ngIf="salesReport?.isShippingCharge">
+              <!-- Big space for label -->
+              <td [attr.colspan]="totalVisibleColumns - 1" style="text-align: right; font-weight: 700; font-size: 13px;">
+                {{this.salesReport?.shippingChargeHeader?? 'Shipping Charge'}}
+              </td>
+            
+              <!-- Last column (amount) -->
+              <td style="text-align: right;">
+                {{this._service.sale?.shippingCharge? (this._service.sale?.shippingCharge | number:"1.2-2"):'0.00'}}
+              </td>
+            </tr>
+
+            
+            <tr *ngIf="this.salesReport?.isSalesDiscountRate">
+              
+              <td [attr.colspan]="totalVisibleColumns - 1" style="text-align: right;font-weight: 700;font-size:13px;">
+                {{this.salesReport?.isSalesDiscountAmount?? 'Discount'}}
+                <span>
+                  ({{this._service.sale?.discountAmount?? ''}})
+                </span>
+              </td>
+    
+              <td style="text-align: right;">
+                <span>(-)</span> 
+                {{this._service.sale?.saleDiscount | number:"1.2-2"}}
+                </td>
+            </tr>
+             <tr *ngIf="this.salesReport?.isSalesTaxRate">              
+              <td [attr.colspan]="totalVisibleColumns - 1" style="text-align: right;font-weight: 700;font-size:13px;">
+                {{this.salesReport?.salesTaxRate?? 'Tax'}}
+                <span>
+                  ({{this._service.sale?.saleTaxAmount?? ''}})
+                </span>
+              </td>
+    
+              <td style="text-align: right;">
+                (+) {{this._service.sale?.taxAmount | number:"1.2-2"}}</td>
+            </tr>
+            <tr *ngIf="this.salesReport?.isTotalPayable">
+              <td [attr.colspan]="totalVisibleColumns - 1" style="text-align: right;font-weight: 700;font-size:13px;">
+                {{this.salesReport?.totalPayable?? 'Net Amount'}}
+              </td>
+    
+              <td style="text-align: right;">
+                {{this._service.sale?.totalAmount |
+                number:"1.2-2"}}
+                </td>
+            </tr>
+            <tr *ngIf="this.salesReport?.isTotalPaid">
+              <td [attr.colspan]="totalVisibleColumns - 1" style="text-align: right;font-weight: 700;font-size:13px;">
+                {{this.salesReport?.totalPaid?? 'Total Paid'}}
+              </td>
+              <td style="text-align: right;">
+                {{this._service.sale?.totalPayment | number:"1.2-2"}}
+              </td>
+            </tr>
+            
+            <tr *ngIf="this.salesReport?.isPreviousDueAmount">
+              <td [attr.colspan]="totalVisibleColumns - 1" style="text-align: right;font-weight: 700;font-size:13px;">
+                {{this.salesReport?.previousDueAmount?? 'Previous Due'}}
+              </td>
+    
+              <td style="text-align: right;">
+                {{(this._service.previousDueAmount - this._service.currentDueAmount) | number:"1.2-2"}}
+              </td>
+            </tr>
+            <tr *ngIf="this.salesReport?.isCurrentDueAmount">
+              <td [attr.colspan]="totalVisibleColumns - 1" style="text-align: right;font-weight: 700;font-size:13px;">
+                {{this.salesReport?.currentDueAmount?? 'Current Due'}}
+              </td>
+              <td style="text-align: right;">
+                {{this._service.currentDueAmount | number:"1.2-2"}}
+              </td>
+            </tr>
+            <tr *ngIf="this.salesReport?.isTotalDueAmount">                  
+              <td [attr.colspan]="totalVisibleColumns - 1" style="text-align: right;font-weight: 700;font-size:13px;">
+                {{this.salesReport?.totalDueAmount?? 'Total Due'}}
+              </td>
+    
+              <td style="text-align: right;">
+                {{this._service.previousDueAmount | number:"1.2-2"}}
+              </td>
+            </tr>
+            <tr *ngIf="this.salesReport?.isInWordNetAmount" class="table-summery">
+              <td colspan="10" style="text-align: center;font-weight: 700;font-size:15px;">
+                {{this.netAmountTransform(this._service.sale?.totalAmount?? 0)}}
+              </td>
+            </tr>
+          </ng-container>
+        </table>
+        <div *ngIf="this.salesReport?.isPaidStatus" class="invoice-status"
+          [ngClass]="this._service.sale?.totalDue === 0? 'paid':'unpaid'">
+          {{this._service.sale?.totalDue === 0? this.salesReport?.paidStatusTitle: this.salesReport?.unpaidStatusTitle}}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="this.salesReport?.footerTitle" [innerHTML]="transformHtml(this.salesReport?.footerTitle)" class="invoice-signature-fromSettings" style="width: 100%;" >
+
+    </div>
+   
+    <div class="invoice-signature" style="width: 100%;" *ngIf="this.salesReport?.isShowingSignature && !this.salesReport?.footerTitle">
+      <div class="grid justify-content-between align-items-center">
+          <div class="col-5">
+            <p>Approved By</p>
+          </div>
+
+          <div class="col-5">
+           <p>Authorized By</p>
+          </div>
+         
+      </div>
+    </div>
+    <div class="footer-fixed">
+      <p>
+        Software By: <b>MySolution Bangladesh 01778-137027</b>
+      </p>
+    </div>
+</div>

@@ -11,6 +11,7 @@ import { ApplicationUserService } from 'src/app/components/user-management/appli
 import { CompanyDetailService } from 'src/app/components/application-services/company-detail.service';
 import { CustomerNotificationService } from 'src/app/components/application-services/customer-notification.service';
 import { CustomerService } from 'src/app/components/application-services/customer.service';
+import { ResetPasswordService } from 'src/app/components/user-management/reset-password/reset-password.service';
 
 
 @Component({
@@ -58,7 +59,8 @@ export class AppTopBarComponent implements OnInit {
     public translateService: TranslateService,
     private _sharedService: SharedService,
     public _notificationService:CustomerNotificationService,
-    private _customerService:CustomerService
+    private _customerService:CustomerService,
+     public _resetService:ResetPasswordService,
     
   ) {
     this.baseUrl = this.configService.apiBaseUrl;
@@ -84,7 +86,22 @@ export class AppTopBarComponent implements OnInit {
       this.GetByUserBrancesByUserId();
     };
   }
+  onDisplayResetPassward() {
+    this._resetService.Init();
+    this._resetService.afterResetId = null;
+    this._resetService.afterResetEmail = null;
+    this._resetService.afterResetPassword = null;
 
+    let token = JSON.parse(localStorage.getItem("Token"));
+    if(token){
+      this._resetService.userName = token.fullName;
+      this._resetService.form.patchValue({
+        id: token.id
+      });
+      this._resetService.displayModal = true;
+    }
+    
+  }
   GetAll(): void {
     let token = JSON.parse(localStorage.getItem("Token"));
     if (token) {
@@ -152,7 +169,7 @@ export class AppTopBarComponent implements OnInit {
   GetCustomerById(){
     let token = JSON.parse(localStorage.getItem("Token"));
     if(token){
-      this._customerService.GetCustomerProfileById(token.customerId).subscribe((response)=>{
+      this._customerService.GetById(token.customerId).subscribe((response)=>{
         if(response.statusCode === 200){
           this.customer = response.value;
          //this.translate.use(this.company?.language);

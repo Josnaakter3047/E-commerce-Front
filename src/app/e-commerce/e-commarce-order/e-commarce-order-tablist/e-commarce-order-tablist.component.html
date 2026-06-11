@@ -1,0 +1,35 @@
+<div class="grid grid-nogutter" style="width:100%">
+  <div class="p-fluid" style="width:100%">
+    <div class="col-12 m-0 p-0" style="width:100%;border-top:1px solid rgb(195, 194, 194);">
+      <p-tabView [activeIndex]="activeIndex" (onChange)="onTabChange($event)">
+        <p-tabPanel>
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+              <i class="pi pi-cog"></i>
+              <span class="font-bold white-space-nowrap m-0">
+                {{'Pending Order List' | translate}}
+              </span>
+            </div>
+          </ng-template>
+          <div class="content">
+            <app-e-commarce-order-list></app-e-commarce-order-list>
+          </div>
+        </p-tabPanel>
+        
+        <p-tabPanel>
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+              <i class="pi pi-book"></i>
+              <span class="font-bold white-space-nowrap m-0">
+                {{'Confirm Order List' | translate}}
+              </span>
+            </div>
+          </ng-template>
+          <div class="content">
+            <app-customer-order-list></app-customer-order-list>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </div>
+</div>
