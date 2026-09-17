@@ -1,0 +1,34 @@
+export class SoftwareGeneralSettingModel {
+ id?:string;
+ branchId:string;
+ isShowPurchaseReturnImei:boolean;
+ isShowSalesReturnImei:boolean;
+ isMaintainCreditLimit:boolean;
+ isRestrarant:boolean;
+ isAddPaxNumber:boolean;
+ isPrintCategoryWise:boolean;
+ isSalesWithNegativeStock:boolean;
+ isCreatePaymentDealerUser:boolean;
+ isProfitMargin:boolean;
+ isDisabledOverallDiscount:boolean;
+ orderTax?:string;
+ serviceCharge?:number;
+ profitMargin?:number;
+ configRoundAmount:number;
+ updatedById?:string;
+ createdById:string;
+ isShowingCostingPriceInSaleSearch:boolean;
+ isDefaultInCashForPosPayModal:boolean;
+ isDefaultInQantityAfterPosSearch:boolean;
+ isShowingStockQtyInPosSale:boolean;
+ isCalculateStockByParentProduct:boolean;
+ isOrderProcessing:boolean;
+ salesInvoiceFormate:string;
+ customerPaymentInvoiceFormate:string;
+ isShowInvoiceType:boolean;
+ isAutomobile:boolean;
+ isPrintAllItemAfterOrder:boolean;
+ weightBarcodePrefix:string;
+ isShowSoldByUsers:boolean;
+ isInvoiceNoStartOneByMonth:boolean;
+}

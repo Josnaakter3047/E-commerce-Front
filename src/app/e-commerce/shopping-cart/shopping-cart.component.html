@@ -16,31 +16,39 @@
           Your cart is empty.
         </div>
 
-        <div *ngFor="let item of _shoppingCartService.cartItems; let i = index"
-          class="cart-item flex items-center mb-3">
-          
-          <img *ngIf="item.image" [src]="_shoppingCartService.baseUrl + '/' + item.image"
-            alt="{{item.name}}" class="cart-img mr-2">
-          <img *ngIf="!item.image" src="assets/images/default-img.png"
-            alt="{{item.name}}" class="cart-img mr-2">
-
+        <div *ngFor="let item of _shoppingCartService.cartItems; let i = index" class="cart-item flex items-center mb-3">
+        
+          <img *ngIf="item.image" [src]="_shoppingCartService.baseUrl + '/' + item.image" alt="{{item.name}}"
+            class="cart-img mr-2">
+          <img *ngIf="!item.image" src="assets/images/default-img.png" alt="{{item.name}}" class="cart-img mr-2">
+        
           <div class="flex-grow product-info">
-            <h4 class="m-0 font-semibold">{{ item.name }} <span *ngIf="item?.description">- ({{ item?.description?? '' }})</span></h4>
-            <p class="m-0 text-gray-600">৳ {{ item.price }}</p>
-
+            <h4 class="m-0 font-semibold">{{ item.name }} <span *ngIf="item?.description">- ({{ item?.description?? ''
+                }})</span></h4>
+            <span *ngIf="item.discountRate > 0" class="product-discount">Off {{item.discountRate?? 0}}%</span>
+            <p class="m-0 text-gray-600">{{ item.price }}</p>
+        
             <div class="flex items-center">
-              <div class="flex items-center" style="background-color:#eae9e9; border:1px solid grey;">
-                <button pButton icon="pi pi-minus" class="p-button-sm  p-button-success"
-                  (click)="decreaseQty(i)"></button>
-                <div class="align-items-center justify-content-center p-1"
-                  style="border-left:1px solid grey; border-right:1px solid grey;">
-                  <span class="px-3">{{ item.quantity }}</span>
+              <div class="flex align-items-center justify-content-center">
+                <div class="flex align-items-center" style="background:rgb(181, 221, 181);">
+                  <button type="button" pButton icon="pi pi-minus" class="p-button-sm p-button-success"
+                    (click)="decreaseQty(item)"></button>
+                 
+                  <div class="align-items-center justify-content-center p-0 m-0">
+                    <input (focus)="selectInput($event)" type="number" min="0" 
+                      [ngModel]="getCartQty(item.productDetailId)"
+                      (blur)="updateQty(item, $event)" [ngModelOptions]="{standalone:true}" class="qty-input" pInputText 
+                      style="width:100px !important;"/>
+                  </div>
+        
+                  <button type="button" pButton icon="pi pi-plus" class="p-button-sm p-button-success"
+                    (click)="increaseQty(item)">
+                  </button>
                 </div>
-                <button pButton icon="pi pi-plus" class="p-button-sm  p-button-success"
-                  (click)="increaseQty(i)"></button>
+        
               </div>
               <button pButton icon="pi pi-trash" class="p-button-danger ml-2 p-button-outlined"
-                (click)="onRemoveItem(i)">
+                (click)="onRemoveItem(item)">
               </button>
             </div>
           </div>

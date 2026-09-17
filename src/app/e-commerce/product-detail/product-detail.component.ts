@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from 'src/app/components/application-services/product.service';
 import { MyApiService } from 'src/app/shared/my-api.service';
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { CustomerOrderService } from '../customer-order-list/customer-order.service';
@@ -8,6 +7,8 @@ import { CompanyDetailService } from 'src/app/components/application-services/co
 import { BranchService } from 'src/app/components/application-services/branch.service';
 import { CustomerService } from 'src/app/components/application-services/customer.service';
 import { SharedService } from 'src/app/shared/shared.service';
+import { EcommarceSettingsService } from 'src/app/components/application-services/ecommarce-settings.service';
+import { ProductService } from 'src/app/components/product/product.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -26,6 +27,7 @@ export class ProductDetailComponent implements OnInit {
   discountAmount:number = 0;
   branch:any;
   company:any;
+  settings: any;
   constructor(
     private _route: ActivatedRoute,
     private configService: MyApiService,
@@ -37,6 +39,7 @@ export class ProductDetailComponent implements OnInit {
     public _companyService:CompanyDetailService,
     private _sharedService:SharedService,
     private _customerService:CustomerService,
+    public _ecommarceService: EcommarceSettingsService,
   ) { 
     this.baseUrl = this.configService.apiBaseUrl;
     this.branchId = this.configService.apiBranchId;
@@ -45,12 +48,12 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.productId = this._route.snapshot.paramMap.get("id");
-    this.GetAllProduct();
     if(this.productId){
       this.GetProductById(this.productId);
     }
      if(this.branchId){
       this.GetBranchById();
+       this.GetEcommarceSettings();
     }
     if(this.companyId){
       this.GetCompany();
@@ -61,15 +64,40 @@ export class ProductDetailComponent implements OnInit {
       this._companyService.GetCompanyById(this.companyId).subscribe((response)=>{
       if(response.statusCode === 200){
         this.company = response.value;
+        this._companyService.company = response.value;
       }
       else{
         this.company = null;
+        this._companyService.company = null;
       }
      })
     }
     else{
        this.company = null;
+       this._companyService.company = null;
        console.log("Sorry company not found");
+    }
+  }
+  getWhatsAppNumber() {
+    const num = this.settings?.contactNumber || this.branch?.phoneNumber;
+    return num?.toString().replace(/\D/g, '');
+  }
+  
+  GetEcommarceSettings() {
+    if (this.branchId) {
+      this._ecommarceService.GetByBranchId(this.branchId).subscribe((response) => {
+        if (response.statusCode === 200 && response.value) {
+          this.settings = response.value;
+          //console.log(this.settings);
+
+        }
+        else {
+          this.settings = null;
+        }
+      })
+    }
+    else {
+      console.log("branch not found");
     }
   }
   GetBranchById(){
@@ -86,24 +114,6 @@ export class ProductDetailComponent implements OnInit {
     else{
        this.branch = null;
        console.log("Sorry branch not found");
-    }
-  }
-  GetAllProduct(){
-    if(this.branchId){
-      this._productService.GetAllProductsBranchId(this.branchId).subscribe(response=>{
-      if(response.statusCode === 200){
-        this.productList = response.value;
-       
-        //console.log(response.value);
-      }
-      else{
-        this.productList = null;
-      }
-      })
-    }
-    else{
-      this.productList = null;
-      console.log("Branch not found");
     }
   }
   
@@ -158,29 +168,6 @@ onRemoveItem(productDetailId: any) {
   this._shoppingCartService.removeItemByProductDetailId(productDetailId);
 }
 
-  // addToCart(product: any) {
-  //   const existing = this._shoppingCartService.cartItems.find(i => i.productDetailId === product.productDetailId);
-  //   if (existing) {
-  //     existing.quantity++;
-  //   } else {
-  //     this._shoppingCartService.cartItems.push({
-  //       productId: product.id,
-  //       name: product.name,
-  //       productDetailId:product.productDetailId,
-  //       price:product.discount?this.onCalculateDiscountedPrice(product.sellingPrice,product.discount): product.sellingPrice,
-  //       discountAmount:this.discountAmount,
-  //       discountRate:product.discount,
-  //       image: product.productImageUrl?? null,
-  //       quantity: 1
-  //     });
-  //   }
-  //   setTimeout(() => {
-  //     this._shoppingCartService.addCart();
-  //     this._shoppingCartService.showCart();
-      
-      
-  //   }, 200);
-  // }
   
   GetProductById(id:any){
     this._productService.GetProductDetailsById(id).subscribe((response)=>{

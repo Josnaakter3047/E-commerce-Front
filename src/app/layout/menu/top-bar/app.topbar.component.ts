@@ -287,9 +287,11 @@ export class AppTopBarComponent implements OnInit {
       this._companyService.GetCompanyById(token.companyId).subscribe((response) => {
         if (response.statusCode === 200) {
           this.company = response.value;
+           this._companyService.company = response.value;
         }
         else {
           this.company = null;
+           this._companyService.company = null;
         }
       })
     }

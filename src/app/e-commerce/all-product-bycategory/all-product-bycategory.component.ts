@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MyApiService } from 'src/app/shared/my-api.service';
-import { ProductService } from 'src/app/components/application-services/product.service';
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { CategoryService } from 'src/app/components/application-services/item-category.service';
 import { BrandService } from 'src/app/components/application-services/item-brand.service';
+import { CompanyDetailService } from 'src/app/components/application-services/company-detail.service';
+import { ProductService } from 'src/app/components/product/product.service';
+import { SoftwareGeneralSettingService } from 'src/app/components/software-general-settings/general-settings.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-all-product-bycategory',
@@ -25,72 +28,201 @@ export class AllProductBycategoryComponent implements OnInit {
   typeName:any;
   categories:any;
   brands:any;
+  isProductLoading = false;
+  generalSettings: any;
   constructor(
     public _productService:ProductService,
     public _categoryService:CategoryService,
     public _brandService:BrandService,
     private configService: MyApiService,
     public _shoppingCartService:ShoppingCartService,
-    private _route:ActivatedRoute
+    private _route:ActivatedRoute,
+    public _companyService:CompanyDetailService,
+    public _generalSettingService: SoftwareGeneralSettingService,
+    private _sharedService:SharedService
   ) { 
     this.baseUrl = this.configService.apiBaseUrl;
     this.branchId = this.configService.apiBranchId;
     this.companyId = this.configService.apiCompanyId;
   }
-
+  
   ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
       const type = params.get('type');
       this.typeId = params.get('id')!;
       this.typeName = params.get('name')!;
-      // if (type === 'category') {
-      //   this.GetAllProductByCategoryId(id);
-      // }
-      // if (type === 'brand') {
-      //   this.GetAllProductByBrandId(id);
-        
-      // }
     });
     this.GetFeaturedOptions();
     this.GetAllCategories();
     this.GetAllBrands();
+    this.GetCompany();
+     this.GetSoftwareSettingByBranch();
   }
-
-  GetAllProductByCategoryId(cagoryId:any){
+   trackByProduct(index: number, item: any) {
+    return item.productDetailId; // or item.id
+  }
+   GetCompany(){
     if(this.companyId){
-      this._productService.GetAllProductByBranchIdAndCategory(this.companyId, cagoryId).subscribe(response=>{
-      if(response.statusCode === 200){
-        this.allProducts = response.value || [];
-        this._productService.productList = [...this.allProducts];
-       
-        //console.log(response.value);
+      this._companyService.GetCompanyById(this.companyId).subscribe(response=>{
+        if(response.statusCode === 200){
+          this._companyService.company = response.value;
+        }
+        else{
+          this._companyService.company = null;
+        }
+      })
+    }
+  }
+  GetSoftwareSettingByBranch() {
+    if (this.branchId) {
+      this._generalSettingService.GetByBranchId(this.branchId).subscribe((response) => {
+        if (response.statusCode === 200) {
+          this.generalSettings = response.value;
+        }
+        else {
+          this.generalSettings = null;
+        }
+      })
+    }
+    else {
+      this.generalSettings = null;
+    }
+
+  }
+  GetAllProductByCategoryId(cagoryId:any){
+    if(this.companyId && cagoryId){
+      const model = {
+        companyId:this.companyId,
+        branchId:this.branchId,
+        brandId:null,
+        categoryId:cagoryId
       }
-      else{
-        this._productService.productList = [];
-      }
-    })
+      this._productService.GetAllProductForCustomerShopping(model).subscribe({
+        next: (response) => {
+          if (response.statusCode === 200) {
+            this._productService.productList  = response.value.map(product => ({
+              ...product,
+              discountedPrice: this.onCalculateDiscountedPrice(
+                product.sellingPrice,
+                product.discount
+              ),
+              quantity: this.getCartQty(product.productDetailId)
+            }));
+
+            this.totalProducts = response.totalRecords || 0;
+
+          } else {
+            this._productService.productList  = [];
+            this.totalProducts = 0;
+          }
+
+          this.isProductLoading = false;
+        },
+
+        error: (error) => {
+          console.error("Error loading products:", error);
+          this._productService.productList  = [];
+          this.totalProducts = 0;
+
+          this.isProductLoading = false;
+        }
+      });
     }
     else{
-      this._productService.productList= null;
+      this._productService.productList  = [];
+      this.totalProducts = 0;
+      this.isProductLoading = false;
       console.log("Company not found");
     }
   }
+  onSearch(){
+    if (this.branchId && this.companyId) {
+      this.isProductLoading = true;
+      const searchinput = this.searchText.trim();
+      const model = {
+        companyId: this.companyId,
+        branchId: this.branchId,
+        search: searchinput,
+        categoryId: null,
+        brandId: null,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      };
+      this._productService.GetAllProductForCustomerShopping(model).subscribe({
+        next: (response) => {
+          if (response.statusCode === 200) {
+            this.productList = response.value.map(product => ({
+              ...product,
+              discountedPrice: this.onCalculateDiscountedPrice(
+                product.sellingPrice,
+                product.discount
+              ),
+              quantity: this.getCartQty(product.productDetailId)
+            }));
+
+            this.totalProducts = response.totalRecords || 0;
+
+          } else {
+            this.productList = [];
+            this.totalProducts = 0;
+          }
+
+          this.isProductLoading = false;
+        },
+
+        error: (error) => {
+          console.error("Error loading products:", error);
+          this.productList = [];
+          this.totalProducts = 0;
+
+          this.isProductLoading = false;
+        }
+      });
+    }
+  }
   GetAllProductByBrandId(brandId:any){
+     const model = {
+        companyId:this.companyId,
+        branchId:this.branchId,
+        brandId:brandId,
+        categoryId:null
+      }
     if(this.companyId){
-      this._productService.GetAllProductByBranchIdAndBrandId(this.companyId, brandId).subscribe(response=>{
-      if(response.statusCode === 200){
-        this.allProducts = response.value || [];
-        this._productService.productList = [...this.allProducts];
-       
-        //console.log(response.value);
-      }
-      else{
-        this._productService.productList = [];
-      }
-    })
+     this._productService.GetAllProductForCustomerShopping(model).subscribe({
+        next: (response) => {
+          if (response.statusCode === 200) {
+            this._productService.productList  = response.value.map(product => ({
+              ...product,
+              discountedPrice: this.onCalculateDiscountedPrice(
+                product.sellingPrice,
+                product.discount
+              ),
+              quantity: this.getCartQty(product.productDetailId)
+            }));
+
+            this.totalProducts = response.totalRecords || 0;
+
+          } else {
+            this._productService.productList  = [];
+            this.totalProducts = 0;
+          }
+
+          this.isProductLoading = false;
+        },
+
+        error: (error) => {
+          console.error("Error loading products:", error);
+          this._productService.productList  = [];
+          this.totalProducts = 0;
+
+          this.isProductLoading = false;
+        }
+      });
     }
     else{
       this._productService.productList = null;
+      this.isProductLoading = false;
+       this.totalProducts = 0;
       console.log("Company not found");
     }
   }
@@ -135,38 +267,152 @@ export class AllProductBycategoryComponent implements OnInit {
     //this._shoppingCartService.showCart();
   }
 
-  increaseQty(product: any) {
-  const existing = this._shoppingCartService.cartItems.find(
-    i => i.productDetailId === product.productDetailId
-  );
+  updateQty(product: any, event: any) {
+    let qty = Number(event.target.value);
 
-  if (existing) {
-    existing.quantity++;
-  } else {
-    this._shoppingCartService.addProductToCart(product);
-  }
-  this._shoppingCartService.saveCart();
-}
+    // Allow selling exactly the available stock
+    if (this.generalSettings?.isSalesWithNegativeStock && qty > product.stockQty) {
+      this._sharedService.showWarn("Stock limit exceeded");
 
-decreaseQty(product: any) {
-  const existing = this._shoppingCartService.cartItems.find(
-    i => i.productDetailId === product.productDetailId
-  );
+      // Reset input to previous/current valid quantity
+      const existing = this._shoppingCartService.cartItems.find(
+        x => x.productDetailId === product.productDetailId
+      );
 
-  if (existing) {
-    if (existing.quantity > 1) {
-      existing.quantity--;
+      event.target.value = existing?.quantity ?? 0;
+
+      return;
+    }
+
+    const existing = this._shoppingCartService.cartItems.find(
+      x => x.productDetailId === product.productDetailId
+    );
+
+    if (qty <= 0) {
+      if (existing) {
+        this._shoppingCartService.removeItemByProductDetailId(
+          product.productDetailId
+        );
+      }
+
+      this._shoppingCartService.saveCart();
+      return;
+    }
+
+    if (existing) {
+      existing.quantity = qty;
     } else {
-      this._shoppingCartService.removeItemByProductDetailId(product.productDetailId);
+      product.quantity = qty;
+      this._shoppingCartService.addProductToCart(product);
+    }
+
+    this._shoppingCartService.saveCart();
+  }
+  increaseQty(product: any) {
+    const existing = this._shoppingCartService.cartItems.find(
+      i => i.productDetailId === product.productDetailId
+    );
+
+    if (existing) {
+      if (this.generalSettings?.isSalesWithNegativeStock && existing.quantity >= product.stockQty) {
+        this._sharedService.showWarn("Stock limit exceeded");
+        return;
+      }
+      existing.quantity++;
+      product.quantity = existing.quantity;
+    } else {
+      if (this.generalSettings?.isSalesWithNegativeStock && product.stockQty <= 0) {
+        this._sharedService.showWarn("Your stock is not available");
+        return;
+      }
+      this._shoppingCartService.addProductToCart(product);
     }
     this._shoppingCartService.saveCart();
   }
-}
 
-getCartQty(productDetailId: any): number {
-  const existing = this._shoppingCartService.cartItems.find(i => i.productDetailId === productDetailId);
-  return existing ? existing.quantity : 0;
-}
+  decreaseQty(product: any) {
+    const existing = this._shoppingCartService.cartItems.find(
+      i => i.productDetailId === product.productDetailId
+    );
+
+    if (existing) {
+      if (existing.quantity > 1) {
+        existing.quantity--;
+        product.quantity = existing.quantity;
+      } else {
+        this._shoppingCartService.removeItemByProductDetailId(product.productDetailId);
+      }
+      this._shoppingCartService.saveCart();
+    }
+  }
+  pageNumber = 1;
+  pageSize = 100;
+  totalProducts = 0;
+  searchText:any;
+  GetAllProduct() {
+    if (this.branchId && this.companyId) {
+      this.isProductLoading = true;
+      const model = {
+        companyId: this.companyId,
+        branchId: this.branchId,
+        search: '',
+        categoryId: null,
+        brandId: null,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      };
+      this._productService.GetAllProductForCustomerShopping(model).subscribe({
+        next: (response) => {
+          if (response.statusCode === 200) {
+            this.productList = response.value.map(product => ({
+              ...product,
+              discountedPrice: this.onCalculateDiscountedPrice(
+                product.sellingPrice,
+                product.discount
+              ),
+              quantity: this.getCartQty(product.productDetailId)
+            }));
+
+            this.totalProducts = response.totalRecords || 0;
+
+          } else {
+            this.productList = [];
+            this.totalProducts = 0;
+          }
+
+          this.isProductLoading = false;
+        },
+
+        error: (error) => {
+          console.error("Error loading products:", error);
+          this.productList = [];
+          this.totalProducts = 0;
+
+          this.isProductLoading = false;
+        }
+      });
+    }
+    else {
+      this.productList = [];
+      this.totalProducts = 0;
+      console.log("Company not found");
+      this.isProductLoading = false;
+    }
+  }
+   onPageChange(event: any) {
+    this.pageNumber = event.page + 1,
+    this.pageSize = event.rows
+    this.GetAllProduct();
+  }
+  selectInput(event: any) {
+    setTimeout(() => {
+      event.target.select();
+    });
+  }
+  getCartQty(productDetailId: any): number {
+    const existing = this._shoppingCartService.cartItems.find(i => i.productDetailId === productDetailId);
+    return existing ? existing.quantity : 0;
+  }
 
 onRemoveItem(productDetailId: any) {
   this._shoppingCartService.removeItemByProductDetailId(productDetailId);

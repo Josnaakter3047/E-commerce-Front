@@ -388,6 +388,7 @@ export class CustomerOrderListComponent implements OnInit {
         }
         else {
           this.company = null;
+           this._companyService.company = null;
         }
       })
     }

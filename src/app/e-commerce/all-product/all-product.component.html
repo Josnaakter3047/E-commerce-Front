@@ -1,59 +1,100 @@
-<div class="grid p-0 m-0" style="width: 100%;">
-    <div class="col-12 product-title mb-5" style="width: 100%;">
-        <h2 class="mb-0 text-center">ALL PRODUCT</h2>
+
+<div *ngIf="isProductLoading" class="product-loading">
+    <i class="pi pi-spin pi-spinner"></i>
+    <span>Loading products...</span>
+</div>
+
+<div *ngIf="!isProductLoading" class="desktop-view" style="width: 100%;">
+    <div class="col-12 all-product-header">
+        <h2 class="product-title">ALL PRODUCTS</h2>
+
+        <div class="product-search">
+            <div class="search-input-wrapper">
+                <i class="pi pi-search"></i>
+
+                <input type="text" pInputText [(ngModel)]="searchText" placeholder="Search products..."
+                    (keyup.enter)="onSearch()" />
+            </div>
+
+            <button [disabled]="isProductLoading" pButton pRipple type="button" (click)="onSearch()" 
+            label="{{isProductLoading? 'Wait':'Load'}}">
+            </button>
+        </div>
     </div>
-    <div class="p-fluid product-container" style="width: 100%;">
-        <div class="grid">
-            <div class="col-2 product-col" *ngFor="let product of productList; let i = index;">
-                <div class="card h-full flex flex-column shadow-2 product-card">
-                    <a routerLink="/product-detail/{{product.id}}">
-                        <div class="image-wrapper">
-                            <img draggable="false" *ngIf="product?.productImageUrl" src="{{baseUrl}}/{{ product.productImageUrl }}"
-                                alt="{{ product.name }}">
-                            <img draggable="false" *ngIf="!product?.productImageUrl" src="assets/images/default-img.png"
-                                alt="{{ product.name }}">
-                            <span *ngIf="product?.discount > 0" class="product-discount">Off {{product?.discount?? 0}}%</span>
+    <div class="grid mt-2" style="width: 100%;">
+        <div class="col-2 product-col" *ngFor="let product of productList; let i = index;trackBy: trackByProduct">
+            <div class="card h-full flex flex-column shadow-2 product-card">
+                <a routerLink="/product-detail/{{product.id}}">
+                    <div class="image-wrapper">
+                        <img loading="lazy" draggable="false" *ngIf="product.productImageUrl"
+                            src="{{baseUrl}}/{{ product.productImageUrl }}" alt="{{ product.name }}">
+                        <img loading="lazy" draggable="false" *ngIf="!product.productImageUrl"
+                            src="assets/images/default-img.png" alt="{{ product.name }}">
+                        <span *ngIf="product?.discount > 0" class="product-discount">Off {{product?.discount}}%</span>
+                    </div>
+                </a>
+
+                <div class="py-2 flex flex-column justify-between flex-grow-1">
+                    <div class="align-items-center text-center p-0 m-0">
+                        <div class="product-name p-0 m-0">
+                            <p class="p-0 m-0 productname">
+                                {{ product.name }}<span *ngIf="product?.description">, {{ product?.description?? ''
+                                    }}</span>
+                                ({{ product.productCode?? '' }})
+                            </p>
+
+                            <p class="p-0 m-0 brand" *ngIf="product?.brandName">
+                                <span *ngIf="product?.brandName">Brand: {{ product?.brandName?? '' }}</span>
+                            </p>
+
+                            <p class="p-0 m-0 brand" *ngIf="product?.categoryName">
+                                <span *ngIf="product?.categoryName">Category: {{ product?.categoryName?? '' }}</span>
+                            </p>
                         </div>
-                    </a>
-                 
-                    <div class="p-3 flex flex-column justify-between flex-grow-1">
-                        <div class="align-items-center text-center">
-                            <a class="product-name m-0" routerLink="/product-detail/{{product.id}}">
-                                {{ product.name }}
-                                <span *ngIf="product?.description">- ({{ product?.description?? '' }})</span>
-                            </a>
-                            <div class="product-price">
-                                <p *ngIf="!product.discount">৳ {{ product.sellingPrice | number:"1.2-2" }}</p>
-                                <p *ngIf="product.discount">
-                                    <span>৳ {{ onCalculateDiscountedPrice(product.sellingPrice, product.discount) | number:"1.2-2" }}</span>
-                                    <span style="text-decoration: line-through;padding-left:15px;">৳ {{ product.sellingPrice | number:"1.2-2" }}</span>
-                                </p>
-                            </div>
-                            
+                        <div class="product-price">
+                            <p class="actual-price" *ngIf="!product.discount">
+                                {{this._companyService.company?.currency?.symbol?? 'BDT'}} {{ product.sellingPrice |
+                                number:"1.2-2" }}</p>
+                            <p *ngIf="product.discount">
+                                <span class="actual-price">
+                                    {{this._companyService.company?.currency?.symbol?? 'BDT'}} {{
+                                    product.discountedPrice |
+                                    number:'1.2-2' }}
+                                </span>
+                                <span class="discounted-price" style="text-decoration: line-through;padding-left:15px;">
+                                    {{this._companyService.company?.currency?.symbol?? 'BDT'}} {{ product.sellingPrice |
+                                    number:"1.2-2" }}
+                                </span>
+                            </p>
                         </div>
-                        <div class="mt-auto ml-auto mr-auto">
-                            <div class="product-stock">
-                                <p>
-                                    <p-badge value="{{product?.stockQty > 0? 'Available':'Stock Out'}}"
+                    </div>
+                    <div class="mt-auto ml-auto mr-auto">
+                        <div class="product-stock">
+                            <p>
+                                <p-badge value="{{product?.stockQty > 0? 'Available':'Stock Out'}}"
                                     severity="{{product?.stockQty > 0? 'success':'danger'}}"></p-badge>
-                                </p>
+                                <!-- <span>{{product?.stockQty?? ''}}</span> -->
+                            </p>
+                            <!-- <p>Costing: {{product?.actualCost | number:"1.2-2"}}</p> -->
+                        </div>
+                        <div class="flex align-items-center">
+                            <div class="flex items-center" style="background:rgb(181, 221, 181);">
+                                <button pButton icon="pi pi-minus" class="p-button-sm p-button-success"
+                                    (click)="decreaseQty(product)" style="width:fit-content;">
+                                </button>
+                                <!-- <div class="align-items-center justify-content-center p-1" style="color:#000;font-weight:600;">
+                                        <span class="px-2"> {{ getCartQty(product.productDetailId) }}</span>
+                                    </div> -->
+                                <input type="number" min="0" [ngModel]="getCartQty(product.productDetailId)"
+                                    (blur)="updateQty(product, $event)" class="qty-input" pInputText
+                                    (focus)="selectInput($event)" />
+
+                                <button pButton icon="pi pi-plus" class="p-button-sm p-button-success"
+                                    (click)="increaseQty(product)" style="width:fit-content;">
+                                </button>
                             </div>
-                            <div class="flex align-items-center">
-                                <div class="flex items-center" style="background-color:#eae9e9; border:1px solid grey;">
-                                    <button pButton icon="pi pi-minus" 
-                                    class="p-button-sm p-button-success"
-                                        (click)="decreaseQty(product)"></button>
-                                    <div class="align-items-center justify-content-center p-1"
-                                        style="border-left:1px solid grey; border-right:1px solid grey;">
-                                        <span class="px-3"> {{ getCartQty(product?.productDetailId) }}</span>
-                                    </div>
-                                    <button pButton icon="pi pi-plus" 
-                                    class="p-button-sm  p-button-success"
-                                        (click)="increaseQty(product)"></button>
-                                </div>
-                                <!-- <button pButton icon="pi pi-trash" class="p-button-danger ml-2 p-button-outlined" (click)="onRemoveItem(i)">
-                                </button> -->
-                            </div>
+                            <!-- <button pButton icon="pi pi-trash" class="p-button-danger ml-2 p-button-outlined" (click)="onRemoveItem(i)">
+                                    </button> -->
                         </div>
                     </div>
                 </div>
@@ -62,3 +103,109 @@
     </div>
 </div>
 
+<div *ngIf="!isProductLoading" class="mobile-view">
+    <div class="col-12 all-product-header">
+        <h2 class="product-title">ALL PRODUCTS</h2>
+
+        <div class="product-search">
+            <div class="search-input-wrapper">
+                <i class="pi pi-search"></i>
+
+                <input type="text" pInputText [(ngModel)]="searchText" placeholder="Search products..."
+                    (keyup.enter)="onSearch()" />
+            </div>
+
+            <button [disabled]="isProductLoading" pButton pRipple type="button" (click)="onSearch()" 
+            label="{{isProductLoading? 'Wait':'Load'}}">
+            </button>
+        </div>
+    </div>
+    <div class="product-card" *ngFor="let product of productList; let i = index;trackBy: trackByProduct">
+        <div class="image-wrapper">
+            <img loading="lazy" *ngIf="product.productImageUrl" draggable="false"
+                src="{{baseUrl}}/{{ product.productImageUrl }}" alt="Product">
+            <img loading="lazy" draggable="false" *ngIf="!product.productImageUrl" src="assets/images/default-img.png"
+                alt="">
+            <span *ngIf="product?.discount > 0" class="product-discount">Off {{product?.discount}}%</span>
+        </div>
+
+        <div class="product-details">
+            <div class="product-info">
+                <p class="product-name p-0 m-0">{{ product.name }}<span *ngIf="product?.description">, {{
+                        product?.description?? '' }}</span> ({{ product.productCode?? '' }})</p>
+                <p class="p-0 m-0 brand" *ngIf="product?.brandName">
+                    <span *ngIf="product?.brandName">Brand: {{ product?.brandName?? '' }}</span>
+                </p>
+
+                <p class="p-0 m-0 brand" *ngIf="product?.categoryName">
+                    <span *ngIf="product?.categoryName">Category: {{ product?.categoryName?? '' }}</span>
+                </p>
+            </div>
+            <div class="product-price">
+                <ng-container *ngIf="product.discount > 0; else normalPrice">
+                    <span class="actual-price">
+                        <span class="price-symbol">
+                            {{_companyService.company?.currency?.symbol}}
+                        </span>
+                        {{ onCalculateDiscountedPrice(product.sellingPrice, product.discount) | number:'1.2-2' }}
+                    </span>
+
+                    <span class="discounted-price">
+                        <span class="price-symbol">
+                            {{_companyService.company?.currency?.symbol}}
+                        </span>
+                        {{ product.sellingPrice | number:'1.2-2' }}
+                    </span>
+
+                </ng-container>
+
+                <ng-template #normalPrice>
+                    <span class="actual-price">
+                        <span class="price-symbol">
+                            {{_companyService.company?.currency?.symbol}}
+                        </span>
+                        {{ product.sellingPrice | number:'1.2-2' }}
+                    </span>
+                </ng-template>
+
+            </div>
+            <div class="stock-status">
+                <p-badge value="{{product?.stockQty > 0? 'Available':'Stock Out'}}"
+                    severity="{{product?.stockQty > 0? 'success':'danger'}}">
+                </p-badge>
+            </div>
+            <div class="product-action">
+                <div class="flex items-center cart-qty-content">
+                    <button type="button" pButton icon="pi pi-minus" class="p-button-sm p-button-success"
+                        (click)="decreaseQty(product)" style="width:fit-content;">
+                    </button>
+
+                    <div class="p-0 m-0">
+                        <input type="number" min="0" (focus)="selectInput($event)"
+                            [ngModel]="getCartQty(product.productDetailId)" (blur)="updateQty(product, $event)"
+                            class="qty-input" pInputText />
+                    </div>
+
+                    <button type="button" pButton icon="pi pi-plus" class="p-button-sm p-button-success"
+                        (click)="increaseQty(product)" style="width:fit-content;">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="product-paginator-wrapper" *ngIf="totalProducts > 0">
+    <p-paginator [first]="(pageNumber - 1) * pageSize" [rows]="pageSize" [totalRecords]="totalProducts"
+        (onPageChange)="onPageChange($event)" [rowsPerPageOptions]="[100, 200, 300, 500]"
+        styleClass="product-paginator">
+    </p-paginator>
+
+</div>
+
+<!-- Empty -->
+<div *ngIf="!isProductLoading && (productList?.length === 0)" class="no-products">
+    <i class="pi pi-inbox"></i>
+    <span>No products found</span>
+</div>

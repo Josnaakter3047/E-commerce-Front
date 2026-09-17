@@ -27,11 +27,17 @@ export class TopContactInfoComponent implements OnInit {
       this.GetEcommarceSettings();
     }
   }
-   GetEcommarceSettings() {
+  getWhatsAppNumber() {
+    const num = this.settings?.contactNumber || this.branch?.phoneNumber;
+    return num?.toString().replace(/\D/g, '');
+  }
+
+  GetEcommarceSettings() {
     if (this.branchId) {
       this._ecommarceService.GetByBranchId(this.branchId).subscribe((response) => {
         if (response.statusCode === 200 && response.value) {
           this.settings = response.value;
+          //console.log(this.settings);
 
         }
         else {

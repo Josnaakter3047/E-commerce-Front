@@ -127,6 +127,7 @@ import { SalesDetailsComponent } from './components/sales-details/sales-details.
 import { QuotationSalePrintPdfComponent } from './components/quotation-sale-print-pdf/quotation-sale-print-pdf.component';
 import { AddOrderConfirmationComponent } from './components/add-order-confirmation/add-order-confirmation.component';
 import { SalePrintPdfComponent } from './components/sale-print-pdf/sale-print-pdf.component';
+import { SpacialOfferProductComponent } from './e-commerce/spacial-offer-products/spacial-offer-products.component';
 
 
 export function initializeApp(appConfigService: MyApiService) {
@@ -209,7 +210,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SalesDetailsComponent,
     QuotationSalePrintPdfComponent,
     AddOrderConfirmationComponent,
-    SalePrintPdfComponent
+    SalePrintPdfComponent,
+    SpacialOfferProductComponent
   ],
 
   imports: [

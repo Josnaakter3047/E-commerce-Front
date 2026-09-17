@@ -80,9 +80,11 @@ export class AppComponent implements OnInit {
     this._companyService.GetCompanyById(this.companyId).subscribe(response=>{
       if(response.statusCode === 200){
         this.company = response.value;
+        this._companyService.company = response.value;
       }
       else{
         this.company = null;
+        this._companyService.company = null;
       }
     })
   }

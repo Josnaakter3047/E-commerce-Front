@@ -102,17 +102,24 @@ export class SidebarMenuComponent implements OnInit {
       this._companyService.GetCompanyById(token.companyId).subscribe((response)=>{
       if(response.statusCode === 200){
         this.company = response.value;
+        this._companyService.company = response.value;
         this.vatLabel = this.company?.vatLabel?(this.company?.vatLabel + ' Report'):"Vat Report";
         this.vatGroupLabel = this.company?.vatLabel?(this.company?.vatLabel + ' Group'):"Vat Group";
       }
       else{
         this.company = null;
+        this.vatLabel = null;
+        this.vatGroupLabel = null;
+        this._companyService.company = null;
       }
     })
     }
     else{
       console.log("Company Id not found!!");
       this.company = null;
+      this.vatLabel = null;
+      this.vatGroupLabel = null;
+      this._companyService.company = null;
     }
   }
   GetAllMenu(){

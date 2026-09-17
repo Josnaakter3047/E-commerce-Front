@@ -1,0 +1,169 @@
+<!-- <div class="grid align-items-center" style="width:100%;" *ngIf="offerList?.length == 0">
+    <div class="col-12">
+        <div class="not-offer">
+            <i class="pi pi-tags empty-icon"></i>
+            <h3>No Spacial Offers Available</h3>
+            <p>
+                All available offers will appear here. There are no active offers at the moment.
+                Please check back later.
+            </p>
+        </div>
+    </div>
+</div> -->
+
+<div class="grid offer-list" style="width:100%;" *ngIf="offerList?.length > 0">
+    <div class="col-4" *ngFor="let offer of offerList">
+        <div class="offer-card">
+            <div class="offer-header">
+                <div class="offer-title">
+                    🎁 {{offer.offerName}}
+                </div>
+
+                <!-- <span class="offer-category">
+                    {{offer.category?.name?? ''}}
+                </span> -->
+            </div>
+
+            <div class="offer-note" *ngIf="offer.note">
+                {{offer.note}}
+            </div>
+
+            <div class="offer-footer">
+                <div class="offer-date">
+                    <i class="pi pi-calendar"></i>
+                    {{offer.startDate | date:'dd MMM yyyy'}}
+                    -
+                    {{offer.endDate | date:'dd MMM yyyy'}}
+                </div>
+                <span class="offer-status active">
+                    Active
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="desktop-view" style="width: 100%;">
+     <div class="grid" style="width: 100%;">
+        <div class="col-2 product-col" *ngFor="let product of filteredProducts; let i = index;">
+            <div class="card h-full flex flex-column shadow-2 product-card">
+                <a routerLink="/product-detail/{{product.id}}">
+                    <div class="image-wrapper">
+                        <img draggable="false" *ngIf="product.productImageUrl"
+                            src="{{baseUrl}}/{{ product.productImageUrl }}" alt="{{ product.name }}">
+                        <img draggable="false" *ngIf="!product.productImageUrl" src="assets/images/default-img.png"
+                            alt="{{ product.name }}">
+                        <span *ngIf="product?.discount > 0" class="product-discount">Off {{product?.discount}}%</span>
+                    </div>
+                </a>
+
+                <div class="py-2 m-0 flex flex-column justify-between flex-grow-1">
+                    <div class="align-items-center text-center p-0 m-0">
+                        <div class="product-name p-0 m-0">
+                            <p>{{ product.name }} ({{ product.productCode?? '' }})</p>
+                            <p class="description" *ngIf="product?.description">{{ product?.description?? '' }}</p>
+                        </div>
+                        <div class="product-price p-0 m-0">
+                            <p class="actual-price" *ngIf="!product.discount">
+                                {{this._companyService.company?.currency?.symbol?? 'BDT'}} {{ product.sellingPrice | number:"1.2-2" }}
+                            </p>
+                            <span *ngIf="product.discount" class="actual-price"> {{this._companyService.company?.currency?.symbol?? 'BDT'}} {{ onCalculateDiscountedPrice(product.sellingPrice, product.discount) | number:"1.2-2" }}</span>
+                            <span *ngIf="product.discount" class="discounted-price">{{this._companyService.company?.currency?.symbol?? 'BDT'}} {{ product.sellingPrice | number:"1.2-2" }}</span>
+                        </div>
+                    </div>
+                    <div class="mt-auto ml-auto mr-auto">
+                        <div class="product-stock">
+                            <p>
+                                <p-badge value="{{product?.stockQty > 0? 'Available':'Stock Out'}}"
+                                    severity="{{product?.stockQty > 0? 'success':'danger'}}"></p-badge>
+                                <!-- <span>{{product?.stockQty?? ''}}</span> -->
+                            </p>
+                            <!-- <p>Costing: {{product?.actualCost | number:"1.2-2"}}</p> -->
+                        </div>
+                        <div class="flex align-items-center">
+                            <div class="flex items-center" style="background:rgb(181, 221, 181);">
+                                <button pButton icon="pi pi-minus" class="p-button-sm p-button-success"
+                                    (click)="decreaseQty(product)" style="width:fit-content;">
+                                </button>
+                                <div class="align-items-center justify-content-center p-1" style="color:#000;font-weight:600;">
+                                    <span class="px-2"> {{ getCartQty(product.productDetailId) }}</span>
+                                </div>
+                                <button pButton icon="pi pi-plus" class="p-button-sm p-button-success"
+                                    (click)="increaseQty(product)" style="width:fit-content;">
+                                </button>
+                            </div>
+                            <!-- <button pButton icon="pi pi-trash" class="p-button-danger ml-2 p-button-outlined" (click)="onRemoveItem(i)">
+                                </button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-view">
+    <div class="product-card" *ngFor="let product of filteredProducts; let i = index;">
+        <div class="image-wrapper">
+            <img *ngIf="product.productImageUrl" draggable="false" src="{{baseUrl}}/{{ product.productImageUrl }}"
+                alt="Product">
+            <img draggable="false" *ngIf="!product.productImageUrl" src="assets/images/default-img.png" alt="">
+            <span *ngIf="product?.discount > 0" class="product-discount">Off {{product?.discount}}%</span>
+        </div>
+
+        <div class="product-details">
+            <div class="product-name">
+                <span>{{ product.name }} ({{ product.productCode?? '' }})</span>
+            </div>
+            <div class="product-description" *ngIf="product?.description">
+                {{ product?.description?? '' }}
+            </div>
+            <div class="product-price">
+                <ng-container *ngIf="product.discount > 0; else normalPrice">
+                    <span class="discounted-price">
+                        <span class="price-symbol">
+                            {{_companyService.company?.currency?.symbol}}
+                        </span>
+                        {{ onCalculateDiscountedPrice(product.sellingPrice, product.discount) | number:'1.2-2' }}
+                    </span>
+
+                    <span class="actual-price">
+                        <span class="price-symbol">
+                            {{_companyService.company?.currency?.symbol}}
+                        </span>
+                        {{ product.sellingPrice | number:'1.2-2' }}
+                    </span>
+
+                </ng-container>
+
+                <ng-template #normalPrice>
+                    <span class="discounted-price">
+                        <span class="price-symbol">
+                            {{_companyService.company?.currency?.symbol}}
+                        </span>
+                        {{ product.sellingPrice | number:'1.2-2' }}
+                    </span>
+                </ng-template>
+
+            </div>
+            
+        </div>
+
+        <div class="product-action">
+            <!-- <button pButton icon="pi pi-shopping-cart" class="p-button-sm" (click)="addToCart(product)">
+                    </button> -->
+            <div class="flex items-center cart-qty-content">
+                <button pButton icon="pi pi-minus" class="p-button-sm p-button-success" (click)="decreaseQty(product)"
+                    style="width:fit-content;">
+                </button>
+                <div class="cart-qty">
+                    <span> {{ getCartQty(product.productDetailId) }}</span>
+                </div>
+                <button pButton icon="pi pi-plus" class="p-button-sm p-button-success" 
+                (click)="increaseQty(product)"
+                    style="width:fit-content;">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

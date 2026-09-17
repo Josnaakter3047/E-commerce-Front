@@ -3,7 +3,7 @@
         <div class="col-12 sm:col-5 md:col-5 lg:col-5">
             <div class="d-flex flex-row flex-wrap align-items-center justify-content-left gap-2">
                 <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{company?.name?? ''}}" height="60px">
-                <h5>{{settings?.title?? ''}}</h5>
+                <h5 *ngIf="!company?.logoUrl" >{{company?.name?? ''}}</h5>
             </div>
             
             <div class="company-title mt-2 ml-0 pl-0">
@@ -50,12 +50,21 @@
             <ul>
                 <li>
                     <!-- <i class="pi pi-map-marker"></i> -->
-                    <span>Head Office: {{company?.address?? ''}}</span>
+                    <span>Head Office: {{settings?.headOfficeAddress? settings?.headOfficeAddress: company?.address}}</span>
                 </li>
                 <li>
-                    <i class="pi pi-phone"></i>
-                    <i class="pi pi-youtube ml-3"></i>
-                    <i class="pi pi-facebook ml-3"></i>
+                    
+                    <a [href]="'https://wa.me/' + getWhatsAppNumber()"
+                    target="_blank">
+                        <i class="pi pi-phone"></i>
+                    </a>
+                     <a [href]="settings?.youtubeLink?? ''" target="_blank">
+                        <i class="pi pi-youtube ml-3"></i>
+                    </a>
+                    <a [href]="settings?.facebookLink?? ''" target="_blank">
+                        <i class="pi pi-facebook ml-3"></i>
+                    </a>
+                    
                     <!-- <span class="pl-2">Phone: {{settings?.contactNumber?? ''}}</span> -->
                 </li>
                 <!-- <li>

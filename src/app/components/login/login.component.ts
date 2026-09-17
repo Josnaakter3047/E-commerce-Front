@@ -137,14 +137,17 @@ export class LoginComponent implements OnInit {
       this._companyService.GetCompanyById(this.companyId).subscribe((response)=>{
       if(response.statusCode === 200){
         this.company = response.value;
+        this._companyService.company = response.value;
       }
       else{
         this.company = null;
+        this._companyService.company = null;
       }
      })
     }
     else{
        this.company = null;
+       this._companyService.company = null;
        console.log("Sorry company not found");
     }
   }

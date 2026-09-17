@@ -1,11 +1,16 @@
 <div class="company-log p-0 m-0" [ngClass]="{'sticky-header': isSticky}">
     <section class="banner-logo" style="width:100%;">
         <!-- desktop view -->
-        <div class="grid p-0 m-0 text-center align-items-center justify-content-center header"
-            style="width:100%;">
-            <div class="col-3 p-2">
-                 <a href="/home">
-                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{company?.name?? ''}}" height="60px">
+        <div class="grid p-0 m-0 text-center align-items-center justify-content-center header" style="width:100%;">
+
+            <div class="col-3 align-items-center d-flex pl-4">
+                <label pTooltip="Show all categories and Brand" tooltipPosition="top" (click)="sidebarVisible = true"
+                    pButton pRipple icon="pi pi-ellipsis-v" class="p-button-info p-button-outlined mr-2"
+                    style="width:fit-content;">
+                </label>
+                <a href="/home">
+                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}"
+                        alt="{{company?.name?? ''}}" height="60px">
                     <span class="companyTitle" *ngIf="!company?.logoUrl">{{company?.name?? ''}}</span>
                 </a>
             </div>
@@ -15,7 +20,7 @@
                     <div class="menubar-bg">
                         <div class="flex justify-content-center align-items-center">
                             <ul class="nav flex flex-wrap text-base whitespace-nowrap">
-                                  <!-- <li class="menu-item list-none" *ngFor="let x of productCategories">
+                                <!-- <li class="menu-item list-none" *ngFor="let x of productCategories">
                                     <a *ngIf="x.id" routerLink="/products/{{x.name}}/{{x.id}}" routerLinkActive="active-link"
                                         class="block flex items-center menu-link">
                                         {{x.name?? ''}}
@@ -26,48 +31,54 @@
                                     </a>
                                 </li> -->
                                 <li class="menu-item list-none">
-                                    <button (click)="sidebarVisible = true"  pButton pRipple icon="pi pi-arrow-down" label="Shop Now"
-                                    class="p-button-success" style="width:fit-content;"></button>
+
                                 </li>
-                                
+
                                 <li class="menu-item list-none">
-                                    <a routerLink="/home" routerLinkActive="active-link" class="block flex items-center menu-link">
+                                    <a routerLink="/home" routerLinkActive="active-link"
+                                        class="block flex items-center menu-link">
                                         Home
                                     </a>
                                 </li>
                                 <li class="menu-item list-none">
-                                    <a routerLink="/about-us" routerLinkActive="active-link" class="block flex items-center menu-link">
+                                    <a routerLink="/about-us" routerLinkActive="active-link"
+                                        class="block flex items-center menu-link">
                                         About Us
                                     </a>
                                 </li>
-                                 <li class="menu-item list-none">
-                                    <a routerLink="/contact-us" routerLinkActive="active-link" class="block flex items-center menu-link">
+                                <li class="menu-item list-none">
+                                    <a routerLink="/contact-us" routerLinkActive="active-link"
+                                        class="block flex items-center menu-link">
                                         Contact Us
                                     </a>
                                 </li>
-                              
+
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 p-2">
-                <span (click)="onDisplaySearchBar()" pTooltip="Search" tooltipPosition="bottom"
+            <div class="col-3 align-items-center ml-auto text-end pr-4">
+                <!-- <span (click)="onDisplaySearchBar()" pTooltip="Search" 
+                tooltipPosition="bottom" class="mr-4"
                     style="cursor: pointer;color:#34a520;">
                     <i class="pi pi-search" style="font-size: 20px;"></i>
-                </span>
-                <span (click)="onShowCartList()" style="cursor: pointer;color:#34a520;margin-left:30px;">
-                    <i class="pi pi-shopping-cart p-text-primary" severity="danger" pBadge style="font-size: 20px"
-                        value="{{cartCount?? 0}}"></i>
+                </span> -->
+                <span (click)="onShowCartList()" class="cart-container">
+                    <i class="pi pi-shopping-cart cart-icon"></i>
+                    <p-badge value="{{cartCount}}" severity="danger" class="cart-badge">
+                    </p-badge>
+
                 </span>
                 <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#34a520;margin-left:30px;">
                     <i class="pi pi-user" style="font-size: 20px;"></i>
                 </span>
-                <span *ngIf="userName" style="cursor: pointer;color:#34a520; margin-left:15px; font-size:20px;">
+
+                <span *ngIf="userName" style="cursor: pointer; font-size:20px;">
                     <p-menu #userOption [popup]="true" appendTo="body" [model]=GetUserOptions()></p-menu>
                     <button pButton pRipple icon="pi pi-chevron-down" label="{{ userName }}"
-                        class="p-button-text user-optionBtn" (click)="userOption.toggle($event)"
-                        style="width:fit-content;">
+                        class="p-button-success p-button-outlined ml-5 user-optionBtn"
+                        (click)="userOption.toggle($event)" style="width:fit-content;">
                     </button>
                 </span>
             </div>
@@ -77,32 +88,37 @@
         <div class="header-mobile px-3 py-2" style="width:100%;">
             <div class="flex align-items-center justify-content-center">
                 <span (click)="sidebarVisible = true" style="cursor: pointer;color:#34a520;">
-                    <i class="{{sidebarVisible? 'pi pi-times':'pi pi-list'}}" style="font-size: 20px;"></i>
+                    <i [ngClass]="sidebarVisible ? 'pi pi-times' : 'pi pi-list'" style="font-size: 20px;"></i>
                 </span>
             </div>
             <div class="align-items-center justify-content-between logo-img">
                 <a href="/home">
-                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{settings?.title?? ''}}" height="60px">
+                    <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}"
+                        alt="{{settings?.title?? ''}}" height="60px">
                     <span class="companyTitle" *ngIf="!company?.logoUrl">{{settings?.title?? ''}}</span>
                 </a>
             </div>
 
             <div class="flex align-items-center justify-content-between gap-3">
-                <span (click)="onDisplaySearchBar()" style="cursor: pointer;color:#34a520;">
+                <!-- <span (click)="onDisplaySearchBar()" style="cursor: pointer;color:#34a520;">
                     <i class="pi pi-search" style="font-size: 20px;"></i>
+                </span> -->
+                <span (click)="onShowCartList()" class="cart-container">
+
+                    <i class="pi pi-shopping-cart cart-icon"></i>
+
+                    <p-badge value="{{cartCount}}" severity="danger" class="cart-badge">
+                    </p-badge>
+
                 </span>
-                <span (click)="onShowCartList()" style="cursor: pointer;color:#34a520;">
-                    <i class="pi pi-shopping-cart p-text-secondary" severity="danger" pBadge style="font-size: 20px"
-                        value="{{cartCount?? 0}}"></i>
-                </span>
-                 <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#34a520;margin-left:30px;">
+                <span *ngIf="!userName" (click)="onLogIn()" style="cursor: pointer;color:#34a520;margin-left:30px;">
                     <i class="pi pi-user" style="font-size: 20px;"></i>
                 </span>
-                <span *ngIf="userName" style="cursor: pointer;color:#34a520; margin-left:15px; font-size:20px;">
+                <span *ngIf="userName" style="cursor: pointer;font-size:20px;">
                     <p-menu #userOption [popup]="true" appendTo="body" [model]=GetUserOptions()></p-menu>
                     <button pButton pRipple icon="pi pi-chevron-down" label="{{ userName }}"
-                        class="p-button-text user-optionBtn" (click)="userOption.toggle($event)"
-                        style="width:fit-content;">
+                        class="p-button-success p-button-outlined user-optionBtn ml-2"
+                        (click)="userOption.toggle($event)" style="width:fit-content;">
                     </button>
                 </span>
             </div>
@@ -110,51 +126,76 @@
     </section>
 </div>
 <!-- menu sidebar -->
-<p-sidebar [(visible)]="sidebarVisible" position="left" styleClass="custom-sidebar" [showCloseIcon]="false">
+<p-sidebar *ngIf="sidebarVisible" [(visible)]="sidebarVisible" position="left" styleClass="custom-sidebar"
+    [showCloseIcon]="false">
+
     <ng-template pTemplate="headless">
+
         <div class="flex flex-column h-full" style="background-color: #fff;">
+
             <!-- Header -->
             <div class="flex align-items-center justify-content-between px-3 py-2 flex-shrink-0 border-bottom-1 border-gray-300">
                 <span class="font-semibold">Product Items</span>
-                <button pButton (click)="sidebarVisible = false" icon="pi pi-times" class="p-button-danger p-button-text"
-                    style="width: fit-content;">
+                <button pButton type="button" (click)="sidebarVisible = false" icon="pi pi-times"
+                    class="p-button-danger p-button-text" style="width: fit-content;">
                 </button>
             </div>
+            <!-- Content -->
             <div class="overflow-y-auto px-3 py-2">
-            <ul class="list-none p-0 m-0">
-                <li class="side-menu-item">
-                     <h6 class="font-semibold">Category</h6>
-                     <div *ngFor="let x of productCategories">
-                        <a (click)="goProductCategory(x)" routerLinkActive="side-active-link" class="block w-full">
-                            <i class="pi pi-directions mr-2"></i> {{x.name ?? ''}}
+                <!-- CATEGORY -->
+                <div class="filter-section">
+                    <div class="filter-header" (click)="categoryExpanded = !categoryExpanded">
+                        <span>
+                            <i class="pi pi-th-large mr-2"></i>
+                            Category
+                        </span>
+                        <i class="pi pi-chevron-down filter-chevron" [class.rotate]="categoryExpanded">
+                        </i>
+                    </div>
+
+                    <div class="filter-list" [class.expanded]="categoryExpanded">
+                        <div *ngFor="let x of productCategories">
+                            <a (click)="goProductCategory(x)" routerLinkActive="side-active-link" class="side-filter-item">
+                                <i class="pi pi-angle-right mr-2"></i>
+                                {{ x.name ?? '' }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- BRAND -->
+                <div class="filter-section">            
+                    <div class="filter-header" (click)="brandExpanded = !brandExpanded">
+                        <span>
+                            <i class="pi pi-tag mr-2"></i>
+                            Brand
+                        </span>
+            
+                        <i class="pi pi-chevron-down filter-chevron" [class.rotate]="brandExpanded">
+                        </i>
+                    </div>
+                    <div class="filter-list" [class.expanded]="brandExpanded">
+                        <a *ngFor="let x of productBrands" (click)="goProductBrand(x)" routerLinkActive="side-active-link"
+                            class="side-filter-item">
+            
+                            <i class="pi pi-angle-right mr-2"></i>
+                            {{ x.name ?? '' }}
                         </a>
-                     </div>
-                    
-                </li>
-                <li class="side-menu-item">
-                     <h6 class="font-semibold">Brand</h6>
-                     <div *ngFor="let x of productBrands">
-                        <a (click)="goProductBrand(x)" 
-                        routerLinkActive="side-active-link" class="block w-full">
-                            <i class="pi pi-directions mr-2"></i> {{x.name ?? ''}}
-                        </a>
-                     </div>
-                    
-                </li>
-            </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        </div>
-        
     </ng-template>
-   
+
 </p-sidebar>
 
 <!-- search display -->
-<p-sidebar #searchSidebar [(visible)]="displaySearchBar" position="top" [showCloseIcon]="false"
+<p-sidebar #searchSidebar *ngIf="displaySearchBar" [(visible)]="displaySearchBar" position="top" [showCloseIcon]="false"
     (onHide)="onSidebarHide()" styleClass="search-sidebar">
     <div class="grid align-items-center justify-content-left py-2 px-3 md:px-6 mb-3" style="width:100%;">
         <!-- Logo -->
-        <div class="col-12 sm:col-3 text-left flex align-items-center justify-content-center sm:justify-content-start mb-2 sm:mb-0">
+        <div
+            class="col-12 sm:col-3 text-left flex align-items-center justify-content-center sm:justify-content-start mb-2 sm:mb-0">
             <!-- <img draggable="false" src="assets/images/company-logo.jpg" height="40" alt="My Solution Bangladesh"> -->
             <a href="/home">
                 <img *ngIf="company?.logoUrl" src="{{this.baseUrl}}/{{company?.logoUrl}}" alt="{{settings?.title?? ''}}"
@@ -173,7 +214,7 @@
                 <a (click)="onSearchWithTopProduct(p)" class="search-link" *ngFor="let p of searchTopThereeProducts">
                     {{p.name?? ''}}
                 </a>
-                
+
             </p>
         </div>
 
@@ -183,8 +224,7 @@
                 <i class="pi pi-user" style="font-size: 20px;"></i>
             </span>
             <span (click)="onShowCartList()" style="cursor: pointer;color: green;margin-right:20px;">
-                <i class="pi pi-shopping-cart p-text-secondary" severity="danger" 
-                pBadge style="font-size: 20px"
+                <i class="pi pi-shopping-cart text-secondary" severity="danger" pBadge style="font-size: 20px"
                     value="{{this.cartitems?.length?? 0}}"></i>
             </span>
             <span (click)="onClose($event)" style="cursor: pointer;color: rgb(228, 1, 1);">
@@ -212,10 +252,12 @@
                                         src="{{baseUrl}}/{{ product.productImageUrl }}" alt="{{ product.name }}">
                                     <img draggable="false" *ngIf="!product.productImageUrl"
                                         src="assets/images/default-img.png" alt="{{ product.name }}">
-                                    <span *ngIf="product.discount > 0" class="product-discount">On Sale</span>
+
+                                    <span *ngIf="product?.discount > 0" class="product-discount">Off
+                                        {{product?.discount?? 0}}%</span>
                                 </div>
                             </a>
-                            
+
 
                             <div class="p-3 flex flex-column justify-between flex-grow-1">
                                 <div class="align-items-center text-center">
@@ -223,15 +265,19 @@
                                         {{ product.name }}
                                         <span *ngIf="product?.description">- ({{ product?.description?? '' }})</span>
                                     </h3>
-                                    <p *ngIf="!product.discount" class="text-gray-600 mt-1">৳ {{ product.sellingPrice | number:"1.2-2" }}</p>
-                                    <p *ngIf="product.discount" class="text-gray-600 mt-1">
-                                        <span>৳ {{ onCalculateDiscountedPrice(product.sellingPrice, product.discount) | number:"1.2-2" }}</span>
-                                        <span style="text-decoration: line-through;padding-left:15px;">৳ {{ product.sellingPrice | number:"1.2-2"
+
+                                    <p *ngIf="!product.discount" class="text-gray-600 mt-1">৳ {{ product.sellingPrice |
+                                        number:"1.2-2" }}</p>
+                                    <p *ngIf="product?.discount" class="text-gray-600 mt-1">
+                                        <span>৳ {{ onCalculateDiscountedPrice(product.sellingPrice, product.discount) |
+                                            number:"1.2-2" }}</span>
+                                        <span style="text-decoration: line-through;padding-left:15px;">৳ {{
+                                            product.sellingPrice | number:"1.2-2"
                                             }}</span>
                                     </p>
                                     <p class="mb-2">
                                         <p-badge value="{{product?.isStockAvailable? 'Available':'Stock Out'}}"
-                                        severity="{{product?.isStockAvailable? 'success':'danger'}}"></p-badge>
+                                            severity="{{product?.isStockAvailable? 'success':'danger'}}"></p-badge>
                                     </p>
                                 </div>
                                 <div class="mt-auto">
@@ -245,8 +291,8 @@
 
             <div class="col-12 text-center align-items-center text-2xl text-[#999] mt-3 mb-5 text-center"
                 style="width: 100%;">
-                <button (click)="onSearchMoreProduct()" pButton pRipple label="More Results" class="p-button-warning more-btn"
-                    style="width: fit-content;"></button>
+                <button (click)="onSearchMoreProduct()" pButton pRipple label="More Results"
+                    class="p-button-warning more-btn" style="width: fit-content;"></button>
             </div>
         </div>
     </div>

@@ -49,13 +49,13 @@
                                 <td style="text-align: center;">
                                     <div class="flex align-items-center justify-content-center">
                                         <div class="flex align-items-center" style="background-color:#eae9e9;">
-                                            <button pButton icon="pi pi-minus" class="p-button-sm  p-button-success"
-                                                (click)="decreaseQty(item)"></button>
-                                            <div class="align-items-center justify-content-center p-1">
-                                                <span class="px-3" style="font-size:15px;">{{ item.quantity }}</span>
+                                            <button pButton icon="pi pi-minus" class="p-button-sm  p-button-success" (click)="decreaseQty(item)"></button>
+                                            <div class="align-items-center justify-content-center p-0 m-0">
+                                                <input (focus)="selectInput($event)" type="number" min="0" [ngModel]="getCartQty(item.productDetailId)"
+                                                    (blur)="updateQty(item, $event)" [ngModelOptions]="{standalone:true}" class="qty-input" pInputText
+                                                    style="width:100px !important;" />
                                             </div>
-                                            <button pButton icon="pi pi-plus" class="p-button-sm  p-button-success"
-                                                (click)="increaseQty(item)"></button>
+                                            <button pButton icon="pi pi-plus" class="p-button-sm  p-button-success" (click)="increaseQty(item)"></button>
                                         </div>
                                     
                                     </div>
@@ -94,20 +94,18 @@
 
                             <div class="col-5 product-info">
                                 <h4 class="m-0 font-semibold">{{ item.name }}</h4>
-                                <p class="m-0 text-gray-600">৳ {{ item.price }}</p>
+                                <p class="m-0 text-gray-600"> {{ item.price }}</p>
 
                             </div>
                             <div class="col-3 product-qty">
                                 <div class="flex" style="background-color:#eae9e9; border:1px solid rgb(232, 229, 229);">
-                                    <button pButton icon="pi pi-minus"
-                                        class="p-button-sm  p-button-success"
-                                        (click)="decreaseQty(i)"></button>
-                                    <div class="align-items-center justify-content-center p-1"
-                                        style="border-left:1px solid grey; border-right:1px solid grey;">
-                                        <span class="px-3">{{ item.quantity }}</span>
+                                    <button pButton icon="pi pi-minus" class="p-button-sm  p-button-success" (click)="decreaseQty(i)"></button>
+                                    <div class="align-items-center justify-content-center p-0 m-0">
+                                        <input (focus)="selectInput($event)" type="number" min="0" [ngModel]="getCartQty(item.productDetailId)"
+                                            (blur)="updateQty(item, $event)" [ngModelOptions]="{standalone:true}" class="qty-input" pInputText
+                                            style="width:100px !important;" />
                                     </div>
-                                    <button pButton icon="pi pi-plus" class="p-button-sm  p-button-success"
-                                        (click)="increaseQty(i)"></button>
+                                    <button pButton icon="pi pi-plus" class="p-button-sm  p-button-success" (click)="increaseQty(i)"></button>
                                 </div>
                             </div>
                             <div class="col-1 remove-btn text-center">
@@ -119,18 +117,17 @@
                     </div>
                     <!-- Cart Summary -->
                     <div class="cart-footer-container">
-                        <div class="cart-footer-content"
-                            *ngIf="_shoppingCartService.cartItems?.length > 0; else emptySummary">
-                            <div class="cart-action">
+                        <div class="cart-footer-content" *ngIf="_shoppingCartService.cartItems?.length > 0; else emptySummary">
+                            <!-- <div class="cart-action">
                                 <button pTooltip="Add note" class="cart-note-btn">
                                     <span class="pi pi-pencil"></span><span>Note</span>
                                 </button>
                                 <button pTooltip="Add coupon">
                                     <span class="pi pi-ticket"></span><span>Coupon</span>
                                 </button>
-                            </div>
+                            </div> -->
                             <div class="shipping-method-option">
-                                <h5>{{'Select a Method' | translate}}:</h5>
+                                <h5 class="text-left pl-3" style="text-decoration: underline;">{{'Select a Method' | translate}}:</h5>
                                 <div class="grid p-0 m-0" style="width: 100%;">
                                     <div class="col-12 p-0 m-0">
                                         <div class="field-checkbox shipping-content" *ngFor="let x of this._service.shippingMethods">

@@ -2,7 +2,6 @@ import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sidebar } from 'primeng/sidebar';
-import { ProductService } from 'src/app/components/application-services/product.service';
 import { MyApiService } from 'src/app/shared/my-api.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { CategoryService } from 'src/app/components/application-services/item-category.service';
@@ -13,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { LoginService } from 'src/app/components/login/login.service';
 import { EcommarceSettingsService } from 'src/app/components/application-services/ecommarce-settings.service';
 import { BrandService } from 'src/app/components/application-services/item-brand.service';
+import { ProductService } from 'src/app/components/product/product.service';
 
 
 @Component({
@@ -40,8 +40,11 @@ export class HomeBannerComponent implements OnInit {
   isSticky = false;
   branch:any;
   company:any;
-  settings: any
-
+  settings: any;
+  topProductList:any;
+  searchTopThereeProducts:any[] =[];
+  categoryExpanded = false;
+brandExpanded = false;
   @ViewChild('searchSidebar') sidebarRef!: Sidebar;
   private typingTimer: any;
 
@@ -92,7 +95,6 @@ export class HomeBannerComponent implements OnInit {
     this.GetAllProduct();   
     this.GetAllCategories();
     this.GetAllBrand();
-    this.GetAllTopProductList();
     this.GetEcommarceSettings();
     let token = JSON.parse(localStorage.getItem("Token"));
     if(token){
@@ -149,14 +151,14 @@ export class HomeBannerComponent implements OnInit {
  }
  
  onSearchWithTopProduct(row: any) {
-  let count = this.topProductList.filter(p => p.name === row.name).length;
-  this._router.navigate(['/more-product'], {
-    queryParams: {
-      search_result: row.name,
-      result_count: count
-    }
-  });
-  this.displaySearchBar = false;
+  // let count = this.topProductList.filter(p => p.name === row.name).length;
+  // this._router.navigate(['/more-product'], {
+  //   queryParams: {
+  //     search_result: row.name,
+  //     result_count: count
+  //   }
+  // });
+  // this.displaySearchBar = false;
 }
 
   GetCompany(){
@@ -206,9 +208,16 @@ export class HomeBannerComponent implements OnInit {
       this.sidebarVisible = false;
     }
   }
-   GetAllProductByCategoryId(cagoryId:any){
+  GetAllProductByCategoryId(cagoryId:any){
     if(this.companyId){
-      this._productService.GetAllProductByBranchIdAndCategory(this.companyId, cagoryId).subscribe(response=>{
+      const data = {
+        companyId:this.companyId,
+        branchId:this.branchId,
+        brandId:null,
+        categoryId:cagoryId
+      }
+   
+      this._productService.GetAllProductByFilter(data).subscribe(response=>{
       if(response.statusCode === 200){
         this._productService.productList = [...response.value];
         // this.allProducts = response.value || [];
@@ -227,7 +236,13 @@ export class HomeBannerComponent implements OnInit {
   }
   GetAllProductByBrandId(brandId:any){
     if(this.companyId){
-      this._productService.GetAllProductByBranchIdAndBrandId(this.companyId, brandId).subscribe(response=>{
+      const data = {
+        companyId:this.companyId,
+        branchId:this.branchId,
+        brandId:brandId,
+        categoryId:null
+      }
+      this._productService.GetAllProductByFilter(data).subscribe(response=>{
       if(response.statusCode === 200){
         //this.allProducts = response.value || [];
         this._productService.productList = [...response.value];
@@ -244,16 +259,52 @@ export class HomeBannerComponent implements OnInit {
       console.log("Company not found");
     }
   }
-  GetAllProduct(){
-    if(this.branchId){
-      this._productService.GetAllProductForSearch_Sales(this.companyId, this.branchId).subscribe(response=>{
-      if(response.statusCode === 200){
-        this.productList = response.value;
-      }
-      else{
-        this.productList = [];
-      }
-      })
+  isProductLoading = false;
+  pageNumber = 1;
+  pageSize = 100;
+  totalProducts = 0;
+ GetAllProduct() {
+    if (this.branchId && this.companyId) {
+      this.isProductLoading = true;
+      const model = {
+        companyId: this.companyId,
+        branchId: this.branchId,
+        search: '',
+        categoryId: null,
+        brandId: null,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      };
+      this._productService.GetAllProductForCustomerShopping(model).subscribe({
+        next: (response) => {
+          if (response.statusCode === 200) {
+            this.productList = response.value.map(product => ({
+              ...product,
+              discountedPrice: this.onCalculateDiscountedPrice(
+                product.sellingPrice,
+                product.discount
+              ),
+             
+            }));
+
+            this.totalProducts = response.totalRecords || 0;
+
+          } else {
+            this.productList = [];
+            this.totalProducts = 0;
+          }
+
+          this.isProductLoading = false;
+        },
+
+        error: (error) => {
+          console.error("Error loading products:", error);
+          this.productList = [];
+          this.totalProducts = 0;
+
+          this.isProductLoading = false;
+        }
+      });
     }
     else{
       this.productList = [];
@@ -371,7 +422,7 @@ export class HomeBannerComponent implements OnInit {
         menuItems = [
     
           {
-            label: 'Dashboard',icon: 'pi pi-home', command: () => {
+            label: 'Profile',icon: 'pi pi-home', command: () => {
               this.onGoDashboard();
             }
           },
@@ -392,28 +443,28 @@ export class HomeBannerComponent implements OnInit {
     this.discountedPrice = (price - this.discountAmount) || 0;
     return this.discountedPrice;
   }
-  topProductList:any;
-  searchTopThereeProducts:any[] =[];
-  GetAllTopProductList() {
-    let startDate = new Date("1991-01-01");
-    let endDate = new Date();
-    let formateStart = this.datePipe.transform(startDate, 'yyyy-MM-dd');
-    let formateEnd = this.datePipe.transform(endDate, 'yyyy-MM-dd');
-    this._productService.filterForm.patchValue({
-      branchId: this.branchId,
-      startDate: new Date(formateStart),
-      endDate: new Date(formateEnd)
-    });
+  
+  
+  // GetAllTopProductList() {
+  //   let startDate = new Date();
+  //   let endDate = new Date();
+  //   let formateStart = this.datePipe.transform(startDate, 'yyyy-MM-dd');
+  //   let formateEnd = this.datePipe.transform(endDate, 'yyyy-MM-dd');
+  //   this._productService.filterForm.patchValue({
+  //     branchId: this.branchId,
+  //     startDate: new Date(formateStart),
+  //     endDate: new Date(formateEnd)
+  //   });
 
-    this._productService.GetTopProductList(this._productService.filterForm.value).subscribe((response) => {
-      if (response.value) {
-        this.topProductList = response.value;
-        //console.log(response.value);
-        this.searchTopThereeProducts = this.topProductList.slice(0, 3);       
-      }
-      else {
-        this.topProductList = null;
-      }
-    });
-  }
+  //   this._productService.GetTopProductList(this._productService.filterForm.value).subscribe((response) => {
+  //     if (response.value) {
+  //       this.topProductList = response.value;
+  //       //console.log(response.value);
+  //       this.searchTopThereeProducts = this.topProductList.slice(0, 3);       
+  //     }
+  //     else {
+  //       this.topProductList = null;
+  //     }
+  //   });
+  // }
 } 

@@ -83,6 +83,7 @@ export class CompanyDetailComponent implements OnInit {
       this._service.GetCompanyById(token.companyId).subscribe((response)=>{
         if(response.statusCode === 200){
           this.company = response.value;
+          this._service.company = response.value;
          //this.translate.use(this.company?.language);
           this._service.Populate(response.value);
         if (this.company?.logoUrl != null) {
@@ -94,6 +95,7 @@ export class CompanyDetailComponent implements OnInit {
         }
         else{
           this.company = null;
+          this._service.company = null;
         }
       })
     }

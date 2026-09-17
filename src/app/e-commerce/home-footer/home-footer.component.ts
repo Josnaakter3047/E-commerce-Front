@@ -40,25 +40,28 @@ export class HomeFooterComponent implements OnInit {
    
     if(this.branchId){
       this.GetBranchById();
-       this.companySocialMedia = [
-      {name:"Phone: "+ (this.branch?.phoneNumber || ''), icon:"pi pi-phone"},
+    //    this.companySocialMedia = [
+    //   {name:"Phone: "+ (this.branch?.phoneNumber || ''), icon:"pi pi-phone"},
       
-      {name:"Email: company-info@gmail.com", icon:"pi pi-envelope"},
-      {name:"Facebook", icon:"pi pi-facebook"},
-      {name:"Yourtube", icon:"pi pi-youtube"}
-    ];
+    //   {name:"Email: company-info@gmail.com", icon:"pi pi-envelope"},
+    //   {name:"Facebook", icon:"pi pi-facebook"},
+    //   {name:"Yourtube", icon:"pi pi-youtube"}
+    // ];
     }
     if(this.companyId){
       this.GetCompany();
     }
     this.GetEcommarceSettings();
   }
+   getWhatsAppNumber() {
+    const num = this.settings?.contactNumber || this.branch?.phoneNumber;
+    return num?.toString().replace(/\D/g, '');
+  }
   GetEcommarceSettings() {
     if (this.branchId) {
       this._ecommarceService.GetByBranchId(this.branchId).subscribe((response) => {
         if (response.statusCode === 200 && response.value) {
           this.settings = response.value;
-
         }
         else {
           this.settings = null;

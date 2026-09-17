@@ -16,7 +16,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ShoppingCartService {
   cartItems: CartItemModel[] = [];
   baseUrl: string = '';
-
+  isShowCartList = false;
   private cartVisibleSource = new BehaviorSubject<boolean>(false);
   cartVisible$ = this.cartVisibleSource.asObservable();
 
@@ -47,14 +47,21 @@ export class ShoppingCartService {
 
       this.cartItems.push({
         productId: product.id,
+        unitId: product.unitId,
         productDetailId: product.productDetailId,
         name: product.name,
-        description:product.description,
+        description: product.description,
+        sellingPrice: product.sellingPrice,
+        productCode: product.productCode,
+        brandName: product.brandName,
+        categoryName: product.categoryName,
         price: price,
         discountAmount: this.discountAmount(product.sellingPrice, product.discount),
         discountRate: product.discount,
+        costingPrice: product.actualCost,
         image: product.productImageUrl ?? null,
-        quantity: 1
+        quantity: product.quantity || 1,
+        stockQty: product.stockQty
       });
     }
     this.saveCart();
@@ -66,6 +73,10 @@ export class ShoppingCartService {
     this.refreshCart();
   }
 
+  removeItemByProductDetailId(productDetailId: any) {
+    this.cartItems = this.cartItems.filter(i => i.productDetailId !== productDetailId);
+    this.saveCart();
+  }
 
   refreshCart() {
     const savedCart = localStorage.getItem('cart');
@@ -87,10 +98,7 @@ export class ShoppingCartService {
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
     this.refreshCart()
   }
-  removeItemByProductDetailId(productDetailId: any) {
-    this.cartItems = this.cartItems.filter(i => i.productDetailId !== productDetailId);
-    this.saveCart();
-  }
+
 
 
   clearCart() {
@@ -103,16 +111,23 @@ export class ShoppingCartService {
     return this.cartItems.reduce((sum, item) => sum + item.discountAmount, 0);
   }
 
-  getTotal() {
-    return this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  getTotal(): number {
+    let total = this.cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const totalAmt = total.toFixed(2);
+    return Number(totalAmt);
   }
 
-  
+
+
   discountAmount(price: number, discountRate: number): number {
-    return discountRate ? (price * discountRate) / 100 : 0;
+    return Number(
+      (discountRate ? (price * discountRate) / 100 : 0).toFixed(2)
+    );
   }
 
   onCalculateDiscountedPrice(price: number, discountRate: number): number {
-    return discountRate ? price - (price * discountRate) / 100 : price;
+    return Number(
+      (discountRate ? price - (price * discountRate) / 100 : price).toFixed(2)
+    );
   }
 }

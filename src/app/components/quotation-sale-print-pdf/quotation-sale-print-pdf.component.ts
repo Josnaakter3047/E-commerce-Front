@@ -40,17 +40,22 @@ company:any;
       this._companyService.GetCompanyById(token.companyId).subscribe((response)=>{
       if(response.statusCode === 200){
         this.company = response.value;
+        this._companyService.company = response.value;
         this.vatLabel = this.company?.vatLabel? (this.company?.vatLabel + " Rate"):"Tax Rate";
         
       }
       else{
         this.company = null;
+        this._companyService.company = null;
+        this.vatLabel = null;
       }
     })
     }
     else{
       console.log("Company Id not found!!");
       this.company = null;
+      this._companyService.company = null;
+      this.vatLabel = null;
     }
   }
   GetReportSettingByBranchId(){
